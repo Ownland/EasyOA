@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">EasyOA</string>
+    <string name="app_display_name">EasyOA</string>
+      <string name="account">输入用户名</string>
+    <string name="password">输入密码</string>
+        <string name="login">登 录</string>
+    <string name="auto_save_password">记住用户名</string>
+    <string name= "menu_settings">菜单</string>
+    <string name="sending_request">正在发送请求</string>
+    <string name="all_contact">全部联系人</string>
+    <string name="detail">联系人详情</string>
+    <string name="entername">请输入姓名</string>
+    <string name="phone">电话</string>
+    <string name="mobile">手机</string>
+    <string name="email">邮件</string>
+    <string name="department">部门</string>
+    <string name="other">其他</string>
+   <string name="nickname">昵称</string>
+   <string name="address">住址</string>
+<string name="company">公司</string>
+<string name="addadd">地   址</string>
+<string name="addnick">昵   称</string>
+<string name="addnote">备   注</string>
+<string name="note">备注</string>
+<string name="group">分组</string>
+<string name="addmore">添加更多属性</string>
+<string name="inputphone">请输入电话</string>
+<string name="inputemail">请输入邮件地址</string>
+<string name="inputmobile">请输入手机</string>
+<string name="inputdepartment">请输入部门</string>
+<string name="inputaddress">请输入住址</string>
+<string name="inputcompany">请输入公司名称</string>
+<string name="inputnickname">请输入昵称</string>
+<string name="inputnote">请输入备注</string>
+<string name="person">个人信息</string>
+<string name="select">请选择类型</string>
+</resources>

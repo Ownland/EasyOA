@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rlContact"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
+
+    <RelativeLayout
+        android:id="@+id/rlToolbar"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="#106184" >
+
+        <RelativeLayout
+            android:id="@+id/rlContactTool"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true" >
+
+            <TextView
+                android:id="@+id/txtContactTool"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:paddingRight="20dip"
+                android:text="@string/all_contact"
+                android:textColor="#ffffff"
+                android:textSize="20sp" />
+
+            <ImageButton
+                android:id="@+id/imbDownContact"
+                android:layout_width="13dip"
+                android:layout_height="15dip"
+                android:layout_alignBottom="@id/txtContactTool"
+                android:layout_alignRight="@id/txtContactTool"
+                android:layout_alignTop="@id/txtContactTool"
+                android:layout_centerInParent="true"
+                android:layout_marginLeft="5dip"
+                android:layout_marginTop="15dip"
+                android:background="@drawable/spinner_undown"
+                android:clickable="false"
+                android:focusable="false" />
+        </RelativeLayout>
+
+        <ImageButton
+            android:id="@+id/imbPerson"
+            android:layout_width="32dip"
+            android:layout_height="32dip"
+            android:layout_alignParentRight="true"
+            android:layout_centerInParent="true"
+            android:layout_marginLeft="10dip"
+            android:layout_marginRight="10dip"
+            android:background="@drawable/title_contact_icon" />
+
+        <ImageView
+            android:id="@+id/imgLine01"
+            android:layout_width="1dip"
+            android:layout_height="45dip"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@id/imbPerson"
+            android:background="@drawable/top_bar_diviver" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rlFindContact"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/rlToolbar" >
+
+        <EditText
+            android:id="@+id/edtFindContact"
+            android:layout_width="fill_parent"
+            android:layout_height="70dip"
+            android:layout_alignParentTop="true"
+            android:background="@drawable/bg_contact_search_edttext1"
+            android:hint="联系人搜索 | 共0人"
+            android:paddingLeft="58dip"
+            android:textSize="17dip" />
+
+        <ImageView
+            android:layout_width="30dip"
+            android:layout_height="30dip"
+            android:layout_alignBottom="@id/edtFindContact"
+            android:layout_alignLeft="@id/edtFindContact"
+            android:layout_alignTop="@id/edtFindContact"
+            android:layout_marginBottom="8dip"
+            android:layout_marginLeft="23dip"
+            android:src="@drawable/search_bar_icon_normal" />
+    </RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/rl_progress"
+        	android:layout_width="fill_parent"
+        	android:layout_height="fill_parent"
+        	android:layout_below="@id/rlFindContact"
+        	android:layout_marginTop="-12dip"
+        	android:background="#fff1f1f1">
+	<ProgressBar
+			android:id="@+id/progress"
+        	android:layout_width="50dip"
+        	android:layout_height="50dip"
+        	android:layout_centerHorizontal="true"
+        	android:layout_centerVertical="true"
+			android:clickable="false"			
+			style="?android:attr/progressBarStyleLarge" />
+	</RelativeLayout>
+    <ListView
+        	android:id="@+id/Lsv_contacts"
+        	android:visibility="gone"
+       		android:layout_width="fill_parent"
+        	android:layout_height="fill_parent"
+        	android:layout_below="@id/rlFindContact"
+        	android:cacheColorHint="#00000000"
+        	android:layout_marginTop="-12dip"
+        	android:background="#fff1f1f1" >
+    </ListView>
+
+</RelativeLayout>
