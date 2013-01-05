@@ -60,7 +60,11 @@ public class LoginActivity extends Activity {
 						user.setPasswd(pwdText.getText().toString());
 						Message msg = new Message();
 						Bundle b = new Bundle();
-						ILoginService ls = ClientServiceHelper.getLoginService();
+						
+						/**
+						 * 没有服务器时注释掉这一段，直接跳转到主界面
+						 */
+						/*ILoginService ls = ClientServiceHelper.getLoginService();
 						Map<String, Object> result = ls.login(user.getUsername(),user.getPasswd());
 						int status = (Integer) result.get("status");
 						if(status == 0){
@@ -73,8 +77,9 @@ public class LoginActivity extends Activity {
 							b.putInt("result", 1);
 							String backMsg = (String)result.get("msg");
 							b.putString("msg", backMsg);
-						}
+						}*/
 						
+						b.putInt("result", 0);
 						msg.setData(b);
 						LoginActivity.this.myHandler.sendMessage(msg);
 					}
