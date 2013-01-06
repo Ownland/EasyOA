@@ -20,7 +20,7 @@ public class DESUtil {
 
 	}
 
-	public DESUtil(String str) {
+	public DESUtil(String str) {  //每个用户都有一个自己的str用于生成密钥
 		setKey(str); // 生成密匙
 	}
 

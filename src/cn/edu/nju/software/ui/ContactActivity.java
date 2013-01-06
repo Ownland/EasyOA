@@ -115,10 +115,9 @@ public class ContactActivity extends Activity {
 			IContactService cs = ClientServiceHelper.getContactService();
 			contacts = cs.getContactList();
 			for (int i = 0; i < contacts.size(); i++) {
-				contacts.get(i).setGroupId(0);
-				// contactMgr.addContact(contacts.get(i));
+				contactMgr.addContact(contacts.get(i));
 			}
-			// contacts=contactMgr.getAllContacts();
+			contacts=contactMgr.getAllContacts();
 			Collections.sort(contacts);
 
 			Message msg = new Message();

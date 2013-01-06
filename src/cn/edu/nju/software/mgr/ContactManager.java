@@ -1,5 +1,6 @@
 package cn.edu.nju.software.mgr;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Context;
@@ -28,7 +29,6 @@ public class ContactManager {
 			String nickname, String address, String note, int groupid) {
 		Contact contact = new Contact(userId, name, namePinyin, phone, mobile,
 				email, department, nickname, address, note, groupid);
-		encryptContact(contact);
 		this.addContact(contact);
 	}
 
@@ -49,20 +49,32 @@ public class ContactManager {
 		String condition = DB.TABLES.CONTACT.FIELDS.ID + " = " + id;
 		List<Contact> contacts = dao.getContactsByCondition(condition);
 		if (contacts.size() > 0)
-			return contacts.get(0);
+		{
+			Contact contact = contacts.get(0);
+			return decryptContact(contact);
+		}
 		else
 			return null;
 	}
 
 	public List<Contact> getContactsByName(String contactName) {
-		String condition = FIELDS.NAME + " like '%" + contactName + "%' ";
-		return dao.getContactsByCondition(condition);
+		List<Contact> contacts = getContacts();
+		List<Contact> result =new  ArrayList<Contact>();
+		for(int i=0;i<contacts.size();i++){
+			if(contacts.get(i).getName().contains(contactName))
+				result.add(contacts.get(i));				
+		}
+		return result;
 	}
 
 	public List<Contact> getContactsByNamePinyin(String contactNamePinyin) {
-		String condition = FIELDS.NAMEPINYIN + " like '" + contactNamePinyin
-				+ "%' ";
-		return dao.getContactsByCondition(condition);
+		List<Contact> contacts = getContacts();
+		List<Contact> result =new  ArrayList<Contact>();
+		for(int i=0;i<contacts.size();i++){
+			if(contacts.get(i).getName().startsWith(contactNamePinyin))
+				result.add(contacts.get(i));				
+		}
+		return result;
 	}
 
 	public List<Contact> getContactsByGroupId(int groupId) {
@@ -71,7 +83,17 @@ public class ContactManager {
 	}
 
 	public List<Contact> getAllContacts() {
-		return dao.getContactsByCondition("1=1");
+		List<Contact> contacts = getContacts();
+		List<Contact> result =new  ArrayList<Contact>();
+		for(int i = 0;i<contacts.size();i++){
+			result.add(decryptContact(contacts.get(i)));
+		}
+		return result;
+	}
+	
+	public List<Contact> getContacts() {
+		List<Contact> contacts = dao.getContactsByCondition("1=1");
+		return contacts;
 	}
 
 	public void changeGroupByContact(int contactId, int toGroupId) {

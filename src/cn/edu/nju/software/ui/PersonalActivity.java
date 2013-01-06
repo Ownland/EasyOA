@@ -99,12 +99,14 @@ public class PersonalActivity extends Activity {
 		rlAddAddress = (RelativeLayout) findViewById(R.id.rlAddress_personal);
 		rlAddNote = (RelativeLayout) findViewById(R.id.rlNote_personal);
 		addMore = (Button) findViewById(R.id.btn_addmore);
-		contactMgr = new ContactManager(context, ((NowUser)getApplication()).getUser().getKey());
+		contactMgr = new ContactManager(context, ((NowUser) getApplication())
+				.getUser().getKey());
 		initUI();
 	}
 
 	public void initUI() {
-		nowContact = contactMgr.getContactById(((NowUser)getApplication()).getUser().getContactId());
+		nowContact = contactMgr.getContactById(((NowUser) getApplication())
+				.getUser().getContactId());
 		viewName.setText(nowContact.getName());
 		editPhone.setText(nowContact.getPhone());
 		editMobile.setText(nowContact.getMobile());

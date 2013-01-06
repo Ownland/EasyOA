@@ -234,11 +234,6 @@ public final class R {
         public static final int accounts=0x7f090041;
         public static final int auto_save_password=0x7f090044;
         public static final int btn_addmore=0x7f090071;
-        public static final int button1=0x7f090076;
-        public static final int button2=0x7f090077;
-        public static final int button3=0x7f090078;
-        public static final int button4=0x7f090079;
-        public static final int button5=0x7f09007a;
         public static final int checkbox=0x7f090043;
         public static final int edtFindContact=0x7f090008;
         public static final int edt_inputaddress=0x7f090034;
@@ -288,7 +283,7 @@ public final class R {
         public static final int llPhotoTitle_personal=0x7f09004d;
         public static final int login=0x7f090045;
         public static final int loginpage=0x7f09003f;
-        public static final int menu_settings=0x7f09007c;
+        public static final int menu_settings=0x7f090076;
         public static final int mobile_num=0x7f090075;
         public static final int name=0x7f090015;
         public static final int name_personal=0x7f09004e;
@@ -328,7 +323,6 @@ public final class R {
         public static final int scrollview_personal=0x7f09004c;
         public static final int tool_bar=0x7f09000f;
         public static final int tool_bar_personal=0x7f090046;
-        public static final int tv=0x7f09007b;
         public static final int tvLoad=0x7f090038;
         public static final int txtAddAdress=0x7f09003a;
         public static final int txtAddNickname=0x7f09003b;
@@ -365,8 +359,7 @@ public final class R {
         public static final int personal_activity=0x7f030007;
         public static final int plaza_activity=0x7f030008;
         public static final int popup_call=0x7f030009;
-        public static final int testnet_activity=0x7f03000a;
-        public static final int welcome_acticity=0x7f03000b;
+        public static final int welcome_acticity=0x7f03000a;
     }
     public static final class menu {
         public static final int welcome_acticity=0x7f080000;

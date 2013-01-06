@@ -49,7 +49,6 @@ public class ContactDetailActivity extends Activity {
 				// TODO Auto-generated method stub
 				finish();
 			}
-
 		});
 		
 		imbCall.setOnClickListener(new OnClickListener() {
@@ -60,7 +59,6 @@ public class ContactDetailActivity extends Activity {
 				initPopWindow();
 				popWin.showAsDropDown(findViewById(R.id.imb_contact_call),-50,0);
 			}
-
 		});
 		
 		imbMsg.setOnClickListener(new OnClickListener() {
