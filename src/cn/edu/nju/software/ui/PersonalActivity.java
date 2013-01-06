@@ -38,7 +38,6 @@ public class PersonalActivity extends Activity {
 	private LayoutInflater inflater;// 反射
 	private Builder builder;// 对话框创建器
 	private AlertDialog dialog;// 对话框
-	private int nowContactId;// 点击联系人传递过来的联系人ID号
 	private Contact nowContact = null;// 点击联系人过来的实体
 	private Contact newContact = null;
 	private ContactManager contactMgr;
@@ -84,7 +83,6 @@ public class PersonalActivity extends Activity {
 
 	private void init() {
 		this.context = this;
-		nowContactId = this.getIntent().getIntExtra("userId", -1);
 		inflater = LayoutInflater.from(context);
 		builder = new Builder(context);
 		imbBack = (ImageButton) findViewById(R.id.imb_new_back_personal);
@@ -101,12 +99,12 @@ public class PersonalActivity extends Activity {
 		rlAddAddress = (RelativeLayout) findViewById(R.id.rlAddress_personal);
 		rlAddNote = (RelativeLayout) findViewById(R.id.rlNote_personal);
 		addMore = (Button) findViewById(R.id.btn_addmore);
-		contactMgr = new ContactManager(context);
+		contactMgr = new ContactManager(context, ((NowUser)getApplication()).getUser().getKey());
 		initUI();
 	}
 
 	public void initUI() {
-		nowContact = contactMgr.getContactById(nowContactId);
+		nowContact = contactMgr.getContactById(((NowUser)getApplication()).getUser().getContactId());
 		viewName.setText(nowContact.getName());
 		editPhone.setText(nowContact.getPhone());
 		editMobile.setText(nowContact.getMobile());

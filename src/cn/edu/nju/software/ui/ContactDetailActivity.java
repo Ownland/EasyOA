@@ -101,7 +101,7 @@ public class ContactDetailActivity extends Activity {
 		rlAddNickname = (RelativeLayout) findViewById(R.id.rlNickname);
 		rlAddAddress = (RelativeLayout) findViewById(R.id.rlAddress);
 		rlAddNote = (RelativeLayout) findViewById(R.id.rlNote);
-		contactMgr = new ContactManager(context);
+		contactMgr = new ContactManager(context, ((NowUser)getApplication()).getUser().getKey());
 		initUI();
 	}
 

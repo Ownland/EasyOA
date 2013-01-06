@@ -41,7 +41,6 @@ public class ContactActivity extends Activity {
 	private EditText edtSearchContact;
 	private List<Contact> contacts;
 	private ContactManager contactMgr;
-	private int nowUserId;
 	private Thread mThread;
 
 	public static final int REQUEST_CONTACT_ITEM_CLICK = 1;
@@ -76,8 +75,7 @@ public class ContactActivity extends Activity {
 
 	public void init() {
 		context = this;
-		nowUserId = this.getIntent().getIntExtra("userId", -1);
-		contactMgr = new ContactManager(context);
+		contactMgr = new ContactManager(context, ((NowUser)getApplication()).getUser().getKey());
 		rlProgress = (RelativeLayout) findViewById(R.id.rl_progress);
 		lstContact = (ListView) findViewById(R.id.Lsv_contacts);
 		imbPerson = (ImageButton) findViewById(R.id.imbPerson);
@@ -146,7 +144,6 @@ public class ContactActivity extends Activity {
 		public void onClick(View v) {
 			// TODO Auto-generated method stub
 			Intent intent = new Intent(context, PersonalActivity.class);
-			intent.putExtra("userId", nowUserId);
 			startActivityForResult(intent, REQUEST_PERSON_CLICK);
 		}
 	}

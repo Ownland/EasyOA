@@ -12,6 +12,7 @@ public class User implements Serializable {
 	private int type;	//用户类型
 	private String username;	//用户名
 	private String passwd;	//密码
+	private String key; //密钥
 	
 	public int getId() {
 		return id;
@@ -44,6 +45,12 @@ public class User implements Serializable {
 	}
 	public void setUsername(String username) {
 		this.username = username;
+	}
+	public String getKey() {
+		return key;
+	}
+	public void setKey(String key) {
+		this.key = key;
 	}
 	
 }

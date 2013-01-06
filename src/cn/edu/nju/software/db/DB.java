@@ -127,42 +127,5 @@ public interface DB {
 						+ " where %s";
 			}
 		}
-
-		public interface USER {
-			public static final String TABLENAME = "tbl_user";
-
-			public interface FIELDS {
-				public static final String USERID = "userId";
-				public static final String USERNAME = "userName";
-				public static final String USERTYPE = "userType";
-
-			}
-
-			public interface SQL {
-				// 创建表的SQL语句
-				public static final String CREATE = "create table if not exists "
-						+ TABLENAME
-						+ "("
-						+ FIELDS.USERID
-						+ " integer primary key,"
-						+ FIELDS.USERNAME
-						+ " varchar(20)," + FIELDS.USERTYPE + " integer)";
-				// 删除表的SQL语句
-				public static final String DROPTABLE = "drop table if exists "
-						+ TABLENAME;
-				// 插入一条记录的SQL语句
-				public static final String INSERT = "insert into " + TABLENAME
-						+ "(" + FIELDS.USERID + "," + FIELDS.USERNAME + ","
-						+ FIELDS.USERTYPE + ") values('%s','%s','%s')";
-				// 根据主键emailId号修改一条记录的SQL语句
-				// 删除一条记录的SQL语句
-				public static final String DELETE = "delete from " + TABLENAME
-						+ " where userId=%s";
-				// 查询的SQL语句
-				public static final String SELECT = "select *from " + TABLENAME
-						+ " where %s";
-			}
-		}
-
 	}
 }

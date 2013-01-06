@@ -17,7 +17,6 @@ import android.widget.SimpleAdapter;
 public class PlazaActivity extends Activity {
 
 	private GridView gridview;
-	private int nowUserId;
 	private Integer[] mThumbIds = {// 显示的图片数组
 	R.drawable.function1, R.drawable.function2, R.drawable.function3,
 			R.drawable.function4, R.drawable.function5, R.drawable.function6,
@@ -28,12 +27,10 @@ public class PlazaActivity extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.plaza_activity);
-
 		initView();
 	}
 
 	public void initView() {
-		nowUserId = this.getIntent().getIntExtra("userId", -1);
 		gridview = (GridView) findViewById(R.id.plazagridview);
 
 		// 生成动态数组，并且转入数据
@@ -63,7 +60,6 @@ public class PlazaActivity extends Activity {
 				long arg3) {
 			Intent intent = new Intent();
 			intent.setClass(PlazaActivity.this, ContactActivity.class);
-			intent.putExtra("userId", nowUserId);
 			startActivity(intent);
 		}
 	}

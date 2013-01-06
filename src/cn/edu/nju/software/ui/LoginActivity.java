@@ -2,7 +2,6 @@ package cn.edu.nju.software.ui;
 
 import java.util.Map;
 
-import cn.edu.nju.software.mgr.UserMgr;
 import cn.edu.nju.software.model.User;
 import cn.edu.nju.software.service.ILoginService;
 import cn.edu.nju.software.serviceConfig.ClientServiceHelper;
@@ -26,10 +25,7 @@ public class LoginActivity extends Activity {
 	private Button mBtnLogin;
 	private MyHandler myHandler;
 	private EditText nameText, pwdText;
-	private Context context;
-	private UserMgr userMgr;
 	private Dialog mDialog = null;
-	private int userId;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -40,15 +36,11 @@ public class LoginActivity extends Activity {
 	}
 
 	public void initView() {
-		this.context = this;
-		userMgr = new UserMgr(context);
 		mBtnLogin = (Button) findViewById(R.id.login);
 		nameText = (EditText)findViewById(R.id.accounts);
 		pwdText = (EditText)findViewById(R.id.password);
 	
 		mBtnLogin.setOnClickListener(new MyLoginListener());
-
-			
 	}
 
 	public void showRequestDialog() {
@@ -78,19 +70,22 @@ public class LoginActivity extends Activity {
 					/**
 					 * 没有服务器时注释掉这一段，直接跳转到主界面
 					 */
-					ILoginService ls = ClientServiceHelper.getLoginService();
+					/*ILoginService ls = ClientServiceHelper.getLoginService();
 					Map<String, Object> result = ls.login(user.getUsername(),user.getPasswd());
-					int status = (Integer) result.get("status");
+					int status = (Integer) result.get("status");*/
+					int status = 0;
+					user.setContactId(1);
+					user.setId(2);
+					user.setType(0);
 					if(status == 0){
 						b.putInt("result", 0);
-						user = (User)result.get("User");
-						userId = user.getId();
-						userMgr.modifyUser(user);
+						//user = (User)result.get("User");
+						((NowUser)getApplication()).setUser(user);
 					}
 					else{
 						b.putInt("result", 1);
-						String backMsg = (String)result.get("msg");
-						b.putString("msg", backMsg);
+						//String backMsg = (String)result.get("msg");
+						//b.putString("msg", backMsg);
 					}			
 					msg.setData(b);
 					LoginActivity.this.myHandler.sendMessage(msg);
@@ -115,9 +110,9 @@ public class LoginActivity extends Activity {
 			int result = b.getInt("result");
 			LoginActivity.this.mDialog.dismiss();
 			if (result == 0) {
+				
 				Intent intent = new Intent();
 				intent.setClass(LoginActivity.this, PlazaActivity.class);
-				intent.putExtra("userId", userId);
 				startActivity(intent);
 				finish();
 			} else {

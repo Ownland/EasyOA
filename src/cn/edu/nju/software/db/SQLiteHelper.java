@@ -15,7 +15,6 @@ public class SQLiteHelper extends SQLiteOpenHelper {
 		// TODO Auto-generated method stub
 		db.execSQL(DB.TABLES.CONTACT.SQL.CREATE);
 		db.execSQL(DB.TABLES.GROUP.SQL.CREATE);
-		db.execSQL(DB.TABLES.USER.SQL.CREATE);
 	}
 
 	@Override
@@ -23,7 +22,6 @@ public class SQLiteHelper extends SQLiteOpenHelper {
 		// TODO Auto-generated method stub
 		db.execSQL(DB.TABLES.CONTACT.SQL.DROPTABLE);
 		db.execSQL(DB.TABLES.GROUP.SQL.DROPTABLE);
-		db.execSQL(DB.TABLES.USER.SQL.DROPTABLE);
 		onCreate(db);
 	}
 
