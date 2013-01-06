@@ -26,7 +26,6 @@ public class LoginActivity extends Activity {
 	private Button mBtnLogin;
 	private MyHandler myHandler;
 	private EditText nameText, pwdText;
-	private User user;
 	private Context context;
 	private UserMgr userMgr;
 	private Dialog mDialog = null;
@@ -46,46 +45,10 @@ public class LoginActivity extends Activity {
 		mBtnLogin = (Button) findViewById(R.id.login);
 		nameText = (EditText)findViewById(R.id.accounts);
 		pwdText = (EditText)findViewById(R.id.password);
-		user = new User();
-		
-		mBtnLogin.setOnClickListener(new OnClickListener(){
+	
+		mBtnLogin.setOnClickListener(new MyLoginListener());
 
-			@Override
-			public void onClick(View arg0) {
-				// TODO Auto-generated method stub
-				showRequestDialog();
-				new Thread() {
-					public void run() {
-						user.setUsername(nameText.getText().toString());
-						user.setPasswd(pwdText.getText().toString());
-						Message msg = new Message();
-						Bundle b = new Bundle();
-						
-						/**
-						 * 没有服务器时注释掉这一段，直接跳转到主界面
-						 */
-						/*ILoginService ls = ClientServiceHelper.getLoginService();
-						Map<String, Object> result = ls.login(user.getUsername(),user.getPasswd());
-						int status = (Integer) result.get("status");
-						if(status == 0){
-							b.putInt("result", 0);
-							User back = (User)result.get("User");
-							userId = back.getId();
-							userMgr.modifyUser(back);
-						}
-						else{
-							b.putInt("result", 1);
-							String backMsg = (String)result.get("msg");
-							b.putString("msg", backMsg);
-						}*/
-						
-						b.putInt("result", 0);
-						msg.setData(b);
-						LoginActivity.this.myHandler.sendMessage(msg);
-					}
-				}.start();
-			}
-		});
+			
 	}
 
 	public void showRequestDialog() {
@@ -97,6 +60,45 @@ public class LoginActivity extends Activity {
 		mDialog.show();
 	}
 
+	
+	class MyLoginListener implements OnClickListener{
+		@Override
+		public void onClick(View arg0) {
+			// TODO Auto-generated method stub
+			showRequestDialog();
+			
+			new Thread() {
+				public void run() {
+					User user = new User();
+					user.setUsername(nameText.getText().toString());
+					user.setPasswd(pwdText.getText().toString());
+					Message msg = new Message();
+					Bundle b = new Bundle();
+					
+					/**
+					 * 没有服务器时注释掉这一段，直接跳转到主界面
+					 */
+					ILoginService ls = ClientServiceHelper.getLoginService();
+					Map<String, Object> result = ls.login(user.getUsername(),user.getPasswd());
+					int status = (Integer) result.get("status");
+					if(status == 0){
+						b.putInt("result", 0);
+						user = (User)result.get("User");
+						userId = user.getId();
+						userMgr.modifyUser(user);
+					}
+					else{
+						b.putInt("result", 1);
+						String backMsg = (String)result.get("msg");
+						b.putString("msg", backMsg);
+					}			
+					msg.setData(b);
+					LoginActivity.this.myHandler.sendMessage(msg);
+				}
+			}.start();
+		}
+	}
+	
 	class MyHandler extends Handler {
 		public MyHandler() {
 		}

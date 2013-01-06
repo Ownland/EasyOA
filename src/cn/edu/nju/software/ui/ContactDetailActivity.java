@@ -165,7 +165,6 @@ public class ContactDetailActivity extends Activity {
 			popWin.dismiss();
 			Intent intent = new Intent(Intent.ACTION_CALL,Uri.parse("tel:" + num));
 			startActivity(intent);
-		}
-		
+		}		
 	}
 }

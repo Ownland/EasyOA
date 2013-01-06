@@ -79,53 +79,7 @@ public class PersonalActivity extends Activity {
 
 		imbSave.setOnClickListener(new MySaveListener());
 
-		addMore.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				View view = inflater.inflate(
-						R.layout.dialog_newcontact_addmore, null);
-				TextView txtAddAddress = (TextView) view
-						.findViewById(R.id.txtAddAdress);
-				TextView txtAddNickname = (TextView) view
-						.findViewById(R.id.txtAddNickname);
-				TextView txtAddNote = (TextView) view
-						.findViewById(R.id.txtAddNote);
-				builder = new AlertDialog.Builder(context);
-				dialog = builder.setView(view).create();
-				dialog.show();
-				txtAddAddress.setOnClickListener(new OnClickListener() {
-
-					@Override
-					public void onClick(View v) {
-						// TODO Auto-generated method stub
-						AddAddressView();
-						dialog.dismiss();
-					}
-				});
-				txtAddNickname.setOnClickListener(new OnClickListener() {
-
-					@Override
-					public void onClick(View v) {
-						// TODO Auto-generated method stub
-						AddNicknameView();
-						dialog.dismiss();
-					}
-
-				});
-				txtAddNote.setOnClickListener(new OnClickListener() {
-
-					@Override
-					public void onClick(View v) {
-						// TODO Auto-generated method stub
-						AddNoteView();
-						dialog.dismiss();
-					}
-
-				});
-			}
-		});
+		addMore.setOnClickListener(new AddMoreListener());
 	}
 
 	private void init() {
@@ -240,34 +194,77 @@ public class PersonalActivity extends Activity {
 		public void onClick(View arg0) {
 			// TODO Auto-generated method stub
 			showRequestDialog();
-			new Thread() {
-				public void run() {
-					newContact = new Contact();
-					newContact.setAddress(editAddress.getText().toString());
-					newContact.setDepartment(editDepartment.getText()
-							.toString());
-					newContact.setEmail(editEmail.getText().toString());
-					newContact.setGroupId(nowContact.getGroupId());
-					newContact.setId(nowContact.getId());
-					newContact.setName(nowContact.getName());
-					newContact.setNamePinyin(nowContact.getNamePinyin());
-					newContact.setMobile(editMobile.getText().toString());
-					newContact.setNickname(editNickname.getText().toString());
-					newContact.setNote(editNote.getText().toString());
-					newContact.setPhone(editPhone.getText().toString());
-					IContactService cs = ClientServiceHelper
-							.getContactService();
-					Map<String, Object> result = cs.changeInfo(newContact);
-					int str = (Integer) result.get("status");
-					Message msg = new Message();
-					Bundle b = new Bundle();
-					b.putInt("status", str);
-					msg.setData(b);
-					PersonalActivity.this.handler.sendMessage(msg);
-				}
-			}.start();
+			Thread myThread = new Thread(runnable);
+			myThread.start();
 		}
-
 	}
 
+	Runnable runnable = new Runnable() {
+		public void run() {
+			newContact = new Contact();
+			newContact.setAddress(editAddress.getText().toString());
+			newContact.setDepartment(editDepartment.getText().toString());
+			newContact.setEmail(editEmail.getText().toString());
+			newContact.setGroupId(nowContact.getGroupId());
+			newContact.setId(nowContact.getId());
+			newContact.setName(nowContact.getName());
+			newContact.setNamePinyin(nowContact.getNamePinyin());
+			newContact.setMobile(editMobile.getText().toString());
+			newContact.setNickname(editNickname.getText().toString());
+			newContact.setNote(editNote.getText().toString());
+			newContact.setPhone(editPhone.getText().toString());
+			IContactService cs = ClientServiceHelper.getContactService();
+			Map<String, Object> result = cs.changeInfo(newContact);
+			int str = (Integer) result.get("status");
+			Message msg = new Message();
+			Bundle b = new Bundle();
+			b.putInt("status", str);
+			msg.setData(b);
+			PersonalActivity.this.handler.sendMessage(msg);
+		}
+	};
+
+	class AddMoreListener implements OnClickListener {
+		@Override
+		public void onClick(View v) {
+			// TODO Auto-generated method stub
+			View view = inflater.inflate(R.layout.dialog_newcontact_addmore,
+					null);
+			TextView txtAddAddress = (TextView) view
+					.findViewById(R.id.txtAddAdress);
+			TextView txtAddNickname = (TextView) view
+					.findViewById(R.id.txtAddNickname);
+			TextView txtAddNote = (TextView) view.findViewById(R.id.txtAddNote);
+			builder = new AlertDialog.Builder(context);
+			dialog = builder.setView(view).create();
+			dialog.show();
+			txtAddAddress.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+					// TODO Auto-generated method stub
+					AddAddressView();
+					dialog.dismiss();
+				}
+			});
+			txtAddNickname.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+					// TODO Auto-generated method stub
+					AddNicknameView();
+					dialog.dismiss();
+				}
+			});
+			txtAddNote.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+					// TODO Auto-generated method stub
+					AddNoteView();
+					dialog.dismiss();
+				}
+			});
+		}
+	}
 }

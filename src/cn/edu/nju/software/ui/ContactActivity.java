@@ -28,7 +28,6 @@ import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
-import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -43,6 +42,7 @@ public class ContactActivity extends Activity {
 	private List<Contact> contacts;
 	private ContactManager contactMgr;
 	private int nowUserId;
+	private Thread mThread;
 
 	public static final int REQUEST_CONTACT_ITEM_CLICK = 1;
 	public static final int REQUEST_PERSON_CLICK = 2;
@@ -66,69 +66,12 @@ public class ContactActivity extends Activity {
 
 		init();
 
-		lstContact.setOnItemClickListener(new OnItemClickListener() {
+		lstContact.setOnItemClickListener(new MyItemClickListener());
 
-			@Override
-			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
-					long arg3) {
-				// TODO Auto-generated method stub
-				int contactId = (int) arg3;
-				Intent intent = new Intent(context, ContactDetailActivity.class);
-				intent.putExtra("id", contactId);
-				startActivity(intent);
-			}
-		});
+		imbPerson.setOnClickListener(new PersonClickListener());
 
-		imbPerson.setOnClickListener(new OnClickListener() {
+		edtSearchContact.addTextChangedListener(new MyTextWatcher());
 
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				Intent intent = new Intent(context, PersonalActivity.class);
-				intent.putExtra("userId", nowUserId);
-				startActivityForResult(intent,REQUEST_PERSON_CLICK);
-			}
-		});
-
-		edtSearchContact.addTextChangedListener(new TextWatcher() {
-
-			@Override
-			public void afterTextChanged(Editable arg0) {
-				// TODO Auto-generated method stub
-
-			}
-
-			@Override
-			public void beforeTextChanged(CharSequence s, int start, int count,
-					int after) {
-				// TODO Auto-generated method stub
-
-			}
-
-			@Override
-			public void onTextChanged(CharSequence s, int start, int before,
-					int count) {
-				// TODO Auto-generated method stub
-				String str = s.toString();
-				if (str.equals(""))
-					refleshLsvContact();
-				else {
-					contacts = contactMgr.getContactsByNamePinyin(str);
-					Collections.sort(contacts);
-					MyAdapter adapter = new MyAdapter(context);
-					lstContact.setAdapter(adapter);
-				}
-			}
-
-		});
-
-		/*
-		 * new Thread(){ public void run(){ try { sleep(10000); Message msg =
-		 * new Message(); Bundle b = new Bundle(); b.putInt("result", 1);
-		 * msg.setData(b); ContactActivity.this.h.sendMessage(msg); } catch
-		 * (InterruptedException e) { // TODO Auto-generated catch block
-		 * e.printStackTrace(); } } }.start();
-		 */
 	}
 
 	public void init() {
@@ -144,22 +87,8 @@ public class ContactActivity extends Activity {
 	}
 
 	public void initList() {
-		new Thread() {
-			public void run() {
-				IContactService cs = ClientServiceHelper.getContactService();
-				contacts = cs.getContactList();
-				for (int i = 0; i < contacts.size(); i++) {
-					contacts.get(i).setGroupId(0);
-					//contactMgr.addContact(contacts.get(i));
-				}
-				//contacts=contactMgr.getAllContacts();
-				Collections.sort(contacts);
-				
-				Message msg = new Message();
-				msg.arg1 = 1;
-				ContactActivity.this.handler.sendMessage(msg);
-			}
-		}.start();
+		mThread = new Thread(runnable);
+		mThread.start();
 	}
 
 	public List<Contact> getContactsByGroupPosition() {
@@ -175,16 +104,84 @@ public class ContactActivity extends Activity {
 		lstContact.setAdapter(adapter);
 	}
 
-	
-
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		// TODO Auto-generated method stub
-		if(requestCode == REQUEST_PERSON_CLICK &&resultCode == PersonalActivity.RESULT_BTN_BACK)
+		if (requestCode == REQUEST_PERSON_CLICK
+				&& resultCode == PersonalActivity.RESULT_BTN_BACK)
 			refleshLsvContact();
 	}
 
+	Runnable runnable = new Runnable() {
+		public void run() {
+			IContactService cs = ClientServiceHelper.getContactService();
+			contacts = cs.getContactList();
+			for (int i = 0; i < contacts.size(); i++) {
+				contacts.get(i).setGroupId(0);
+				// contactMgr.addContact(contacts.get(i));
+			}
+			// contacts=contactMgr.getAllContacts();
+			Collections.sort(contacts);
 
+			Message msg = new Message();
+			msg.arg1 = 1;
+			ContactActivity.this.handler.sendMessage(msg);
+		}
+	};
+
+	class MyItemClickListener implements OnItemClickListener {
+		@Override
+		public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
+				long arg3) {
+			// TODO Auto-generated method stub
+			int contactId = (int) arg3;
+			Intent intent = new Intent(context, ContactDetailActivity.class);
+			intent.putExtra("id", contactId);
+			startActivity(intent);
+		}
+	}
+
+	class PersonClickListener implements OnClickListener {
+		@Override
+		public void onClick(View v) {
+			// TODO Auto-generated method stub
+			Intent intent = new Intent(context, PersonalActivity.class);
+			intent.putExtra("userId", nowUserId);
+			startActivityForResult(intent, REQUEST_PERSON_CLICK);
+		}
+	}
+
+	class MyTextWatcher implements TextWatcher {
+
+		@Override
+		public void afterTextChanged(Editable arg0) {
+			// TODO Auto-generated method stub
+
+		}
+
+		@Override
+		public void beforeTextChanged(CharSequence s, int start, int count,
+				int after) {
+			// TODO Auto-generated method stub
+
+		}
+
+		@Override
+		public void onTextChanged(CharSequence s, int start, int before,
+				int count) {
+			// TODO Auto-generated method stub
+			String str = s.toString();
+			if (str.equals(""))
+				refleshLsvContact();
+			else {
+				contacts = contactMgr.getContactsByNamePinyin(str);
+				Collections.sort(contacts);
+				MyAdapter adapter = new MyAdapter(context);
+				lstContact.setAdapter(adapter);
+			}
+		}
+
+	}
 
 	class MyAdapter extends BaseAdapter {
 
