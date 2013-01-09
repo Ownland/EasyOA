@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" 
+    android:layout_width="fill_parent" 
+    android:layout_height="fill_parent"
+    android:background="@color/white">
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+		android:id="@+id/main_relativelayout_header" 
+	  	android:layout_width="fill_parent" 
+	  	android:layout_height="40dip"
+	  	android:background="@drawable/widget_head_bg">
+  	
+	    <ImageView
+	    	android:id="@+id/main_head_logo"
+	  		android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_centerVertical="true"
+			android:layout_alignParentLeft="true"
+			android:layout_marginLeft="5.0dip"
+			android:src="@drawable/frame_logo_news"/>
+	    
+	    <TextView 
+	        android:id="@+id/main_head_title"
+	        style="@style/main_head_title"
+			android:layout_toRightOf="@id/main_head_logo"
+			android:layout_centerVertical="true"
+			android:layout_marginLeft="5.0dip"
+			android:text="邮箱"/>
+	</RelativeLayout>
+	<LinearLayout 
+		android:layout_width="fill_parent" 
+		android:layout_height="35.0dip"
+		android:orientation="horizontal" 
+		android:gravity="center_vertical">
+     	<Button 
+     		android:id="@+id/frame_btn_email_inbox"
+     		style="@style/frame_button"
+         	android:text="@string/frame_title_email_inbox"/>
+     	<ImageView android:layout_width="wrap_content" android:layout_height="fill_parent" android:background="@drawable/frame_button_cutline" android:contentDescription="@string/frame_title_email_split"/>
+     	<Button 
+     		android:id="@+id/frame_btn_email_outbox"
+     		style="@style/frame_button"
+         	android:text="@string/frame_title_email_outbox"/>
+     	<ImageView android:layout_width="wrap_content" android:layout_height="fill_parent" android:background="@drawable/frame_button_cutline" android:contentDescription="@string/frame_title_email_split"/>
+     	<Button 
+     		android:id="@+id/frame_btn_email_new"
+     		style="@style/frame_button"
+         	android:text="@string/frame_title_email_new"/>
+    </LinearLayout>
+    
+	<FrameLayout
+	    android:id="@+id/search_frame"
+	   	android:layout_width="fill_parent"
+	   	android:layout_height="wrap_content"
+	   	android:gravity="center_vertical"
+	   	android:paddingLeft="5dip"
+   		android:paddingRight="5dip"
+	   	android:orientation="horizontal"
+	   	android:background="@drawable/widget_head_bg">
+		<EditText
+	        android:id="@+id/search_editer"
+	        android:layout_width="fill_parent"
+	        android:layout_height="30dip"
+	        android:layout_gravity="left|center"
+	        android:layout_marginRight="36dip"
+	        android:singleLine="true"
+	        android:focusable="true" 
+	        android:focusableInTouchMode="true"
+	        android:imeOptions="actionSearch"
+	        android:background="@drawable/edit_search_bg"
+	        android:hint="输入搜索内容"/>			
+	   	<Button 
+	   		android:id="@+id/search_btn"
+		   	android:layout_width="wrap_content" 
+	      	android:layout_height="30dip" 
+	      	android:layout_gravity="right|center"
+	      	android:background="@drawable/btn_search_bg"/>
+	</FrameLayout>
+	
+<cn.edu.nju.software.widget.PullToRefreshListView
+	  	android:id="@+id/frame_listview_emails_recieve"
+	    style="@style/widget_listview"/>
+	
+	<cn.edu.nju.software.widget.PullToRefreshListView
+	  	android:id="@+id/frame_listview_emails_send"
+	    style="@style/widget_listview"
+	    android:visibility="gone"/>
+	
+	<ScrollView
+	    android:id="@+id/email_scroll"
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	    android:layout_weight="1"
+	    android:scrollbars="vertical"
+	    android:fadingEdge="none"
+	    android:visibility="gone">
+	<LinearLayout
+	    android:layout_width="fill_parent"
+	    android:layout_height="fill_parent"
+	    android:orientation="vertical">
+	    <LinearLayout
+	    	android:layout_width="fill_parent"
+	    	android:layout_height="wrap_content"
+	    	android:layout_marginLeft="2.0dip"
+	    	android:layout_marginTop="2.0dip">
+		    <TextView 
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:text="收件人："
+		        android:textSize="15sp"
+		        android:textColor="@color/black"/>
+		    <EditText
+		        android:id="@+id/email_new_reciever"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:layout_weight="1"
+		        android:singleLine="true"
+		        android:hint="请输入收件人邮箱"/>
+	    </LinearLayout>
+
+	    <LinearLayout
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:layout_marginLeft="2.0dip"
+	        android:layout_marginTop="2.0dip">
+	        <TextView
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:layout_gravity="center_vertical"
+	            android:text="主    题："
+	            android:textColor="@color/black"
+	            android:textSize="15sp" />
+	        <EditText
+		        android:id="@+id/email_new_title"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:layout_weight="1"
+		        android:singleLine="true"
+		        android:hint="请输入邮件主题"/>
+	    </LinearLayout>
+	    
+		<LinearLayout 
+		    android:layout_width="fill_parent"
+	    	android:layout_height="wrap_content"
+	    	android:layout_marginLeft="2.0dip"
+	    	android:layout_marginTop="2.0dip">
+	    <TextView
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:layout_gravity="center_vertical"
+	            android:text="内    容："
+	            android:textColor="@color/black"
+	            android:textSize="15sp" />
+		</LinearLayout>
+	    <EditText
+	        android:id="@+id/email_new_content"
+	        android:layout_width="fill_parent"
+	        android:layout_height="fill_parent"
+	        android:layout_marginTop="2.0dip"
+	        android:layout_weight="1"
+	        android:lines="8"
+	        android:autoLink="web"
+	        android:gravity="top"
+	        android:hint="请输入邮件内容"/>
+         
+	    <LinearLayout 
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	    android:layout_marginLeft="2.0dip"
+	    android:gravity="center">
+	    <Button
+		    	android:id="@+id/email_send"
+		        android:layout_width="100dip"
+		    	android:layout_height="45dip"
+		    	android:layout_marginTop="15dip"
+		    	android:layout_marginBottom="30dip"
+		    	android:gravity="center"
+		    	android:background="@drawable/email_btn_selector" 
+		    	android:textSize="@dimen/text_size_18"
+		        android:text="发送"/>
+	    <Button
+		    	android:id="@+id/email_cancel"
+		        android:layout_width="100dip"
+		    	android:layout_height="45dip"
+		    	android:layout_marginTop="15dip"
+		    	android:layout_marginBottom="30dip"
+		    	android:layout_marginLeft="20dip"
+		    	android:gravity="center"
+		    	android:background="@drawable/email_btn_selector" 
+		    	android:textSize="@dimen/text_size_18"
+		        android:text="取消"/>
+	</LinearLayout>
+	</LinearLayout>
+	
+	</ScrollView>
+	
+	
+</LinearLayout>

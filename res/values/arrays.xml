@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="categories">
+        <item>通讯录</item>
+        <item>邮件</item>
+        <item>功能3</item>
+        <item>功能4</item>
+        <item>功能5</item>
+        <item>功能6</item>
+        <item>功能7</item>
+        <item>功能8</item>
+        <item>功能9</item>
+        <item>功能10</item>
+    </string-array>
+</resources>
