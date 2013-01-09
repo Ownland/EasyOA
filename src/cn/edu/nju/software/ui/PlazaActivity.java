@@ -8,13 +8,18 @@ import cn.edu.nju.software.ui.R;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
 import android.widget.SimpleAdapter;
+import android.widget.Toast;
 
 public class PlazaActivity extends Activity {
+
+	private long waitTime = 2000;
+	private long touchTime = 0;
 
 	private GridView gridview;
 	private Integer[] mThumbIds = {// 显示的图片数组
@@ -55,11 +60,35 @@ public class PlazaActivity extends Activity {
 		gridview.setOnItemClickListener(new ItemClickListener());
 	}
 
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		// TODO Auto-generated method stub
+		if (event.getAction() == KeyEvent.ACTION_DOWN
+				&& KeyEvent.KEYCODE_BACK == keyCode) {
+			long currentTime = System.currentTimeMillis();
+			if ((currentTime - touchTime) >= waitTime) {
+				Toast.makeText(this, "再按一次退出程序", Toast.LENGTH_SHORT).show();
+				touchTime = currentTime;
+			} else {
+				finish();
+				System.exit(0);
+			}
+			return true;
+		}
+		return super.onKeyDown(keyCode, event);
+	}
+
 	class ItemClickListener implements OnItemClickListener {
 		public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
 				long arg3) {
 			Intent intent = new Intent();
-			intent.setClass(PlazaActivity.this, ContactActivity.class);
+			switch (arg2) {
+			case 0:
+				intent.setClass(PlazaActivity.this, ContactActivity.class);
+				break;
+			default:
+				;
+			}
 			startActivity(intent);
 		}
 	}

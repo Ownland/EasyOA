@@ -8,7 +8,7 @@ public class ClientServiceResource {
 	
 	public static int port = 8443;
 	
-	public static int outoftime = 100000;
+	public static int outoftime = 5000;
 	
 	public static String namespace = "http://service.software.nju.edu.cn/";
 	

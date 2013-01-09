@@ -83,17 +83,16 @@ public class ContactManager {
 	}
 
 	public List<Contact> getAllContacts() {
-		List<Contact> contacts = getContacts();
+		return getContacts();
+	}
+	
+	public List<Contact> getContacts() {
+		List<Contact> contacts = dao.getContactsByCondition("1=1");
 		List<Contact> result =new  ArrayList<Contact>();
 		for(int i = 0;i<contacts.size();i++){
 			result.add(decryptContact(contacts.get(i)));
 		}
 		return result;
-	}
-	
-	public List<Contact> getContacts() {
-		List<Contact> contacts = dao.getContactsByCondition("1=1");
-		return contacts;
 	}
 
 	public void changeGroupByContact(int contactId, int toGroupId) {

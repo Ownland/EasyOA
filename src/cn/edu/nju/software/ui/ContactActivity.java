@@ -75,7 +75,7 @@ public class ContactActivity extends Activity {
 
 	public void init() {
 		context = this;
-		contactMgr = new ContactManager(context, ((NowUser)getApplication()).getUser().getKey());
+		contactMgr = new ContactManager(context, ((MyApplication)getApplication()).getUser().getKey());
 		rlProgress = (RelativeLayout) findViewById(R.id.rl_progress);
 		lstContact = (ListView) findViewById(R.id.Lsv_contacts);
 		imbPerson = (ImageButton) findViewById(R.id.imbPerson);
@@ -114,10 +114,13 @@ public class ContactActivity extends Activity {
 		public void run() {
 			IContactService cs = ClientServiceHelper.getContactService();
 			contacts = cs.getContactList();
+			contactMgr.delAllContacts();
+			
 			for (int i = 0; i < contacts.size(); i++) {
+				contacts.get(i).setGroupId(0);
 				contactMgr.addContact(contacts.get(i));
 			}
-			contacts=contactMgr.getAllContacts();
+			contacts = getContactsByGroupPosition();
 			Collections.sort(contacts);
 
 			Message msg = new Message();

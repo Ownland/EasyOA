@@ -7,6 +7,7 @@ import cn.edu.nju.software.model.Contact;
 import cn.edu.nju.software.service.IContactService;
 import cn.edu.nju.software.serviceConfig.ClientServiceHelper;
 import cn.edu.nju.software.ui.R;
+import cn.edu.nju.software.utils.NetUtil;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -42,6 +43,8 @@ public class PersonalActivity extends Activity {
 	private Contact newContact = null;
 	private ContactManager contactMgr;
 	private Dialog mDialog = null;
+
+	private NetUtil net;
 	public static final int RESULT_BTN_BACK = 0;
 
 	Handler handler = new Handler() {
@@ -85,6 +88,7 @@ public class PersonalActivity extends Activity {
 		this.context = this;
 		inflater = LayoutInflater.from(context);
 		builder = new Builder(context);
+		net = new NetUtil(context);
 		imbBack = (ImageButton) findViewById(R.id.imb_new_back_personal);
 		imbSave = (ImageButton) findViewById(R.id.imb_save);
 		viewName = (TextView) findViewById(R.id.name_personal);
@@ -99,14 +103,15 @@ public class PersonalActivity extends Activity {
 		rlAddAddress = (RelativeLayout) findViewById(R.id.rlAddress_personal);
 		rlAddNote = (RelativeLayout) findViewById(R.id.rlNote_personal);
 		addMore = (Button) findViewById(R.id.btn_addmore);
-		contactMgr = new ContactManager(context, ((NowUser) getApplication())
-				.getUser().getKey());
+		contactMgr = new ContactManager(context,
+				((MyApplication) getApplication()).getUser().getKey());
 		initUI();
 	}
 
 	public void initUI() {
-		nowContact = contactMgr.getContactById(((NowUser) getApplication())
-				.getUser().getContactId());
+		nowContact = contactMgr
+				.getContactById(((MyApplication) getApplication()).getUser()
+						.getContactId());
 		viewName.setText(nowContact.getName());
 		editPhone.setText(nowContact.getPhone());
 		editMobile.setText(nowContact.getMobile());
@@ -193,32 +198,41 @@ public class PersonalActivity extends Activity {
 		@Override
 		public void onClick(View arg0) {
 			// TODO Auto-generated method stub
-			showRequestDialog();
-			Thread myThread = new Thread(runnable);
-			myThread.start();
+			if (!net.goodNet()) {
+				Toast.makeText(PersonalActivity.this, "网络不可用，请检测网络连接。",
+						Toast.LENGTH_SHORT).show();
+			} else {
+				showRequestDialog();
+				Thread myThread = new Thread(runnable);
+				myThread.start();
+			}
 		}
 	}
 
 	Runnable runnable = new Runnable() {
 		public void run() {
-			newContact = new Contact();
-			newContact.setAddress(editAddress.getText().toString());
-			newContact.setDepartment(editDepartment.getText().toString());
-			newContact.setEmail(editEmail.getText().toString());
-			newContact.setGroupId(nowContact.getGroupId());
-			newContact.setId(nowContact.getId());
-			newContact.setName(nowContact.getName());
-			newContact.setNamePinyin(nowContact.getNamePinyin());
-			newContact.setMobile(editMobile.getText().toString());
-			newContact.setNickname(editNickname.getText().toString());
-			newContact.setNote(editNote.getText().toString());
-			newContact.setPhone(editPhone.getText().toString());
-			IContactService cs = ClientServiceHelper.getContactService();
-			Map<String, Object> result = cs.changeInfo(newContact);
-			int str = (Integer) result.get("status");
 			Message msg = new Message();
 			Bundle b = new Bundle();
-			b.putInt("status", str);
+			IContactService cs = ClientServiceHelper.getContactService();
+			Map<String, Object> result = cs.changeInfo(newContact);
+			if (result == null) {
+				b.putInt("status", 1);
+			} else {
+				newContact = new Contact();
+				newContact.setAddress(editAddress.getText().toString());
+				newContact.setDepartment(editDepartment.getText().toString());
+				newContact.setEmail(editEmail.getText().toString());
+				newContact.setGroupId(nowContact.getGroupId());
+				newContact.setId(nowContact.getId());
+				newContact.setName(nowContact.getName());
+				newContact.setNamePinyin(nowContact.getNamePinyin());
+				newContact.setMobile(editMobile.getText().toString());
+				newContact.setNickname(editNickname.getText().toString());
+				newContact.setNote(editNote.getText().toString());
+				newContact.setPhone(editPhone.getText().toString());
+				int str = (Integer) result.get("status");
+				b.putInt("status", str);
+			}
 			msg.setData(b);
 			PersonalActivity.this.handler.sendMessage(msg);
 		}
