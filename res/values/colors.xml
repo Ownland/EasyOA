@@ -57,7 +57,7 @@
     <color name="system_item_name_read">#ff798089</color>
     <color name="system_item_name_unread">#ff000000</color>
     <color name="qq_normal">#ff000000</color>
-    <color name="white">#fffffffe</color>
+    <color name="white">#ffffffff</color>
     <color name="black">#ff000000</color>
     <color name="video_bg_color">#ffecf3f9</color>
     <color name="video_edge_color">#ffd0deee</color>
@@ -136,4 +136,47 @@
     <color name="setting_text1">#ff000000</color>
     <color name="setting_text2">#ff798089</color>
     <color name="setting_bg">#ffe3e6e8</color>
+	<color name="gray">#808080</color>
+	<color name="red">#FF0000</color>
+	<color name="gold">#FFD700</color>
+	<color name="yellow">#FFFF00</color>
+	<color name="green">#008000</color>
+	<color name="blue">#0000FF</color>
+	<color name="purple">#800080</color>
+	<color name="pink">#FFC0CB</color>
+	<color name="orange">#FFA500</color>
+	<color name="lemonyellow">#FFFACD</color>
+	<color name="graywhite">#F5F5F5</color>
+	<color name="grayslate">#708090</color>
+	<color name="lightblue">#0083FF</color>
+	
+    <color name="full_transparent">#00000000</color>
+    <color name="half_transparent">#aa000000</color>
+    
+    <color name="bright_foreground_light">#ff000000</color>
+    <color name="bright_foreground_light_inverse">#ffffffff</color>
+    <color name="bright_foreground_light_disabled">#80000000</color>
+    
+    <color name="dim_foreground_light">#808080</color>
+    <color name="dim_foreground_light_disabled">#80323232</color>
+    <color name="dim_foreground_light_inverse">#ff006eaa</color>
+    <color name="dim_foreground_light_inverse_disabled">#80bebebe</color>
+    
+    <color name="head_text">#0e5986</color>
+    <color name="author_text">#0e5986</color>
+    
+    <color name="face_bg">#eef1f4</color>
+    
+    <color name="frame_button_text_nor">#033a5c</color>
+    <color name="frame_button_text_select">#FFFFFF</color>
+    
+    <color name="listitem_transparent">#00000000</color>
+    <color name="listitem_black">#ff000000</color>
+    <color name="listitem_white">#ffffffff</color>
+    <color name="listitem_blue">#0e5986</color>
+    <color name="listitem_gray">#ff9da19e</color>
+    <color name="listitem_green">#ffe3ffc6</color>
+    <color name="listitem_greenyellow">#ff87b869</color>
+    <color name="listitem_yellow">#fffaffbf</color>  
+    
 </resources>
