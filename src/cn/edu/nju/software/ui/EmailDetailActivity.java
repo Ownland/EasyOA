@@ -3,6 +3,9 @@ package cn.edu.nju.software.ui;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.webkit.WebView;
@@ -20,12 +23,14 @@ public class EmailDetailActivity extends Activity {
 	private TextView recieverTv;
 	private TextView dateTv;
 	private WebView contentTv;
+	private MyHandler myHandler;
 	static final private int DELETE_ITEM = Menu.FIRST;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_email_detail);
 		this.initView();
+		myHandler = new MyHandler();
 	}
 
 
@@ -42,13 +47,34 @@ public class EmailDetailActivity extends Activity {
 		String reciever = intent.getStringExtra(Email.RECIEVER);
 		String date = intent.getStringExtra(Email.DATE);
 		String content = intent.getStringExtra(Email.CONTENT);
-		
+		final int number = intent.getIntExtra(Email.ID, -1);
+		final int type = intent.getIntExtra(Email.TYPE, 1);
+		if(content==null){
+			content="<div>loading¡£¡£¡£</div>";
+		}
 		titleTv.setText(title);
 		senderTv.setText(sender);
 		recieverTv.setText(reciever);
 		dateTv.setText(date);
 		contentTv.loadDataWithBaseURL(null, content, "text/html", "utf-8",null); 
+		new Thread(){
+			public void run(){
+				 Message msg = new Message();
+		         Bundle b = new Bundle();
+		         Email email = new Email();
+		         email.setType(EmailType.valueOf(type));
+		         email.setId(number);
+		         String content = new MailServiceImpl(EmailDetailActivity.this).getEmailContent(email);
+		         b.putString("content", content);
+		         msg.setData(b);
+		         EmailDetailActivity.this.myHandler.sendMessage(msg);
+			}
+		}.start();
+		
+		
+		
 	}
+	
 	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -98,5 +124,17 @@ public class EmailDetailActivity extends Activity {
 				new MailServiceImpl(EmailDetailActivity.this).deleteEmail(email);
 			}
 		}.start();
+	}
+	
+	private class MyHandler extends Handler{
+		@Override
+        public void handleMessage(Message msg) {
+            // TODO Auto-generated method stub
+            super.handleMessage(msg);
+            Bundle b = msg.getData();
+            String content = b.getString("content");
+            //Log.e("content3",content);
+            contentTv.loadDataWithBaseURL(null, content, "text/html", "utf-8",null);
+        }
 	}
 }

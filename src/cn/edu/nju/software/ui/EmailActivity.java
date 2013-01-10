@@ -186,7 +186,6 @@ public class EmailActivity extends Activity{
     	return new Handler(){
 			public void handleMessage(Message msg) {
 				if(msg.what >= 0){
-					//listview閺佺増宓佹径鍕倞
 					handleEmailData(msg.what, msg.obj, msg.arg2, msg.arg1);
 					if(msg.what < pageSize){
 						lv.setTag(UIHelper.LISTVIEW_DATA_FULL);
@@ -199,7 +198,6 @@ public class EmailActivity extends Activity{
 					}
 				}
 				else if(msg.what == -1){
-					//閺堝绱撶敮锟�閺勫墽銇氶崝鐘烘祰閸戞椽鏁�& 瀵懓鍤柨娆掝嚖濞戝牊浼�
 					lv.setTag(UIHelper.LISTVIEW_DATA_MORE);
 					more.setText(R.string.load_error);
 				}
@@ -227,12 +225,12 @@ public class EmailActivity extends Activity{
 					case UIHelper.LISTVIEW_DATATYPE_EMAIL:
 						EmailList elist = (EmailList)obj;
 						emailsSumData = what;
-					   listRecievedEmail.clear();//閸忓牊绔婚梽銈呭斧閺堝鏆熼幑锟�
+					   listRecievedEmail.clear();//闁稿繐鐗婄粩濠氭⒔閵堝懎鏂ч柡鍫濐樇閺嗙喖骞戦敓锟�
 					   listRecievedEmail.addAll(elist.getEmailslist());
 						break;
 				}
 				if(actiontype == UIHelper.LISTVIEW_ACTION_REFRESH){
-					//閹绘劗銇氶弬鏉垮鏉炶姤鏆熼幑锟�
+					//闁圭粯鍔楅妵姘跺棘閺夊灝顬濋弶鐐跺Г閺嗙喖骞戦敓锟�
 						if(!new NetUtil(this).goodNet()){
 							Toast.makeText(getApplicationContext(), R.string.netBad,Toast.LENGTH_SHORT).show();
 						}else{
@@ -324,7 +322,6 @@ public class EmailActivity extends Activity{
 			// TODO Auto-generated method stub
 			if(position == 0 || view == emailFooter) return;
 			Email email = null;        		
-    		//閸掋倖鏌囬弰顖氭儊閺勭柖extView
     		if(view instanceof TextView){
     			email = (Email)view.getTag();
     		}else{
@@ -332,6 +329,7 @@ public class EmailActivity extends Activity{
     			email = (Email)tv.getTag();
     		}
     		if(email == null) return;
+    		
 			Intent intent = new Intent(EmailActivity.this,EmailDetailActivity.class);
 			intent.putExtra(Email.TITLE,email.getTitle());
 			intent.putExtra(Email.SENDER,email.getSender());
@@ -372,7 +370,7 @@ public class EmailActivity extends Activity{
 				emailRevievedList.setTag(UIHelper.LISTVIEW_DATA_LOADING);
 				emailFootMore.setText(R.string.load_ing);
 				emailFootProgress.setVisibility(View.VISIBLE);
-				//瑜版挸澧爌ageIndex
+				//鐟滅増鎸告晶鐖宎geIndex
 				int pageIndex = emailsSumData/MyApplication.PAGE_SIZE;
 				Log.e("pageIndex",pageIndex+"");
 				loadEmailData( pageIndex, emailHandler, UIHelper.LISTVIEW_ACTION_SCROLL,curEmailType,true);

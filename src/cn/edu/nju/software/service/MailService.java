@@ -9,4 +9,5 @@ public interface MailService {
     public  EmailList getMail(int pageIndex,int pageSize,EmailType type,boolean isRefresh);
     public void sendEmail(Email email);
     public void deleteEmail(Email email);
+    public String getEmailContent(Email email);
 }
