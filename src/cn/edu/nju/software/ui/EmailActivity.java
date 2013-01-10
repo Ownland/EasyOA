@@ -25,7 +25,8 @@ import android.widget.ProgressBar;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
-import cn.edu.nju.software.adapter.ListViewEmailAdapter;
+import cn.edu.nju.software.adapter.ListViewREmailAdapter;
+import cn.edu.nju.software.adapter.ListViewSEmailAdapter;
 import cn.edu.nju.software.enums.EmailType;
 import cn.edu.nju.software.model.Email;
 import cn.edu.nju.software.model.EmailList;
@@ -41,13 +42,19 @@ public class EmailActivity extends Activity{
 	private Button frameBtEmailOutbox;
 	private Button frameBtEmailNew;
 	
-	private FrameLayout searchFrame;
-	private Button searchBt;
-	private EditText searchText;
+	private FrameLayout searchRFrame;
+	private Button searchRBt;
+	private EditText searchRText;
+	
+	private FrameLayout searchSFrame;
+	private Button searchSBt;
+	private EditText searchSText;
 	
 	private PullToRefreshListView emailRevievedList;
 	private List<Email> listRecievedEmail = new ArrayList<Email>();
-	private ListViewEmailAdapter emailAdapter;
+	
+	private PullToRefreshListView emailSendList;
+	private List<Email> listSendEmail = new ArrayList<Email>();
 	
 	private Button sendBt;
 	private Button cancelBt;
@@ -55,14 +62,19 @@ public class EmailActivity extends Activity{
 	private EditText titleText;
 	private EditText contentText;
 	
-	private View emailFooter;
-	private TextView emailFootMore;
-	private ProgressBar emailFootProgress;
-	private Handler emailHandler;
+	private View emailRFooter;
+	private TextView emailRFootMore;
+	private ProgressBar emailRFootProgress;
+	private Handler emailRHandler;
+	private int emailsRSumData;
+	private ListViewREmailAdapter emailRAdapter;
 	
-	private int emailsSumData;
-	
-	private EmailType curEmailType = EmailType.INBOXMAIL;
+	private View emailSFooter;
+	private TextView emailSFootMore;
+	private ProgressBar emailSFootProgress;
+	private Handler emailSHandler;
+	private int emailsSSumData;
+	private ListViewSEmailAdapter emailSAdapter;
 	
 	private ScrollView scrollView;
 	
@@ -95,22 +107,41 @@ public class EmailActivity extends Activity{
 	}
 	
 	public void initSearchFrame(){
-		searchFrame = (FrameLayout)findViewById(R.id.search_frame);
-		searchBt = (Button)findViewById(R.id.search_btn);
-		searchText = (EditText)findViewById(R.id.search_editer);
+		searchSFrame = (FrameLayout)findViewById(R.id.search_frames);
+		searchSBt = (Button)findViewById(R.id.search_btns);
+		searchSText = (EditText)findViewById(R.id.search_editers);
+		
+		searchSBt.setOnClickListener(new SSearchListener());
+		
+		searchRFrame = (FrameLayout)findViewById(R.id.search_framer);
+		searchRBt = (Button)findViewById(R.id.search_btnr);
+		searchRText = (EditText)findViewById(R.id.search_editerr);
+		
+		searchRBt.setOnClickListener(new RSearchListener());
 	}
 	
 	public void initEmailListView(){
-		emailAdapter = new ListViewEmailAdapter(this,listRecievedEmail,R.layout.emails_listitem);
-		emailFooter = getLayoutInflater().inflate(R.layout.listview_footer, null);
-		emailFootMore = (TextView)emailFooter.findViewById(R.id.listview_foot_more);
-		emailFootProgress = (ProgressBar)emailFooter.findViewById(R.id.listview_foot_progress);
+		emailRAdapter = new ListViewREmailAdapter(this,listRecievedEmail,R.layout.emails_listitemr);
+		emailRFooter = getLayoutInflater().inflate(R.layout.listview_footerr, null);
+		emailRFootMore = (TextView)emailRFooter.findViewById(R.id.listview_foot_morer);
+		emailRFootProgress = (ProgressBar)emailRFooter.findViewById(R.id.listview_foot_progressr);
 		emailRevievedList = (PullToRefreshListView)findViewById(R.id.frame_listview_emails_recieve);
-		emailRevievedList.addFooterView(emailFooter);
-		emailRevievedList.setAdapter(emailAdapter);
-		emailRevievedList.setOnItemClickListener(new EmailItemClickListener());
-		emailRevievedList.setOnScrollListener(new EmailListScrollListener());
-		emailRevievedList.setOnRefreshListener(new EmailListRefreshListener());
+		emailRevievedList.addFooterView(emailRFooter);
+		emailRevievedList.setAdapter(emailRAdapter);
+		emailRevievedList.setOnItemClickListener(new REmailItemClickListener());
+		emailRevievedList.setOnScrollListener(new REmailListScrollListener());
+		emailRevievedList.setOnRefreshListener(new REmailListRefreshListener());
+		
+		emailSAdapter = new ListViewSEmailAdapter(this,listSendEmail,R.layout.emails_listitems);
+		emailSFooter = getLayoutInflater().inflate(R.layout.listview_footers, null);
+		emailSFootMore = (TextView)emailSFooter.findViewById(R.id.listview_foot_mores);
+		emailSFootProgress = (ProgressBar)emailSFooter.findViewById(R.id.listview_foot_progresss);
+		emailSendList = (PullToRefreshListView)findViewById(R.id.frame_listview_emails_send);
+		emailSendList.addFooterView(emailSFooter);
+		emailSendList.setAdapter(emailSAdapter);
+		emailSendList.setOnItemClickListener(new SEmailItemClickListener());
+		emailSendList.setOnScrollListener(new SEmailListScrollListener());
+		emailSendList.setOnRefreshListener(new SEmailListRefreshListener());
 	}
 	
 	public void initNewEmailView(){
@@ -126,6 +157,26 @@ public class EmailActivity extends Activity{
 		cancelBt.setOnClickListener(new CancelBtListener());
 	}
 	
+	private class RSearchListener implements OnClickListener{
+
+		@Override
+		public void onClick(View arg0) {
+			// TODO Auto-generated method stub
+			
+		}
+		
+	}
+	private class SSearchListener implements OnClickListener{
+
+		@Override
+		public void onClick(View arg0) {
+			// TODO Auto-generated method stub
+			
+		}
+		
+	}
+	
+	
 	private class CancelBtListener implements OnClickListener{
 
 		@Override
@@ -133,6 +184,7 @@ public class EmailActivity extends Activity{
 			// TODO Auto-generated method stub
 			Intent intent = new Intent(EmailActivity.this,EmailActivity.class);
 			startActivity(intent);
+			finish();
 		}
 		
 	}
@@ -178,16 +230,20 @@ public class EmailActivity extends Activity{
 	}
 	
 	public void initEmailListViewData(){
-		emailHandler = this.getHandler(emailRevievedList, emailAdapter, emailFootMore, emailFootProgress, MyApplication.PAGE_SIZE);
+		emailRHandler = this.getRHandler(emailRevievedList, emailRAdapter, emailRFootMore, emailRFootProgress, MyApplication.PAGE_SIZE);
 		if(listRecievedEmail.isEmpty()) {
-			loadEmailData( 0, emailHandler, UIHelper.LISTVIEW_ACTION_INIT,EmailType.INBOXMAIL,false);
-		}   
+			loadEmailData( 0, emailRHandler, UIHelper.LISTVIEW_ACTION_INIT,EmailType.INBOXMAIL,false);
+		} 
+		emailSHandler = this.getSHandler(emailSendList, emailSAdapter, emailSFootMore, emailSFootProgress, MyApplication.PAGE_SIZE);
+		/*if(listSendEmail.isEmpty()) {
+			loadEmailData( 0, emailSHandler, UIHelper.LISTVIEW_ACTION_INIT,EmailType.OUTBOXMAIL,false);
+		}*/
 	}
-	private Handler getHandler(final PullToRefreshListView lv,final BaseAdapter adapter,final TextView more,final ProgressBar progress,final int pageSize){
+	private Handler getRHandler(final PullToRefreshListView lv,final BaseAdapter adapter,final TextView more,final ProgressBar progress,final int pageSize){
     	return new Handler(){
 			public void handleMessage(Message msg) {
 				if(msg.what >= 0){
-					handleEmailData(msg.what, msg.obj, msg.arg2, msg.arg1);
+					handleREmailData(msg.what, msg.obj, msg.arg2, msg.arg1);
 					if(msg.what < pageSize){
 						lv.setTag(UIHelper.LISTVIEW_DATA_FULL);
 						adapter.notifyDataSetChanged();
@@ -217,7 +273,41 @@ public class EmailActivity extends Activity{
 			}
 		};
     }
-	private void handleEmailData(int what,Object obj,int objtype,int actiontype){
+	private Handler getSHandler(final PullToRefreshListView lv,final BaseAdapter adapter,final TextView more,final ProgressBar progress,final int pageSize){
+    	return new Handler(){
+			public void handleMessage(Message msg) {
+				if(msg.what >= 0){
+					handleSEmailData(msg.what, msg.obj, msg.arg2, msg.arg1);
+					if(msg.what < pageSize){
+						lv.setTag(UIHelper.LISTVIEW_DATA_FULL);
+						adapter.notifyDataSetChanged();
+						more.setText(R.string.load_full);
+					}else if(msg.what == pageSize){
+						lv.setTag(UIHelper.LISTVIEW_DATA_MORE);
+						adapter.notifyDataSetChanged();
+						more.setText(R.string.load_more);
+					}
+				}
+				else if(msg.what == -1){
+					lv.setTag(UIHelper.LISTVIEW_DATA_MORE);
+					more.setText(R.string.load_error);
+				}
+				if(adapter.getCount()==0){
+					lv.setTag(UIHelper.LISTVIEW_DATA_EMPTY);
+					more.setText(R.string.load_empty);
+				}
+				progress.setVisibility(ProgressBar.GONE);
+				if(msg.arg1 == UIHelper.LISTVIEW_ACTION_REFRESH){
+					lv.onRefreshComplete(getString(R.string.pull_to_refresh_update) + new Date().toLocaleString());
+					lv.setSelection(0);
+				}else if(msg.arg1 == UIHelper.LISTVIEW_ACTION_CHANGE_CATALOG){
+					lv.onRefreshComplete();
+					lv.setSelection(0);
+				}
+			}
+		};
+    }
+	private void handleREmailData(int what,Object obj,int objtype,int actiontype){
 		switch (actiontype) {
 			case UIHelper.LISTVIEW_ACTION_INIT:
 			case UIHelper.LISTVIEW_ACTION_REFRESH:
@@ -225,7 +315,7 @@ public class EmailActivity extends Activity{
 				switch (objtype) {
 					case UIHelper.LISTVIEW_DATATYPE_EMAIL:
 						EmailList elist = (EmailList)obj;
-						emailsSumData = what;
+						emailsRSumData = what;
 					   listRecievedEmail.clear();//闁稿繐鐗婄粩濠氭⒔閵堝懎鏂ч柡鍫濐樇閺嗙喖骞戦敓锟�
 					   listRecievedEmail.addAll(elist.getEmailslist());
 						break;
@@ -243,7 +333,7 @@ public class EmailActivity extends Activity{
 						switch (objtype) {
 							case UIHelper.LISTVIEW_DATATYPE_EMAIL:
 								EmailList list = (EmailList)obj;
-								emailsSumData += what;
+								emailsRSumData += what;
 								if(listRecievedEmail.size() > 0){
 									for(Email email1 : list.getEmailslist()){
 										boolean b = false;
@@ -263,23 +353,70 @@ public class EmailActivity extends Activity{
 		    break;
 		}
     }
+	private void handleSEmailData(int what,Object obj,int objtype,int actiontype){
+		switch (actiontype) {
+			case UIHelper.LISTVIEW_ACTION_INIT:
+			case UIHelper.LISTVIEW_ACTION_REFRESH:
+			case UIHelper.LISTVIEW_ACTION_CHANGE_CATALOG:
+				switch (objtype) {
+					case UIHelper.LISTVIEW_DATATYPE_EMAIL:
+						EmailList elist = (EmailList)obj;
+						emailsSSumData = what;
+					   listSendEmail.clear();//闁稿繐鐗婄粩濠氭⒔閵堝懎鏂ч柡鍫濐樇閺嗙喖骞戦敓锟�
+					   listSendEmail.addAll(elist.getEmailslist());
+						break;
+				}
+				if(actiontype == UIHelper.LISTVIEW_ACTION_REFRESH){
+					//闁圭粯鍔楅妵姘跺棘閺夊灝顬濋弶鐐跺Г閺嗙喖骞戦敓锟�
+						if(!new NetUtil(this).goodNet()){
+							Toast.makeText(getApplicationContext(), R.string.netBad,Toast.LENGTH_SHORT).show();
+						}else{
+							Toast.makeText(getApplicationContext(), R.string.updatre_complete,Toast.LENGTH_SHORT).show();
+						}
+				}
+				break;
+		    case UIHelper.LISTVIEW_ACTION_SCROLL:
+						switch (objtype) {
+							case UIHelper.LISTVIEW_DATATYPE_EMAIL:
+								EmailList list = (EmailList)obj;
+								emailsSSumData += what;
+								if(listSendEmail.size() > 0){
+									for(Email email1 : list.getEmailslist()){
+										boolean b = false;
+										for(Email email2 : listSendEmail){
+											if(email1.getId() == email2.getId()){
+												b = true;
+												break;
+											}
+										}
+										if(!b) listSendEmail.add(email1);
+									}
+								}else{
+									listSendEmail.addAll(list.getEmailslist());
+								}
+							break;
+						}
+		    break;
+		}
+    }
 	private class FrameBtEmailInboxListener implements OnClickListener{
 
 		@Override
 		public void onClick(View v) {
 			// TODO Auto-generated method stub
-			curEmailType = EmailType.INBOXMAIL;
 			frameBtEmailInbox.setEnabled(false);
 			frameBtEmailOutbox.setEnabled(true);
 			frameBtEmailNew.setEnabled(true);
 			
-			searchFrame.setVisibility(View.VISIBLE);
-			searchText.setText("");
+			searchRFrame.setVisibility(View.GONE);
+			searchRText.setText("");
+			searchSFrame.setVisibility(View.GONE);
 			
 			scrollView.setVisibility(View.GONE);
 			emailRevievedList.setVisibility(View.VISIBLE);
-			
-			loadEmailData( 0, emailHandler, UIHelper.LISTVIEW_ACTION_CHANGE_CATALOG,curEmailType,false);
+			emailSendList.setVisibility(View.GONE);
+			if(listRecievedEmail.isEmpty())
+				loadEmailData( 0, emailRHandler, UIHelper.LISTVIEW_ACTION_CHANGE_CATALOG,EmailType.INBOXMAIL,false);
 		}
 		
 	}
@@ -289,16 +426,17 @@ public class EmailActivity extends Activity{
 		@Override
 		public void onClick(View v) {
 			// TODO Auto-generated method stub
-			curEmailType = EmailType.OUTBOXMAIL;
 			frameBtEmailInbox.setEnabled(true);
 			frameBtEmailOutbox.setEnabled(false);
 			frameBtEmailNew.setEnabled(true);
-			searchFrame.setVisibility(View.VISIBLE);
-			searchText.setText("");
+			searchSFrame.setVisibility(View.GONE);
+			searchSText.setText("");
+			searchRFrame.setVisibility(View.GONE);
 			scrollView.setVisibility(View.GONE);
-			emailRevievedList.setVisibility(View.VISIBLE);
-			
-			loadEmailData( 0, emailHandler, UIHelper.LISTVIEW_ACTION_CHANGE_CATALOG,curEmailType,false);
+			emailSendList.setVisibility(View.VISIBLE);
+			emailRevievedList.setVisibility(View.GONE);
+			if(listSendEmail.isEmpty())
+				loadEmailData( 0, emailSHandler, UIHelper.LISTVIEW_ACTION_CHANGE_CATALOG,EmailType.OUTBOXMAIL,false);
 		}
 	}
 	
@@ -309,24 +447,55 @@ public class EmailActivity extends Activity{
 			frameBtEmailInbox.setEnabled(true);
 			frameBtEmailOutbox.setEnabled(true);
 			frameBtEmailNew.setEnabled(false);
-			searchFrame.setVisibility(View.GONE);
+			searchRFrame.setVisibility(View.GONE);
+			searchSFrame.setVisibility(View.GONE);
 			scrollView.setVisibility(View.VISIBLE);
 			emailRevievedList.setVisibility(View.GONE);
+			emailSendList.setVisibility(View.GONE);
 		}
 	}
 	
-	private class EmailItemClickListener implements OnItemClickListener{
+	private class REmailItemClickListener implements OnItemClickListener{
 
 		@Override
 		public void onItemClick(AdapterView<?> parent, View view, int position,
 				long id) {
 			// TODO Auto-generated method stub
-			if(position == 0 || view == emailFooter) return;
+			if(position == 0 || view == emailRFooter) return;
 			Email email = null;        		
     		if(view instanceof TextView){
     			email = (Email)view.getTag();
     		}else{
-    			TextView tv = (TextView)view.findViewById(R.id.email_listitem_title);
+    			TextView tv = (TextView)view.findViewById(R.id.email_listitem_titler);
+    			email = (Email)tv.getTag();
+    		}
+    		if(email == null) return;
+    		
+			Intent intent = new Intent(EmailActivity.this,EmailDetailActivity.class);
+			intent.putExtra(Email.TITLE,email.getTitle());
+			intent.putExtra(Email.SENDER,email.getSender());
+			intent.putExtra(Email.RECIEVER,email.getReciever());
+			intent.putExtra(Email.CONTENT,email.getContent());
+			intent.putExtra(Email.TYPE, email.getType().value());
+			intent.putExtra(Email.ID, email.getId());
+			SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+			intent.putExtra(Email.DATE,df.format(email.getDate()));
+			startActivity(intent);
+		}
+		
+	}
+	private class SEmailItemClickListener implements OnItemClickListener{
+
+		@Override
+		public void onItemClick(AdapterView<?> parent, View view, int position,
+				long id) {
+			// TODO Auto-generated method stub
+			if(position == 0 || view == emailSFooter) return;
+			Email email = null;        		
+    		if(view instanceof TextView){
+    			email = (Email)view.getTag();
+    		}else{
+    			TextView tv = (TextView)view.findViewById(R.id.email_listitem_titles);
     			email = (Email)tv.getTag();
     		}
     		if(email == null) return;
@@ -345,7 +514,7 @@ public class EmailActivity extends Activity{
 		
 	}
 	
-	private class EmailListScrollListener implements OnScrollListener{
+	private class REmailListScrollListener implements OnScrollListener{
 
 		@Override
 		public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
@@ -360,7 +529,7 @@ public class EmailActivity extends Activity{
 			if(listRecievedEmail.isEmpty()) return;
 			boolean scrollEnd = false;
 			try {
-				if(view.getPositionForView(emailFooter) == view.getLastVisiblePosition())
+				if(view.getPositionForView(emailRFooter) == view.getLastVisiblePosition())
 					scrollEnd = true;
 			} catch (Exception e) {
 				scrollEnd = false;
@@ -369,23 +538,68 @@ public class EmailActivity extends Activity{
 			if(scrollEnd && lvDataState==UIHelper.LISTVIEW_DATA_MORE)
 			{
 				emailRevievedList.setTag(UIHelper.LISTVIEW_DATA_LOADING);
-				emailFootMore.setText(R.string.load_ing);
-				emailFootProgress.setVisibility(View.VISIBLE);
+				emailRFootMore.setText(R.string.load_ing);
+				emailRFootProgress.setVisibility(View.VISIBLE);
 				//鐟滅増鎸告晶鐖宎geIndex
-				int pageIndex = emailsSumData/MyApplication.PAGE_SIZE;
+				int pageIndex = emailsRSumData/MyApplication.PAGE_SIZE;
 				Log.e("pageIndex",pageIndex+"");
-				loadEmailData( pageIndex, emailHandler, UIHelper.LISTVIEW_ACTION_SCROLL,curEmailType,true);
+				loadEmailData( pageIndex, emailRHandler, UIHelper.LISTVIEW_ACTION_SCROLL,EmailType.INBOXMAIL,true);
 			}
 		}
 		
 	}
 	
-	private class EmailListRefreshListener implements OnRefreshListener{
+	private class SEmailListScrollListener implements OnScrollListener{
+
+		@Override
+		public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+			// TODO Auto-generated method stub
+				emailSendList.onScroll(view, firstVisibleItem, visibleItemCount, totalItemCount);
+		}
+
+		@Override
+		public void onScrollStateChanged(AbsListView view, int scrollState) {
+			// TODO Auto-generated method stub
+			emailSendList.onScrollStateChanged(view, scrollState);
+			if(listSendEmail.isEmpty()) return;
+			boolean scrollEnd = false;
+			try {
+				if(view.getPositionForView(emailSFooter) == view.getLastVisiblePosition())
+					scrollEnd = true;
+			} catch (Exception e) {
+				scrollEnd = false;
+			}
+			int lvDataState = StringUtils.toInt(emailSendList.getTag());
+			if(scrollEnd && lvDataState==UIHelper.LISTVIEW_DATA_MORE)
+			{
+				emailSendList.setTag(UIHelper.LISTVIEW_DATA_LOADING);
+				emailSFootMore.setText(R.string.load_ing);
+				emailSFootProgress.setVisibility(View.VISIBLE);
+				//鐟滅増鎸告晶鐖宎geIndex
+				int pageIndex = emailsSSumData/MyApplication.PAGE_SIZE;
+				Log.e("pageIndex",pageIndex+"");
+				loadEmailData( pageIndex, emailSHandler, UIHelper.LISTVIEW_ACTION_SCROLL,EmailType.OUTBOXMAIL,true);
+			}
+		}
+		
+	}
+	
+	private class REmailListRefreshListener implements OnRefreshListener{
 
 		@Override
 		public void onRefresh() {
 			// TODO Auto-generated method stub
-				loadEmailData( 0, emailHandler, UIHelper.LISTVIEW_ACTION_REFRESH,curEmailType,true);
+				loadEmailData( 0, emailRHandler, UIHelper.LISTVIEW_ACTION_REFRESH,EmailType.INBOXMAIL,true);
+		}
+		
+	}
+	
+	private class SEmailListRefreshListener implements OnRefreshListener{
+
+		@Override
+		public void onRefresh() {
+			// TODO Auto-generated method stub
+				loadEmailData( 0, emailSHandler, UIHelper.LISTVIEW_ACTION_REFRESH,EmailType.OUTBOXMAIL,true);
 		}
 		
 	}
@@ -405,9 +619,7 @@ public class EmailActivity extends Activity{
 	            }
 				msg.arg1 = action;
 				msg.arg2 = UIHelper.LISTVIEW_DATATYPE_EMAIL;
-				if(curEmailType == type){
-					handler.sendMessage(msg);
-				}
+				handler.sendMessage(msg);
 			}
 		}.start();
 	} 

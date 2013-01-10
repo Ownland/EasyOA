@@ -49,16 +49,17 @@
     </LinearLayout>
     
 	<FrameLayout
-	    android:id="@+id/search_frame"
+	    android:id="@+id/search_framer"
 	   	android:layout_width="fill_parent"
 	   	android:layout_height="wrap_content"
 	   	android:gravity="center_vertical"
 	   	android:paddingLeft="5dip"
    		android:paddingRight="5dip"
 	   	android:orientation="horizontal"
-	   	android:background="@drawable/widget_head_bg">
+	   	android:background="@drawable/widget_head_bg"
+	   	android:visibility="gone">
 		<EditText
-	        android:id="@+id/search_editer"
+	        android:id="@+id/search_editerr"
 	        android:layout_width="fill_parent"
 	        android:layout_height="30dip"
 	        android:layout_gravity="left|center"
@@ -70,13 +71,41 @@
 	        android:background="@drawable/edit_search_bg"
 	        android:hint="输入搜索内容"/>			
 	   	<Button 
-	   		android:id="@+id/search_btn"
+	   		android:id="@+id/search_btnr"
 		   	android:layout_width="wrap_content" 
 	      	android:layout_height="30dip" 
 	      	android:layout_gravity="right|center"
 	      	android:background="@drawable/btn_search_bg"/>
 	</FrameLayout>
-	
+	<FrameLayout
+	    android:id="@+id/search_frames"
+	   	android:layout_width="fill_parent"
+	   	android:layout_height="wrap_content"
+	   	android:gravity="center_vertical"
+	   	android:paddingLeft="5dip"
+   		android:paddingRight="5dip"
+	   	android:orientation="horizontal"
+	   	android:background="@drawable/widget_head_bg"
+	   	android:visibility="gone">
+		<EditText
+	        android:id="@+id/search_editers"
+	        android:layout_width="fill_parent"
+	        android:layout_height="30dip"
+	        android:layout_gravity="left|center"
+	        android:layout_marginRight="36dip"
+	        android:singleLine="true"
+	        android:focusable="true" 
+	        android:focusableInTouchMode="true"
+	        android:imeOptions="actionSearch"
+	        android:background="@drawable/edit_search_bg"
+	        android:hint="输入搜索内容"/>			
+	   	<Button 
+	   		android:id="@+id/search_btns"
+		   	android:layout_width="wrap_content" 
+	      	android:layout_height="30dip" 
+	      	android:layout_gravity="right|center"
+	      	android:background="@drawable/btn_search_bg"/>
+	</FrameLayout>
 <cn.edu.nju.software.widget.PullToRefreshListView
 	  	android:id="@+id/frame_listview_emails_recieve"
 	    style="@style/widget_listview"/>

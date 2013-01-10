@@ -5,10 +5,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.webkit.WebView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import cn.edu.nju.software.enums.EmailType;
@@ -23,7 +24,10 @@ public class EmailDetailActivity extends Activity {
 	private TextView recieverTv;
 	private TextView dateTv;
 	private WebView contentTv;
+	private ProgressBar progressBar;
 	private MyHandler myHandler;
+	private DeleteHandler deleteHandler;
+	private TextView deleteing;
 	static final private int DELETE_ITEM = Menu.FIRST;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +35,7 @@ public class EmailDetailActivity extends Activity {
 		setContentView(R.layout.activity_email_detail);
 		this.initView();
 		myHandler = new MyHandler();
+		deleteHandler = new DeleteHandler();
 	}
 
 
@@ -40,6 +45,8 @@ public class EmailDetailActivity extends Activity {
 		recieverTv = (TextView)findViewById(R.id.email_detail_reciever);
 		dateTv = (TextView)findViewById(R.id.email_detail_date);
 		contentTv = (WebView)findViewById(R.id.email_detail_content);
+		progressBar = (ProgressBar)findViewById(R.id.content_progressBar);
+		deleteing = (TextView)findViewById(R.id.deleting);
 		
 		Intent intent=getIntent();
 		String title=intent.getStringExtra(Email.TITLE);
@@ -50,7 +57,8 @@ public class EmailDetailActivity extends Activity {
 		final int number = intent.getIntExtra(Email.ID, -1);
 		final int type = intent.getIntExtra(Email.TYPE, 1);
 		if(content==null){
-			content="<div>loading¡£¡£¡£</div>";
+			contentTv.setVisibility(View.GONE);
+			progressBar.setVisibility(ProgressBar.VISIBLE);
 		}
 		titleTv.setText(title);
 		senderTv.setText(sender);
@@ -105,11 +113,11 @@ public class EmailDetailActivity extends Activity {
         	email.setType(EmailType.valueOf(type));
         	
         	if(new NetUtil(this).goodNet()){
+        		
+        		progressBar.setVisibility(View.VISIBLE);
+        		deleteing.setVisibility(View.VISIBLE);
         		deleteEmail(email);
-	        	Toast.makeText(getApplicationContext(), R.string.delete_mail_success,
-	        		     Toast.LENGTH_SHORT).show();
-	        	Intent newIntent = new Intent(EmailDetailActivity.this,EmailActivity.class);
-	        	startActivity(newIntent);
+	        	
         	}else{
         		Toast.makeText(getApplicationContext(), R.string.netBad,
 	        		     Toast.LENGTH_SHORT).show();
@@ -122,6 +130,8 @@ public class EmailDetailActivity extends Activity {
 		new Thread(){
 			public void run(){
 				new MailServiceImpl(EmailDetailActivity.this).deleteEmail(email);
+				Message msg = new Message();
+				deleteHandler.sendMessage(msg);
 			}
 		}.start();
 	}
@@ -135,6 +145,24 @@ public class EmailDetailActivity extends Activity {
             String content = b.getString("content");
             //Log.e("content3",content);
             contentTv.loadDataWithBaseURL(null, content, "text/html", "utf-8",null);
+            contentTv.setVisibility(View.VISIBLE);
+            progressBar.setVisibility(View.GONE);
+        }
+	}
+	
+	private class DeleteHandler extends Handler{
+		@Override
+        public void handleMessage(Message msg) {
+            // TODO Auto-generated method stub
+            super.handleMessage(msg);
+            progressBar.setVisibility(View.GONE);
+            deleteing.setVisibility(View.GONE);
+            Toast.makeText(getApplicationContext(), R.string.delete_mail_success,
+       		     Toast.LENGTH_SHORT).show();
+	       	Intent newIntent = new Intent(EmailDetailActivity.this,EmailActivity.class);
+	       	//newIntent.putExtra("number", number);
+	       	startActivity(newIntent);
+	       	finish();
         }
 	}
 }

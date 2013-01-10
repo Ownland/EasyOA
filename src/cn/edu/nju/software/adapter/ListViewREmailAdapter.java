@@ -14,7 +14,7 @@ import cn.edu.nju.software.model.Email;
 import cn.edu.nju.software.ui.R;
 
 
-public class ListViewEmailAdapter extends BaseAdapter {
+public class ListViewREmailAdapter extends BaseAdapter {
 	private Context 					context;
 	private List<Email> 					listItems;
 	private LayoutInflater 				listContainer;
@@ -26,7 +26,7 @@ public class ListViewEmailAdapter extends BaseAdapter {
 	 }  
 
 
-	public ListViewEmailAdapter(Context context, List<Email> data,int resource) {
+	public ListViewREmailAdapter(Context context, List<Email> data,int resource) {
 		this.context = context;			
 		this.listContainer = LayoutInflater.from(context);	
 		this.itemViewResource = resource;
@@ -54,9 +54,9 @@ public class ListViewEmailAdapter extends BaseAdapter {
 			convertView = listContainer.inflate(this.itemViewResource, null);
 			
 			listItemView = new ListItemView();
-			listItemView.title = (TextView)convertView.findViewById(R.id.email_listitem_title);
-			listItemView.sender = (TextView)convertView.findViewById(R.id.email_listitem_sender);
-			listItemView.date= (TextView)convertView.findViewById(R.id.email_listitem_date);
+			listItemView.title = (TextView)convertView.findViewById(R.id.email_listitem_titler);
+			listItemView.sender = (TextView)convertView.findViewById(R.id.email_listitem_senderr);
+			listItemView.date= (TextView)convertView.findViewById(R.id.email_listitem_dater);
 			
 			convertView.setTag(listItemView);
 		}else {

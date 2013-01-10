@@ -146,6 +146,29 @@
 	        android:textSize="15sp"
 	        android:textColor="@color/black">
 		 </WebView>
+		
+		  <LinearLayout 
+            android:layout_width="fill_parent"  
+            android:layout_height="fill_parent" 
+            android:gravity="center" 
+            android:paddingTop="100dip"
+        	>  
+  
+	        <ProgressBar  
+	            android:id="@+id/content_progressBar"
+				style="@style/loading_small"
+				android:visibility="visible"/>
+	         <TextView 
+	            android:id="@+id/deleting"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:text="删除中"
+		        android:textSize="15sp"
+		        android:textColor="@color/black"
+		        android:visibility="gone"/>
+  
+        </LinearLayout>
+		
 	   
 	    
 	</LinearLayout>

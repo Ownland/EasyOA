@@ -34,7 +34,7 @@ public class EmailDAOImpl implements EmailDAO{
 	}
 	public void delete(Email email){
 		SQLiteDatabase db = dbHelper.getWritableDatabase();
-		String temp[] = new String[1];
+		String temp[] = new String[2];
 		temp[0] = email.getId()+"";
 		temp[1] = email.getType().value()+"";
 		db.delete("email", "number=? and type=?",temp );

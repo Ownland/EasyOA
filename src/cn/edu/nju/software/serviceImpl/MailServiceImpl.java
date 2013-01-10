@@ -205,6 +205,7 @@ public class MailServiceImpl implements MailService {
 				store.close();
 				EmailDAO emailDAO = new EmailDAOImpl(context);
 				emailDAO.delete(email);
+				Log.e("deleted","deleted");
 				EmailType type = email.getType();
 				int localMax = emailDAO.findMaxNumber(type);
 				for (int i = number + 1; i <= localMax; i++) {

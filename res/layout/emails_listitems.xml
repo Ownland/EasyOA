@@ -15,7 +15,7 @@
         android:layout_height="wrap_content">
         
     
-	    <TextView android:id="@+id/email_listitem_title" 
+	    <TextView android:id="@+id/email_listitem_titles" 
 	        android:layout_width="fill_parent" 
 	     	android:layout_height="wrap_content"
 	     	android:textStyle="bold"
@@ -31,7 +31,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dip">   
        	
-       	<TextView android:id="@+id/email_listitem_sender"  
+       	<TextView android:id="@+id/email_listitem_senders"  
     		android:layout_width="wrap_content" 
            	android:layout_height="wrap_content" 
            	android:textSize="@dimen/text_size_10"
@@ -39,7 +39,7 @@
        	
        	
        	
-       	<TextView android:id="@+id/email_listitem_date"  
+       	<TextView android:id="@+id/email_listitem_dates"  
     		android:layout_width="wrap_content" 
            	android:layout_height="wrap_content"
            	android:layout_marginLeft="30dip" 
