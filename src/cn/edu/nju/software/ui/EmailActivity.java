@@ -159,6 +159,7 @@ public class EmailActivity extends Activity{
 					Toast.makeText(EmailActivity.this,R.string.email_send_success, Toast.LENGTH_SHORT).show();
 					Intent intent = new Intent(EmailActivity.this,EmailActivity.class);
 					startActivity(intent);
+					finish();
 				}
 			}else{
 				Toast.makeText(EmailActivity.this,R.string.netBad, Toast.LENGTH_SHORT).show();
