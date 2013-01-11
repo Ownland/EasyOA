@@ -5,6 +5,7 @@ import java.util.Date;
 import cn.edu.nju.software.enums.DocumentType;
 
 public class Document {
+	public final static String DOCUMENT_ID = "documentId";
 	public final static String TITLE = "title";
 	public final static String PATH = "path";
 	public final static String UPLOADER_ID = "uploaderId";
@@ -12,6 +13,7 @@ public class Document {
 	public final static String PARENT_ID = "parentId";
 	public final static String TYPE = "type";
 	
+	private int docId;
 	private String title;
 	private String path;
 	private int uploaderId;
@@ -23,15 +25,26 @@ public class Document {
 		
 	}
 	
-	public Document(String title, String path, int uploaderId, Date uploadDate,
+	public Document(int docId,String title, String path, int uploaderId, Date uploadDate,
 			int parentId, DocumentType type) {
 		super();
+		this.docId = docId;
 		this.title = title;
 		this.path = path;
 		this.uploaderId = uploaderId;
 		this.uploadDate = uploadDate;
 		this.parentId = parentId;
 		this.type = type;
+	}
+
+	
+	
+	public int getDocId() {
+		return docId;
+	}
+
+	public void setDocId(int docId) {
+		this.docId = docId;
 	}
 
 	public String getTitle() {
