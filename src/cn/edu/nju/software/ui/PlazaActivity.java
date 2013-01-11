@@ -89,6 +89,8 @@ public class PlazaActivity extends Activity {
 			case 1:
 				intent.setClass(PlazaActivity.this, EmailActivity.class);
 				break;
+			case 2:
+				intent.setClass(PlazaActivity.this, CalendarActivity.class);
 			default:
 				;
 			}

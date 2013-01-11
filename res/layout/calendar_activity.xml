@@ -1,17 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
     android:orientation="vertical" 
     android:background="@color/white">
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-		android:id="@+id/main_relativelayout_header" 
 	  	android:layout_width="fill_parent" 
 	  	android:layout_height="40dip"
 	  	android:background="@drawable/widget_head_bg">
   	
 	    <ImageView
-	    	android:id="@+id/main_head_logo"
+	        android:id="@+id/calendar_head_logo"
 	  		android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:layout_centerVertical="true"
@@ -20,9 +19,8 @@
 			android:src="@drawable/frame_logo_news"/>
 	    
 	    <TextView 
-	        android:id="@+id/main_head_title"
 	        style="@style/main_head_title"
-			android:layout_toRightOf="@id/main_head_logo"
+			android:layout_toRightOf="@id/calendar_head_logo"
 			android:layout_centerVertical="true"
 			android:layout_marginLeft="5.0dip"
 			android:text="日历"/>
@@ -48,37 +46,11 @@
          	android:text="@string/frame_title_calendar_new"/>
     </LinearLayout>
     
-	<FrameLayout
-	    android:id="@+id/search_frame_calendar"
-	   	android:layout_width="fill_parent"
-	   	android:layout_height="wrap_content"
-	   	android:gravity="center_vertical"
-	   	android:paddingLeft="5dip"
-   		android:paddingRight="5dip"
-	   	android:orientation="horizontal"
-	   	android:background="@drawable/widget_head_bg">
-		<EditText
-	        android:id="@+id/search_editer_calendar"
-	        android:layout_width="fill_parent"
-	        android:layout_height="30dip"
-	        android:layout_gravity="left|center"
-	        android:layout_marginRight="36dip"
-	        android:singleLine="true"
-	        android:focusable="true" 
-	        android:focusableInTouchMode="true"
-	        android:imeOptions="actionSearch"
-	        android:background="@drawable/edit_search_bg"
-	        android:hint="输入搜索内容"/>			
-	   	<Button 
-	   		android:id="@+id/search_btn_calendar"
-		   	android:layout_width="wrap_content" 
-	      	android:layout_height="30dip" 
-	      	android:layout_gravity="right|center"
-	      	android:background="@drawable/btn_search_bg"/>
-	</FrameLayout>
+
 	<ListView
 	  	android:id="@+id/frame_listview_calendars"
-	    style="@style/widget_listview"/>
+	    style="@style/widget_listview"
+	    android:visibility="gone"/>
 	<ScrollView
 	    android:id="@+id/calendar_scroll"
 	    android:layout_width="fill_parent"
@@ -105,8 +77,9 @@
 		        android:textColor="@color/black"/>
 		    <EditText
 		        android:id="@+id/email_new_reciever"
-		        android:layout_width="wrap_content"
+		        android:layout_width="fill_parent"
 		        android:layout_height="wrap_content"
+		        android:layout_marginRight="5.0dip"
 		        android:layout_weight="1"
 		        android:singleLine="true"
 		        android:hint="请输入事件名称"/>
@@ -132,14 +105,16 @@
 	       		android:layout_marginTop="2.0dip" >
 	       		<Button 
 			   		android:id="@+id/date_btn_from"
-				   	android:layout_width="wrap_content" 
-			      	android:layout_height="30dip" 
-			      	android:layout_gravity="right|center"/>
+				   android:layout_width="150dip" 
+			      	android:layout_height="40dip" 
+			      	android:layout_gravity="right|center"
+			      	/>
 	        	<Button 
 			   		android:id="@+id/time_btn_from"
-				   	android:layout_width="wrap_content" 
-			      	android:layout_height="30dip" 
-			      	android:layout_gravity="right|center"/>
+				   	android:layout_width="150dip" 
+			      	android:layout_height="40dip" 
+			      	android:layout_gravity="right|center"
+			      	/>
 	        </LinearLayout>
 	    </LinearLayout>
 	     <LinearLayout
@@ -162,48 +137,82 @@
 	       		android:layout_marginTop="2.0dip" >
 	       		<Button 
 			   		android:id="@+id/date_btn_to"
-				   	android:layout_width="wrap_content" 
-			      	android:layout_height="30dip" 
-			      	android:layout_gravity="right|center"/>
+				   	android:layout_width="150dip" 
+			      	android:layout_height="40dip" 
+			      	android:layout_gravity="right|center"
+			      	/>
 	        	<Button 
 			   		android:id="@+id/time_btn_to"
-				   	android:layout_width="wrap_content" 
-			      	android:layout_height="30dip" 
-			      	android:layout_gravity="right|center"/>
+				   	android:layout_width="150dip" 
+			      	android:layout_height="40dip" 
+			      	android:layout_gravity="right|center"
+			      />
 	        </LinearLayout>
 	    </LinearLayout>
 	    
-		<LinearLayout 
-		    android:layout_width="fill_parent"
+		<LinearLayout
+	    	android:layout_width="fill_parent"
 	    	android:layout_height="wrap_content"
 	    	android:layout_marginLeft="2.0dip"
-	    	android:layout_marginTop="2.0dip">
-	    <TextView
-	            android:layout_width="wrap_content"
-	            android:layout_height="wrap_content"
-	            android:layout_gravity="center_vertical"
-	            android:text="内    容："
-	            android:textColor="@color/black"
-	            android:textSize="15sp" />
-		</LinearLayout>
-	    <EditText
-	        android:id="@+id/email_new_content"
-	        android:layout_width="fill_parent"
-	        android:layout_height="fill_parent"
-	        android:layout_marginTop="2.0dip"
-	        android:layout_weight="1"
-	        android:lines="8"
-	        android:autoLink="web"
-	        android:gravity="top"
-	        android:hint="请输入邮件内容"/>
-         
+	    	android:layout_marginTop="2.0dip"
+	    	android:orientation="vertical">
+		    <TextView 
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:text="位置"
+		        android:textSize="15sp"
+		        android:textColor="@color/black"/>
+		    <EditText
+		        android:id="@+id/calendar_new_location"
+		        android:layout_width="fill_parent"
+		        android:layout_height="wrap_content"
+		        android:layout_marginRight="5.0dip"
+		        android:layout_weight="1"
+		        android:singleLine="true"
+		        android:hint="请输入事件发生的位置"/>
+	    </LinearLayout>
+	    <LinearLayout
+	    	android:layout_width="fill_parent"
+	    	android:layout_height="wrap_content"
+	    	android:layout_marginLeft="2.0dip"
+	    	android:layout_marginTop="2.0dip"
+	    	android:orientation="vertical">
+		    <TextView 
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:text="说明"
+		        android:textSize="15sp"
+		        android:textColor="@color/black"/>
+		    <EditText
+		        android:id="@+id/calendar_new_description"
+		        android:layout_width="fill_parent"
+		        android:layout_height="wrap_content"
+		        android:layout_marginRight="5.0dip"
+		        android:layout_weight="1"
+		        android:singleLine="true"
+		        android:hint="请输入事件的说明信息"/>
+	    </LinearLayout>
+	     <LinearLayout 
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	    android:layout_marginLeft="2.0dip"
+	    >
+         <CheckBox 
+		    android:id="@+id/remind"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:checked="false"
+		    android:text="提醒"
+		    android:textColor="@color/black"
+		  ></CheckBox>
+        </LinearLayout>
 	    <LinearLayout 
 	    android:layout_width="fill_parent"
 	    android:layout_height="wrap_content"
 	    android:layout_marginLeft="2.0dip"
 	    android:gravity="center">
 	    <Button
-		    	android:id="@+id/email_send"
+		    	android:id="@+id/calendar_new"
 		        android:layout_width="100dip"
 		    	android:layout_height="45dip"
 		    	android:layout_marginTop="15dip"
@@ -211,9 +220,9 @@
 		    	android:gravity="center"
 		    	android:background="@drawable/email_btn_selector" 
 		    	android:textSize="@dimen/text_size_18"
-		        android:text="发送"/>
+		        android:text="创建"/>
 	    <Button
-		    	android:id="@+id/email_cancel"
+		    	android:id="@+id/calendar_cancel"
 		        android:layout_width="100dip"
 		    	android:layout_height="45dip"
 		    	android:layout_marginTop="15dip"
@@ -223,7 +232,8 @@
 		    	android:background="@drawable/email_btn_selector" 
 		    	android:textSize="@dimen/text_size_18"
 		        android:text="取消"/>
-	</LinearLayout>
+		</LinearLayout>
+		
 	</LinearLayout>
 	
 	</ScrollView>

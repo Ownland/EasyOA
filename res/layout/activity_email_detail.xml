@@ -11,7 +11,7 @@
 	  	android:background="@drawable/widget_head_bg">
   	
 	    <ImageView
-	    	android:id="@+id/main_head_logo"
+	    	android:id="@+id/main_head_logo_email_detail"
 	  		android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:layout_centerVertical="true"
@@ -22,7 +22,7 @@
 	    <TextView 
 	        android:id="@+id/main_head_title"
 	        style="@style/main_head_title"
-			android:layout_toRightOf="@id/main_head_logo"
+			android:layout_toRightOf="@id/main_head_logo_email_detail"
 			android:layout_centerVertical="true"
 			android:layout_marginLeft="5.0dip"
 			android:text="邮件信息"/>

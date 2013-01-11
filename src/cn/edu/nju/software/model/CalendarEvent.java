@@ -2,7 +2,6 @@ package cn.edu.nju.software.model;
 
 import java.util.Date;
 
-import cn.edu.nju.software.enums.CalendarState;
 
 public class CalendarEvent {
 	public final static String EVENT_ID = "eventId";
@@ -12,7 +11,6 @@ public class CalendarEvent {
 	public final static String LOCATION = "location";
 	public final static String DESCRIPTION = "description";
 	public final static String REMIND = "remind";
-	public final static String STATE = "state";
 	public final static String OWNER_ID = "ownerId";
 	
 	private int eventId;
@@ -21,7 +19,6 @@ public class CalendarEvent {
 	private Date endTime;
 	private String location;
 	private boolean remind;
-	private CalendarState state;
 	private int ownerId;
 	
 	
@@ -30,7 +27,7 @@ public class CalendarEvent {
 	}
 
 	public CalendarEvent(int eventId, String name, Date beginTime,
-			Date endTime, String location, boolean remind, CalendarState state,
+			Date endTime, String location, boolean remind, 
 			int ownerId) {
 		super();
 		this.eventId = eventId;
@@ -39,7 +36,6 @@ public class CalendarEvent {
 		this.endTime = endTime;
 		this.location = location;
 		this.remind = remind;
-		this.state = state;
 		this.ownerId = ownerId;
 	}
 
@@ -89,14 +85,6 @@ public class CalendarEvent {
 
 	public void setRemind(boolean remind) {
 		this.remind = remind;
-	}
-
-	public CalendarState getState() {
-		return state;
-	}
-
-	public void setState(CalendarState state) {
-		this.state = state;
 	}
 
 	public int getOwnerId() {

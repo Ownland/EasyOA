@@ -235,9 +235,9 @@ public class EmailActivity extends Activity{
 			loadEmailData( 0, emailRHandler, UIHelper.LISTVIEW_ACTION_INIT,EmailType.INBOXMAIL,false);
 		} 
 		emailSHandler = this.getSHandler(emailSendList, emailSAdapter, emailSFootMore, emailSFootProgress, MyApplication.PAGE_SIZE);
-		/*if(listSendEmail.isEmpty()) {
+		if(listSendEmail.isEmpty()) {
 			loadEmailData( 0, emailSHandler, UIHelper.LISTVIEW_ACTION_INIT,EmailType.OUTBOXMAIL,false);
-		}*/
+		}
 	}
 	private Handler getRHandler(final PullToRefreshListView lv,final BaseAdapter adapter,final TextView more,final ProgressBar progress,final int pageSize){
     	return new Handler(){
@@ -415,8 +415,8 @@ public class EmailActivity extends Activity{
 			scrollView.setVisibility(View.GONE);
 			emailRevievedList.setVisibility(View.VISIBLE);
 			emailSendList.setVisibility(View.GONE);
-			if(listRecievedEmail.isEmpty())
-				loadEmailData( 0, emailRHandler, UIHelper.LISTVIEW_ACTION_CHANGE_CATALOG,EmailType.INBOXMAIL,false);
+			//if(listRecievedEmail.isEmpty())
+			//	loadEmailData( 0, emailRHandler, UIHelper.LISTVIEW_ACTION_CHANGE_CATALOG,EmailType.INBOXMAIL,false);
 		}
 		
 	}
@@ -435,8 +435,8 @@ public class EmailActivity extends Activity{
 			scrollView.setVisibility(View.GONE);
 			emailSendList.setVisibility(View.VISIBLE);
 			emailRevievedList.setVisibility(View.GONE);
-			if(listSendEmail.isEmpty())
-				loadEmailData( 0, emailSHandler, UIHelper.LISTVIEW_ACTION_CHANGE_CATALOG,EmailType.OUTBOXMAIL,false);
+			//if(listSendEmail.isEmpty())
+			//	loadEmailData( 0, emailSHandler, UIHelper.LISTVIEW_ACTION_CHANGE_CATALOG,EmailType.OUTBOXMAIL,false);
 		}
 	}
 	
