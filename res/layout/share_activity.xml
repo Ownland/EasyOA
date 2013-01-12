@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
+
+    <RelativeLayout
+        android:id="@+id/shareTitle"
+        android:layout_width="fill_parent"
+        android:layout_height="40dip"
+	  	android:background="@drawable/widget_head_bg">
+
+          <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="公共文件"
+                android:textColor="#FFFFFFFF"
+                android:textSize="20sp" />    
+    </RelativeLayout>
+	<RelativeLayout
+        android:id="@+id/rl_filebar"
+        	android:layout_width="fill_parent"
+        	android:layout_height="fill_parent"
+        	android:layout_below="@id/shareTitle"
+        	android:layout_marginTop="-12dip"
+        	android:background="#fff1f1f1">
+	<ProgressBar
+			android:id="@+id/fileBar"
+        	android:layout_width="50dip"
+        	android:layout_height="50dip"
+        	android:layout_centerHorizontal="true"
+        	android:layout_centerVertical="true"
+			android:clickable="false"			
+			style="?android:attr/progressBarStyleLarge" />
+	</RelativeLayout>
+    <ListView
+        android:id="@+id/Lsv_files"
+        android:visibility="gone"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_below="@id/shareTitle"
+        android:cacheColorHint="#00000000"
+        android:background="#fff1f1f1" >
+    </ListView>
+
+</RelativeLayout>
