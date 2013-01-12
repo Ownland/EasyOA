@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="45dip"
+    android:background="@drawable/btn_style2"
+    android:descendantFocusability="blocksDescendants" >
+
+
+    <ImageView
+        android:id="@+id/imgFile"
+        android:layout_width="40dip"
+        android:layout_height="40dip"
+        android:layout_alignParentLeft="true"
+        android:layout_centerInParent="true"
+        android:layout_margin="15dip" />
+
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_marginRight="50dip"
+        android:layout_toRightOf="@id/imgFile"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/fileName"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:textColor="#000000"
+            android:text="fileName"
+            android:textSize="17sp"
+            android:textStyle="bold" />
+
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+
+            <TextView
+                android:id="@+id/fileUploader"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2.5dip"
+                android:layout_marginLeft="5dip"
+                android:textColor="#000000"
+                 android:text="aaaaa"
+                android:textSize="15sp" />
+             <TextView
+                android:id="@+id/fileDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2.5dip"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="5dip"
+                android:textColor="#000000"
+                 android:text="bbbbb"
+                android:textSize="15sp" />
+        </RelativeLayout>
+    </LinearLayout>
+
+    <!-- 复选框 -->
+
+    <CheckBox
+        android:id="@+id/ckbFile"
+        android:layout_width="25dip"
+        android:layout_height="25dip"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="5dip"
+        
+        android:clickable="false"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
+        android:visibility="gone" />
+
+</RelativeLayout>

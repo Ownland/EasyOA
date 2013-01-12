@@ -4,29 +4,33 @@ import java.util.Date;
 
 import cn.edu.nju.software.enums.DocumentType;
 
-public class Document {
+public class Document implements Comparable<Document>{
 	public final static String DOCUMENT_ID = "documentId";
 	public final static String TITLE = "title";
 	public final static String PATH = "path";
 	public final static String UPLOADER_ID = "uploaderId";
+	public final static String UPLOADER_NAME = "uploaderName";
 	public final static String UPLOAD_DATE = "uploadDate";
 	public final static String PARENT_ID = "parentId";
 	public final static String TYPE = "type";
+	public final static String RESOURCE = "resource";
 	
 	private int docId;
 	private String title;
 	private String path;
 	private int uploaderId;
+	private String uploaderName;
 	private Date uploadDate;
 	private int parentId;
 	private DocumentType type;
+	private int resource;
 	
 	public Document(){
 		
 	}
 	
 	public Document(int docId,String title, String path, int uploaderId, Date uploadDate,
-			int parentId, DocumentType type) {
+			int parentId, DocumentType type, int resource) {
 		super();
 		this.docId = docId;
 		this.title = title;
@@ -35,6 +39,7 @@ public class Document {
 		this.uploadDate = uploadDate;
 		this.parentId = parentId;
 		this.type = type;
+		this.resource =resource;
 	}
 
 	
@@ -93,6 +98,28 @@ public class Document {
 
 	public void setType(DocumentType type) {
 		this.type = type;
+	}
+
+	public int getResource() {
+		return resource;
+	}
+
+	public void setResource(int resource) {
+		this.resource = resource;
+	}
+
+	public String getUploaderName() {
+		return uploaderName;
+	}
+
+	public void setUploaderName(String uploaderName) {
+		this.uploaderName = uploaderName;
+	}
+
+	@Override
+	public int compareTo(Document another) {
+		// TODO Auto-generated method stub
+		return this.title.compareToIgnoreCase(another.title);
 	}
 	
 	
