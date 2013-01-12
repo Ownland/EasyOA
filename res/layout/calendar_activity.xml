@@ -47,8 +47,12 @@
     </LinearLayout>
     
 
-	<ListView
-	  	android:id="@+id/frame_listview_calendars"
+	<cn.edu.nju.software.widget.PullToRefreshListView
+	  	android:id="@+id/frame_listview_calendar_todo"
+	    style="@style/widget_listview"/>
+	
+	<cn.edu.nju.software.widget.PullToRefreshListView
+	  	android:id="@+id/frame_listview_calendar_done"
 	    style="@style/widget_listview"
 	    android:visibility="gone"/>
 	<ScrollView
@@ -76,7 +80,7 @@
 		        android:textSize="15sp"
 		        android:textColor="@color/black"/>
 		    <EditText
-		        android:id="@+id/email_new_reciever"
+		        android:id="@+id/calendar_event_name"
 		        android:layout_width="fill_parent"
 		        android:layout_height="wrap_content"
 		        android:layout_marginRight="5.0dip"
