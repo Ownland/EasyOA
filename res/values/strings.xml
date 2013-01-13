@@ -46,6 +46,7 @@
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_email_detail">EmailDetailActivity</string>
     <string name="calendar_activity">CalendarActivity</string>
+    <string name="calendar_detail_activity">CalendarDetailActivity</string>
     <string name="menu_item_delete">删除</string>
     <string name="pull_to_refresh_pull_label">下拉可以刷新</string>
     <string name="pull_to_refresh_release_label">松开可以刷新</string>

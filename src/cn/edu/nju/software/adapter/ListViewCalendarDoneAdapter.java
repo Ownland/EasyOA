@@ -9,24 +9,25 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
-import cn.edu.nju.software.enums.EmailType;
+import cn.edu.nju.software.model.Calendarevent;
 import cn.edu.nju.software.model.Email;
 import cn.edu.nju.software.ui.R;
+import cn.edu.nju.software.utils.DateUtil;
 
 
 public class ListViewCalendarDoneAdapter extends BaseAdapter {
 	private Context 					context;
-	private List<Email> 					listItems;
+	private List<Calendarevent> 					listItems;
 	private LayoutInflater 				listContainer;
 	private int 						itemViewResource;
 	static class ListItemView{				 
 	        public TextView title;  
-		    public TextView sender;
+		    public TextView weekday;
 		    public TextView date;  
 	 }  
 
 
-	public ListViewCalendarDoneAdapter(Context context, List<Email> data,int resource) {
+	public ListViewCalendarDoneAdapter(Context context, List<Calendarevent> data,int resource) {
 		this.context = context;			
 		this.listContainer = LayoutInflater.from(context);	
 		this.itemViewResource = resource;
@@ -54,28 +55,22 @@ public class ListViewCalendarDoneAdapter extends BaseAdapter {
 			convertView = listContainer.inflate(this.itemViewResource, null);
 			
 			listItemView = new ListItemView();
-			listItemView.title = (TextView)convertView.findViewById(R.id.email_listitem_titler);
-			listItemView.sender = (TextView)convertView.findViewById(R.id.email_listitem_senderr);
-			listItemView.date= (TextView)convertView.findViewById(R.id.email_listitem_dater);
+			listItemView.title = (TextView)convertView.findViewById(R.id.calendar_title_done);
+			listItemView.weekday = (TextView)convertView.findViewById(R.id.calendar_weekday_done);
+			listItemView.date= (TextView)convertView.findViewById(R.id.calendar_date_done);
 			
 			convertView.setTag(listItemView);
 		}else {
 			listItemView = (ListItemView)convertView.getTag();
 		}	
 		
-		Email email = listItems.get(position);
-		if(email!=null){
-			EmailType type= email.getType();
-			
-			listItemView.title.setText(email.getTitle());
-			listItemView.title.setTag(email);
-			if(type==EmailType.INBOXMAIL){
-				listItemView.sender.setText(email.getSender());
-			}else{
-				listItemView.sender.setText(email.getReciever());
-			}
+		Calendarevent event = listItems.get(position);
+		if(event!=null){
+			listItemView.title.setText(event.getName());
+			listItemView.title.setTag(event);
+			listItemView.weekday.setText(new DateUtil().getWeekdayByDate(event.getBeginTime()));
 			SimpleDateFormat df=new SimpleDateFormat("yyyy-MM-dd");
-			listItemView.date.setText(df.format(email.getDate()));
+			listItemView.date.setText(df.format(event.getBeginTime()));
 		}
 		return convertView;
 	}

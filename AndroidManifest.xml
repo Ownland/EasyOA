@@ -71,6 +71,11 @@
             android:theme="@android:style/Theme.NoTitleBar">
         </activity>
         <activity
+            android:name="cn.edu.nju.software.ui.CalendarDetailActivity"
+            android:label="@string/calendar_detail_activity" 
+            android:theme="@android:style/Theme.NoTitleBar">
+        </activity>
+        <activity
             android:name=".SDCardActivity" 
             android:theme="@android:style/Theme.NoTitleBar"
             android:windowSoftInputMode="stateHidden">

@@ -15,6 +15,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AbsListView;
@@ -33,12 +34,11 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 import cn.edu.nju.software.adapter.ListViewCalendarDoneAdapter;
 import cn.edu.nju.software.adapter.ListViewCalendarTodoAdapter;
-import cn.edu.nju.software.enums.EmailType;
-import cn.edu.nju.software.model.CalendarEventList;
 import cn.edu.nju.software.model.Calendarevent;
+import cn.edu.nju.software.model.CalendareventList;
 import cn.edu.nju.software.model.Email;
-import cn.edu.nju.software.model.EmailList;
 import cn.edu.nju.software.utils.NetUtil;
+import cn.edu.nju.software.utils.StringUtils;
 import cn.edu.nju.software.utils.UIHelper;
 import cn.edu.nju.software.widget.PullToRefreshListView;
 import cn.edu.nju.software.widget.PullToRefreshListView.OnRefreshListener;
@@ -66,10 +66,10 @@ public class CalendarActivity extends Activity{
 	
 	
 	private PullToRefreshListView calendarDoneList;
-	private List<Email> listDoneCalendarList = new ArrayList<Email>();
+	private List<Calendarevent> listDoneCalendarList = new ArrayList<Calendarevent>();
 	
 	private PullToRefreshListView calendarTodoList;
-	private List<Email> listTodoCalendarList = new ArrayList<Email>();
+	private List<Calendarevent> listTodoCalendarList = new ArrayList<Calendarevent>();
 	
 	private View calendarTodoFooter;
 	private TextView calendarTodoFootMore;
@@ -96,6 +96,7 @@ public class CalendarActivity extends Activity{
 	public void initView(){
 		this.initFrameButton();
 		this.initCalendarListView();
+		this.initCalendarListViewData();
 		this.initNewCalendar();
 	}
 	
@@ -112,7 +113,7 @@ public class CalendarActivity extends Activity{
 		calendarTodoList.setOnRefreshListener(new CalendarTodoListRefreshListener());
 		
 		calendarDoneAdapter = new ListViewCalendarDoneAdapter(this,listDoneCalendarList,R.layout.calendars_listitem_done);
-		calendarDoneFooter = getLayoutInflater().inflate(R.layout.listview_footer_calendar_todo, null);
+		calendarDoneFooter = getLayoutInflater().inflate(R.layout.listview_footer_calendar_done, null);
 		calendarDoneFootMore = (TextView)calendarDoneFooter.findViewById(R.id.listview_foot_more_calendar_done);
 		calendarDoneFootProgress = (ProgressBar)calendarDoneFooter.findViewById(R.id.listview_foot_progress_calendar_done);
 		calendarDoneList = (PullToRefreshListView)findViewById(R.id.frame_listview_calendar_done);
@@ -139,7 +140,7 @@ public class CalendarActivity extends Activity{
 				Message msg = new Message();
 				try {					
 					//EmailList list = new MailServiceImpl(CalendarActivity.this).getMail(pageIndex,MyApplication.PAGE_SIZE,type,isRefresh);
-					CalendarEventList list = new CalendarEventList();
+					CalendareventList list = new CalendareventList();
 					List<Calendarevent> calendarList = new ArrayList<Calendarevent>();
 					Calendarevent event1 = new Calendarevent();
 					event1.setName("event1");
@@ -178,10 +179,10 @@ public class CalendarActivity extends Activity{
 			case UIHelper.LISTVIEW_ACTION_CHANGE_CATALOG:
 				switch (objtype) {
 					case UIHelper.LISTVIEW_DATATYPE_EMAIL:
-						EmailList elist = (EmailList)obj;
+						CalendareventList elist = (CalendareventList)obj;
 						calendarTodoSumData = what;
 						listTodoCalendarList.clear();
-						listTodoCalendarList.addAll(elist.getEmailslist());
+						listTodoCalendarList.addAll(elist.getCalendarslist());
 						break;
 				}
 				if(actiontype == UIHelper.LISTVIEW_ACTION_REFRESH){
@@ -195,21 +196,21 @@ public class CalendarActivity extends Activity{
 		    case UIHelper.LISTVIEW_ACTION_SCROLL:
 						switch (objtype) {
 							case UIHelper.LISTVIEW_DATATYPE_EMAIL:
-								EmailList list = (EmailList)obj;
+								CalendareventList list = (CalendareventList)obj;
 								calendarTodoSumData += what;
 								if(listTodoCalendarList.size() > 0){
-									for(Email email1 : list.getEmailslist()){
+									for(Calendarevent calendar1 : list.getCalendarslist()){
 										boolean b = false;
-										for(Email email2 : listTodoCalendarList){
-											if(email1.getId() == email2.getId()){
+										for(Calendarevent calendar2 : listTodoCalendarList){
+											if(calendar1.getEventId() == calendar2.getEventId()){
 												b = true;
 												break;
 											}
 										}
-										if(!b) listTodoCalendarList.add(email1);
+										if(!b) listTodoCalendarList.add(calendar1);
 									}
 								}else{
-									listTodoCalendarList.addAll(list.getEmailslist());
+									listTodoCalendarList.addAll(list.getCalendarslist());
 								}
 							break;
 						}
@@ -223,14 +224,14 @@ public class CalendarActivity extends Activity{
 			case UIHelper.LISTVIEW_ACTION_CHANGE_CATALOG:
 				switch (objtype) {
 					case UIHelper.LISTVIEW_DATATYPE_EMAIL:
-						EmailList elist = (EmailList)obj;
+						CalendareventList elist = (CalendareventList)obj;
 						calendarDoneSumData = what;
-						listDoneCalendarList.clear();//闁稿繐鐗婄粩濠氭⒔閵堝懎鏂ч柡鍫濐樇閺嗙喖骞戦敓锟�
-						listDoneCalendarList.addAll(elist.getEmailslist());
+						listDoneCalendarList.clear();//闂佺绻愰悧濠勭博婵犳碍鈷旈柕鍫濇噹閺傃囨煛閸繍妯囬柡鍡欏枛楠炴垿鏁撻敓锟�
+						listDoneCalendarList.addAll(elist.getCalendarslist());
 						break;
 				}
 				if(actiontype == UIHelper.LISTVIEW_ACTION_REFRESH){
-					//闁圭粯鍔楅妵姘跺棘閺夊灝顬濋弶鐐跺Г閺嗙喖骞戦敓锟�
+					//闂佸湱绮崝妤呭Φ濮樿泛妫橀柡澶婄仢椤繈寮堕悙璺盒撻柡鍡欏枛楠炴垿鏁撻敓锟�
 						if(!new NetUtil(this).goodNet()){
 							Toast.makeText(getApplicationContext(), R.string.netBad,Toast.LENGTH_SHORT).show();
 						}else{
@@ -241,21 +242,21 @@ public class CalendarActivity extends Activity{
 		    case UIHelper.LISTVIEW_ACTION_SCROLL:
 						switch (objtype) {
 							case UIHelper.LISTVIEW_DATATYPE_EMAIL:
-								EmailList list = (EmailList)obj;
+								CalendareventList list = (CalendareventList)obj;
 								calendarDoneSumData += what;
 								if(listDoneCalendarList.size() > 0){
-									for(Email email1 : list.getEmailslist()){
+									for(Calendarevent calendar1 : list.getCalendarslist()){
 										boolean b = false;
-										for(Email email2 : listDoneCalendarList){
-											if(email1.getId() == email2.getId()){
+										for(Calendarevent calendar2 : listDoneCalendarList){
+											if(calendar1.getEventId()== calendar2.getEventId()){
 												b = true;
 												break;
 											}
 										}
-										if(!b) listDoneCalendarList.add(email1);
+										if(!b) listDoneCalendarList.add(calendar1);
 									}
 								}else{
-									listDoneCalendarList.addAll(list.getEmailslist());
+									listDoneCalendarList.addAll(list.getCalendarslist());
 								}
 							break;
 						}
@@ -335,10 +336,22 @@ public class CalendarActivity extends Activity{
 	private class CalendarTodoItemClickListener implements OnItemClickListener{
 
 		@Override
-		public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
-				long arg3) {
+		public void onItemClick(AdapterView<?> parent, View view, int position,
+				long id) {
 			// TODO Auto-generated method stub
+			if(position == 0 || view == calendarTodoFooter) return;
+			Calendarevent event = null;        		
+    		if(view instanceof TextView){
+    			event = (Calendarevent)view.getTag();
+    		}else{
+    			TextView tv = (TextView)view.findViewById(R.id.calendar_title_todo);
+    			event = (Calendarevent)tv.getTag();
+    		}
+    		if(event == null) return;
+    		
+			Intent intent = new Intent(CalendarActivity.this,CalendarDetailActivity.class);
 			
+			startActivity(intent);
 		}
 
 		
@@ -347,15 +360,34 @@ public class CalendarActivity extends Activity{
 	private class CalendarTodoListScrollListener implements OnScrollListener{
 
 		@Override
-		public void onScroll(AbsListView arg0, int arg1, int arg2, int arg3) {
+		public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
 			// TODO Auto-generated method stub
-			
+			calendarTodoList.onScroll(view, firstVisibleItem, visibleItemCount, totalItemCount);
 		}
 
 		@Override
-		public void onScrollStateChanged(AbsListView arg0, int arg1) {
+		public void onScrollStateChanged(AbsListView view, int scrollState) {
 			// TODO Auto-generated method stub
-			
+			calendarTodoList.onScrollStateChanged(view, scrollState);
+			if(listTodoCalendarList.isEmpty()) return;
+			boolean scrollEnd = false;
+			try {
+				if(view.getPositionForView(calendarTodoFooter) == view.getLastVisiblePosition())
+					scrollEnd = true;
+			} catch (Exception e) {
+				scrollEnd = false;
+			}
+			int lvDataState = StringUtils.toInt(calendarTodoList.getTag());
+			if(scrollEnd && lvDataState==UIHelper.LISTVIEW_DATA_MORE)
+			{
+				calendarTodoList.setTag(UIHelper.LISTVIEW_DATA_LOADING);
+				calendarTodoFootMore.setText(R.string.load_ing);
+				calendarTodoFootProgress.setVisibility(View.VISIBLE);
+				//鐟滅増鎸告晶鐖宎geIndex
+				int pageIndex = calendarTodoSumData/MyApplication.PAGE_SIZE;
+				Log.e("pageIndex",pageIndex+"");
+				loadCalendarData( pageIndex, calendarTodoHandler, UIHelper.LISTVIEW_ACTION_SCROLL,true,true);
+			}
 		}
 
 		
@@ -366,6 +398,7 @@ public class CalendarActivity extends Activity{
 		@Override
 		public void onRefresh() {
 			// TODO Auto-generated method stub
+			loadCalendarData( 0, calendarTodoHandler, UIHelper.LISTVIEW_ACTION_REFRESH,false,true);
 			
 		}
 
@@ -388,15 +421,34 @@ public class CalendarActivity extends Activity{
 	private class CalendarDoneListScrollListener implements OnScrollListener{
 
 		@Override
-		public void onScroll(AbsListView arg0, int arg1, int arg2, int arg3) {
+		public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
 			// TODO Auto-generated method stub
-			
+			calendarDoneList.onScroll(view, firstVisibleItem, visibleItemCount, totalItemCount);
 		}
 
 		@Override
-		public void onScrollStateChanged(AbsListView arg0, int arg1) {
+		public void onScrollStateChanged(AbsListView view, int scrollState) {
 			// TODO Auto-generated method stub
-			
+			calendarDoneList.onScrollStateChanged(view, scrollState);
+			if(listDoneCalendarList.isEmpty()) return;
+			boolean scrollEnd = false;
+			try {
+				if(view.getPositionForView(calendarDoneFooter) == view.getLastVisiblePosition())
+					scrollEnd = true;
+			} catch (Exception e) {
+				scrollEnd = false;
+			}
+			int lvDataState = StringUtils.toInt(calendarDoneList.getTag());
+			if(scrollEnd && lvDataState==UIHelper.LISTVIEW_DATA_MORE)
+			{
+				calendarDoneList.setTag(UIHelper.LISTVIEW_DATA_LOADING);
+				calendarDoneFootMore.setText(R.string.load_ing);
+				calendarDoneFootProgress.setVisibility(View.VISIBLE);
+				//鐟滅増鎸告晶鐖宎geIndex
+				int pageIndex = calendarDoneSumData/MyApplication.PAGE_SIZE;
+				Log.e("pageIndex",pageIndex+"");
+				loadCalendarData( pageIndex, calendarDoneHandler, UIHelper.LISTVIEW_ACTION_SCROLL,true,true);
+			}
 		}
 
 		
@@ -407,10 +459,9 @@ public class CalendarActivity extends Activity{
 		@Override
 		public void onRefresh() {
 			// TODO Auto-generated method stub
-			
+			loadCalendarData( 0, calendarDoneHandler, UIHelper.LISTVIEW_ACTION_REFRESH,false,true);
 		}
 
-		
 		
 	}
 	
@@ -432,7 +483,7 @@ public class CalendarActivity extends Activity{
 		       return null; 
 	}
 	 /**
-	     * 日期控件的事件
+	     * 鏃ユ湡鎺т欢鐨勪簨浠�
 	     */ 
 	    private DatePickerDialog.OnDateSetListener mFromDateSetListener = new DatePickerDialog.OnDateSetListener() { 
 	   
@@ -444,7 +495,7 @@ public class CalendarActivity extends Activity{
 	       } 
 	    };
 	 /**
-	     * 时间控件的事件
+	     * 鏃堕棿鎺т欢鐨勪簨浠�
 	     */ 
 	    private TimePickerDialog.OnTimeSetListener mFromTimeSetListener = new TimePickerDialog.OnTimeSetListener() {
 
@@ -458,7 +509,7 @@ public class CalendarActivity extends Activity{
 	    };	    
 
 	    /**
-	     * 日期控件的事件
+	     * 鏃ユ湡鎺т欢鐨勪簨浠�
 	     */ 
 	    private DatePickerDialog.OnDateSetListener mToDateSetListener = new DatePickerDialog.OnDateSetListener() { 
 	   
@@ -470,7 +521,7 @@ public class CalendarActivity extends Activity{
 	       } 
 	    };
 	 /**
-	     * 时间控件的事件
+	     * 鏃堕棿鎺т欢鐨勪簨浠�
 	     */ 
 	    private TimePickerDialog.OnTimeSetListener mToTimeSetListener = new TimePickerDialog.OnTimeSetListener() {
 
@@ -594,7 +645,10 @@ public class CalendarActivity extends Activity{
 			toDoBtn.setEnabled(false);
 			doneBtn.setEnabled(true);
 			newBt.setEnabled(true);
+			calendarDoneList.setVisibility(View.GONE);
 			calendarScroll.setVisibility(View.GONE);
+			calendarTodoList.setVisibility(View.VISIBLE);
+			
 		}
 
 		
@@ -609,6 +663,8 @@ public class CalendarActivity extends Activity{
 			toDoBtn.setEnabled(true);
 			doneBtn.setEnabled(false);
 			newBt.setEnabled(true);
+			calendarDoneList.setVisibility(View.VISIBLE);
+			calendarTodoList.setVisibility(View.GONE);
 			calendarScroll.setVisibility(View.GONE);
 		}
 		
@@ -622,6 +678,8 @@ public class CalendarActivity extends Activity{
 			toDoBtn.setEnabled(true);
 			doneBtn.setEnabled(true);
 			newBt.setEnabled(false);
+			calendarDoneList.setVisibility(View.GONE);
+			calendarTodoList.setVisibility(View.GONE);
 			calendarScroll.setVisibility(View.VISIBLE);
 		}
 

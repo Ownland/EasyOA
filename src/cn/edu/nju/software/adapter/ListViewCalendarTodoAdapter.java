@@ -9,10 +9,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
-import cn.edu.nju.software.enums.EmailType;
 import cn.edu.nju.software.model.Calendarevent;
-import cn.edu.nju.software.model.Email;
 import cn.edu.nju.software.ui.R;
+import cn.edu.nju.software.utils.DateUtil;
 
 
 public class ListViewCalendarTodoAdapter extends BaseAdapter {
@@ -55,28 +54,22 @@ public class ListViewCalendarTodoAdapter extends BaseAdapter {
 			convertView = listContainer.inflate(this.itemViewResource, null);
 			
 			listItemView = new ListItemView();
-			listItemView.title = (TextView)convertView.findViewById(R.id.email_listitem_titler);
-			listItemView.sender = (TextView)convertView.findViewById(R.id.email_listitem_senderr);
-			listItemView.date= (TextView)convertView.findViewById(R.id.email_listitem_dater);
+			listItemView.title = (TextView)convertView.findViewById(R.id.calendar_title_todo);
+			listItemView.weekday = (TextView)convertView.findViewById(R.id.calendar_weekday_todo);
+			listItemView.date= (TextView)convertView.findViewById(R.id.calendar_date_todo);
 			
 			convertView.setTag(listItemView);
 		}else {
 			listItemView = (ListItemView)convertView.getTag();
 		}	
 		
-		Email email = listItems.get(position);
-		if(email!=null){
-			EmailType type= email.getType();
-			
-			listItemView.title.setText(email.getTitle());
-			listItemView.title.setTag(email);
-			if(type==EmailType.INBOXMAIL){
-				listItemView.sender.setText(email.getSender());
-			}else{
-				listItemView.sender.setText(email.getReciever());
-			}
+		Calendarevent event = listItems.get(position);
+		if(event!=null){
+			listItemView.title.setText(event.getName());
+			listItemView.title.setTag(event);
+			listItemView.weekday.setText(new DateUtil().getWeekdayByDate(event.getBeginTime()));
 			SimpleDateFormat df=new SimpleDateFormat("yyyy-MM-dd");
-			listItemView.date.setText(df.format(email.getDate()));
+			listItemView.date.setText(df.format(event.getBeginTime()));
 		}
 		return convertView;
 	}

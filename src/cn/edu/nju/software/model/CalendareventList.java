@@ -3,7 +3,7 @@ package cn.edu.nju.software.model;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CalendarEventList {
+public class CalendareventList {
 	private int pageSize;
 	private List<Calendarevent> calendarList = new ArrayList<Calendarevent>();
 
@@ -16,7 +16,7 @@ public class CalendarEventList {
 	public int getPageSize() {
 		return pageSize;
 	}
-	public List<Calendarevent> getEmailslist() {
+	public List<Calendarevent> getCalendarslist() {
 		return calendarList;
 	}
 }

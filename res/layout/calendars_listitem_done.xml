@@ -27,6 +27,7 @@
 	     	android:layout_height="wrap_content"
 	     	android:textSize="@dimen/text_size_15"
 	     	android:textColor="@color/listitem_black"
+	     	android:layout_marginLeft="8.0dip"
 	     	android:singleLine="true"/>  
 	    
    	</LinearLayout>
