@@ -61,5 +61,6 @@
     <string name="netBad">未连接网络</string>
     <string name="updatre_complete">更新完成</string>
     <string name="delete_mail_success">删除成功</string>
-
+	<string name="public_file">公共文件</string>
+	<string name="download_file">已下载文件</string>
 </resources>

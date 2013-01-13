@@ -21,7 +21,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
        <activity
-            android:name=".WelcomeActivity" 
+            android:name=".PlazaActivity" 
             android:theme="@android:style/Theme.NoTitleBar">
             <intent-filter >
                 <action android:name="android.intent.action.MAIN" />
@@ -36,7 +36,7 @@
         </activity>
         
         <activity
-            android:name=".PlazaActivity" 
+            android:name=".ShareFileActivity" 
             android:theme="@android:style/Theme.NoTitleBar">
         </activity>
          <activity
@@ -69,6 +69,11 @@
             android:name="cn.edu.nju.software.ui.CalendarActivity"
             android:label="@string/calendar_activity" 
             android:theme="@android:style/Theme.NoTitleBar">
+        </activity>
+        <activity
+            android:name=".SDCardActivity" 
+            android:theme="@android:style/Theme.NoTitleBar"
+            android:windowSoftInputMode="stateHidden">
         </activity>
     </application>
 

@@ -1,5 +1,6 @@
 package cn.edu.nju.software.ui;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -8,6 +9,7 @@ import cn.edu.nju.software.ui.R;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Environment;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
@@ -58,8 +60,19 @@ public class PlazaActivity extends Activity {
 		gridview.setAdapter(saImageItems);
 		// 添加消息处理
 		gridview.setOnItemClickListener(new ItemClickListener());
+		
+		makeDir();
 	}
 
+	
+	public void makeDir(){
+		String mydir = Environment.getExternalStorageDirectory().getAbsolutePath()+"/EasyOA";
+		File destDir = new File(mydir);
+		  if (!destDir.exists()) {
+		   destDir.mkdirs();
+		  }
+	}
+	
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		// TODO Auto-generated method stub
@@ -91,7 +104,12 @@ public class PlazaActivity extends Activity {
 				break;
 			case 2:
 				intent.setClass(PlazaActivity.this, CalendarActivity.class);
+				break;
+			case 3:
+				intent.setClass(PlazaActivity.this, ShareFileActivity.class);
+				break;
 			default:
+				
 				;
 			}
 			startActivity(intent);

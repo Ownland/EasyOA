@@ -3,7 +3,7 @@ package cn.edu.nju.software.model;
 import java.util.Date;
 
 
-public class Calendarevent {
+public class CalendarEvent {
 	public final static String EVENT_ID = "eventId";
 	public final static String NAME = "name";
 	public final static String BEGIN_TIME = "beginTime";
@@ -25,10 +25,10 @@ public class Calendarevent {
 	private int version;
 	
 	
-	public Calendarevent() {
+	public CalendarEvent() {
 	}
 
-	public Calendarevent(int eventId, String name, Date beginTime,
+	public CalendarEvent(int eventId, String name, Date beginTime,
 			Date endTime, String location,String description, boolean remind, 
 			int ownerId,int version) {
 		super();

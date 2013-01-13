@@ -2,7 +2,6 @@ package cn.edu.nju.software.model;
 
 import java.util.Date;
 
-import cn.edu.nju.software.enums.DocumentType;
 
 public class Document implements Comparable<Document>{
 	public final static String DOCUMENT_ID = "documentId";
@@ -12,7 +11,7 @@ public class Document implements Comparable<Document>{
 	public final static String UPLOADER_NAME = "uploaderName";
 	public final static String UPLOAD_DATE = "uploadDate";
 	public final static String PARENT_ID = "parentId";
-	public final static String TYPE = "type";
+	public final static String TYPE = "type"; //0:нд╪Ч 1:д©б╪
 	public final static String RESOURCE = "resource";
 	
 	private int docId;
@@ -22,7 +21,7 @@ public class Document implements Comparable<Document>{
 	private String uploaderName;
 	private Date uploadDate;
 	private int parentId;
-	private DocumentType type;
+	private int type;
 	private int resource;
 	
 	public Document(){
@@ -30,7 +29,7 @@ public class Document implements Comparable<Document>{
 	}
 	
 	public Document(int docId,String title, String path, int uploaderId, Date uploadDate,
-			int parentId, DocumentType type, int resource) {
+			int parentId, int type, int resource) {
 		super();
 		this.docId = docId;
 		this.title = title;
@@ -92,11 +91,11 @@ public class Document implements Comparable<Document>{
 		this.parentId = parentId;
 	}
 
-	public DocumentType getType() {
+	public int getType() {
 		return type;
 	}
 
-	public void setType(DocumentType type) {
+	public void setType(int type) {
 		this.type = type;
 	}
 
