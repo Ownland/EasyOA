@@ -45,9 +45,9 @@
 	    	android:layout_marginLeft="2.0dip"
 	    	android:layout_marginTop="2.0dip">
 		    <TextView 
+		        android:id="@+id/calendar_detail_title"
 		        android:layout_width="wrap_content"
 		        android:layout_height="wrap_content"
-		        android:text="公司年会"
 		        android:textSize="18sp"
 		        android:textColor="@color/black"/>
 		   
@@ -57,24 +57,25 @@
 	    	android:layout_height="wrap_content"
 	    	android:layout_marginLeft="2.0dip"
 	    	android:layout_marginTop="2.0dip">
-		    <TextView 
+		    <TextView
+		        android:id="@+id/calendar_detail_date_from"
 		        android:layout_width="wrap_content"
 		        android:layout_height="wrap_content"
 		        android:text="由"
 		        android:textSize="12sp"
 		        android:textColor="@color/author_text"/>
 		    <TextView 
+		        android:id="@+id/calendar_detail_date_weekday"
 		        android:layout_width="wrap_content"
 		        android:layout_height="wrap_content"
-		        android:text="星期六"
 		        android:textSize="12sp"
 		        android:textColor="@color/author_text"
 		        android:layout_marginLeft="5.0dip"
 		        />
 		    <TextView 
+		        android:id="@+id/calendar_detail_date"
 		        android:layout_width="wrap_content"
 		        android:layout_height="wrap_content"
-		        android:text="2012/12/29 17:00"
 		        android:textSize="12sp"
 		        android:textColor="@color/author_text"
 		        android:layout_marginLeft="5.0dip"
@@ -89,23 +90,24 @@
 	    	android:layout_marginTop="2.0dip"
 	    	android:layout_marginBottom="5.0dip">
 		    <TextView 
+		        android:id="@+id/calendar_detail_date_to"
 		        android:layout_width="wrap_content"
 		        android:layout_height="wrap_content"
 		        android:text="至"
 		        android:textSize="12sp"
 		        android:textColor="@color/author_text"/>
 		    <TextView 
+		        android:id="@+id/calendar_detail_date_to_weekday"
 		        android:layout_width="wrap_content"
 		        android:layout_height="wrap_content"
-		        android:text="星期日"
 		        android:textSize="12sp"
 		        android:textColor="@color/author_text"
 		        android:layout_marginLeft="5.0dip"
 		        />
 		    <TextView 
+		        android:id="@+id/calendar_detail_date_to_date"
 		        android:layout_width="wrap_content"
 		        android:layout_height="wrap_content"
-		        android:text="2012/12/30 17:00"
 		        android:textSize="12sp"
 		        android:textColor="@color/author_text"
 		        android:layout_marginLeft="5.0dip"
@@ -138,9 +140,9 @@
 	    	android:layout_marginTop="2.0dip"
 	    	android:layout_marginBottom="5.0dip">
 		    <TextView 
+		        android:id="@+id/calendar_detail_loation"
 		        android:layout_width="wrap_content"
 		        android:layout_height="wrap_content"
-		        android:text="公司"
 		        android:textSize="18sp"
 		        android:textColor="@color/black"/>
 	    </LinearLayout>
@@ -168,9 +170,9 @@
 	    	android:layout_marginTop="2.0dip"
 	    	android:layout_marginBottom="5.0dip">
 		    <TextView 
+		        android:id="@+id/calendar_detail_remind"
 		        android:layout_width="wrap_content"
 		        android:layout_height="wrap_content"
-		        android:text="开"
 		        android:textSize="18sp"
 		        android:textColor="@color/black"/>
 	    </LinearLayout>
@@ -198,9 +200,9 @@
 	    	android:layout_marginLeft="2.0dip"
 	    	android:layout_marginTop="2.0dip">
 		    <TextView 
+		        android:id="@+id/calendar_detail_description"
 		        android:layout_width="wrap_content"
 		        android:layout_height="wrap_content"
-		        android:text="一定要去"
 		        android:textSize="18sp"
 		        android:textColor="@color/black"/>
 	    </LinearLayout>

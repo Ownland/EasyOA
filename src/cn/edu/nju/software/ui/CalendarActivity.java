@@ -37,6 +37,7 @@ import cn.edu.nju.software.adapter.ListViewCalendarTodoAdapter;
 import cn.edu.nju.software.model.Calendarevent;
 import cn.edu.nju.software.model.CalendareventList;
 import cn.edu.nju.software.model.Email;
+import cn.edu.nju.software.serviceImpl.CalendarServiceImpl;
 import cn.edu.nju.software.utils.NetUtil;
 import cn.edu.nju.software.utils.StringUtils;
 import cn.edu.nju.software.utils.UIHelper;
@@ -138,27 +139,9 @@ public class CalendarActivity extends Activity{
 		new Thread(){
 			public void run() {				
 				Message msg = new Message();
-				try {					
-					//EmailList list = new MailServiceImpl(CalendarActivity.this).getMail(pageIndex,MyApplication.PAGE_SIZE,type,isRefresh);
-					CalendareventList list = new CalendareventList();
-					List<Calendarevent> calendarList = new ArrayList<Calendarevent>();
-					Calendarevent event1 = new Calendarevent();
-					event1.setName("event1");
-					event1.setBeginTime(new Date());
-					calendarList.add(event1);
-					Calendarevent event2 = new Calendarevent();
-					event2.setName("event2");
-					event2.setBeginTime(new Date());
-					calendarList.add(event2);
-					Calendarevent event3 = new Calendarevent();
-					event3.setName("event3");
-					event3.setBeginTime(new Date());
-					calendarList.add(event3);
-					Calendarevent event4 = new Calendarevent();
-					event4.setName("event4");
-					event4.setBeginTime(new Date());
-					calendarList.add(event4);
-					list.setCalendarList(calendarList);
+				try {	
+					//鑾峰彇鏁版嵁
+					CalendareventList list = new CalendarServiceImpl(CalendarActivity.this).getCalendars(1, pageIndex, MyApplication.PAGE_SIZE, todo, isRefresh);
 					msg.what = list.getPageSize();
 					msg.obj = list;
 	            } catch (Exception e) {
@@ -226,12 +209,12 @@ public class CalendarActivity extends Activity{
 					case UIHelper.LISTVIEW_DATATYPE_EMAIL:
 						CalendareventList elist = (CalendareventList)obj;
 						calendarDoneSumData = what;
-						listDoneCalendarList.clear();//闂佺绻愰悧濠勭博婵犳碍鈷旈柕鍫濇噹閺傃囨煛閸繍妯囬柡鍡欏枛楠炴垿鏁撻敓锟�
+						listDoneCalendarList.clear();//闂備胶顭堢换鎰版偋婵犲嫮鍗氬┑鐘崇閳锋棃鏌曢崼婵囧櫣闁哄們鍥ㄧ厸闁割偅绻嶅Ο鍥煛閸℃瑥鏋涙鐐村灴閺佹捇鏁撻敓锟�
 						listDoneCalendarList.addAll(elist.getCalendarslist());
 						break;
 				}
 				if(actiontype == UIHelper.LISTVIEW_ACTION_REFRESH){
-					//闂佸湱绮崝妤呭Φ濮樿泛妫橀柡澶婄仢椤繈寮堕悙璺盒撻柡鍡欏枛楠炴垿鏁撻敓锟�
+					//闂備礁婀辩划顖炲礉濡ゅ懎桅婵娉涘Λ姗�煛婢跺﹦浠㈡い顒佺箞瀵爼鎮欑捄鐩掓捇鏌￠崱娆忔灈妤犵偞鍨块弫鎾绘晸閿燂拷
 						if(!new NetUtil(this).goodNet()){
 							Toast.makeText(getApplicationContext(), R.string.netBad,Toast.LENGTH_SHORT).show();
 						}else{
@@ -383,7 +366,7 @@ public class CalendarActivity extends Activity{
 				calendarTodoList.setTag(UIHelper.LISTVIEW_DATA_LOADING);
 				calendarTodoFootMore.setText(R.string.load_ing);
 				calendarTodoFootProgress.setVisibility(View.VISIBLE);
-				//鐟滅増鎸告晶鐖宎geIndex
+				//閻熸粎澧楅幐鍛婃櫠閻栧畮geIndex
 				int pageIndex = calendarTodoSumData/MyApplication.PAGE_SIZE;
 				Log.e("pageIndex",pageIndex+"");
 				loadCalendarData( pageIndex, calendarTodoHandler, UIHelper.LISTVIEW_ACTION_SCROLL,true,true);
@@ -444,7 +427,7 @@ public class CalendarActivity extends Activity{
 				calendarDoneList.setTag(UIHelper.LISTVIEW_DATA_LOADING);
 				calendarDoneFootMore.setText(R.string.load_ing);
 				calendarDoneFootProgress.setVisibility(View.VISIBLE);
-				//鐟滅増鎸告晶鐖宎geIndex
+				//閻熸粎澧楅幐鍛婃櫠閻栧畮geIndex
 				int pageIndex = calendarDoneSumData/MyApplication.PAGE_SIZE;
 				Log.e("pageIndex",pageIndex+"");
 				loadCalendarData( pageIndex, calendarDoneHandler, UIHelper.LISTVIEW_ACTION_SCROLL,true,true);
@@ -483,7 +466,7 @@ public class CalendarActivity extends Activity{
 		       return null; 
 	}
 	 /**
-	     * 鏃ユ湡鎺т欢鐨勪簨浠�
+	     * 閺冦儲婀￠幒褌娆㈤惃鍕皑娴狅拷
 	     */ 
 	    private DatePickerDialog.OnDateSetListener mFromDateSetListener = new DatePickerDialog.OnDateSetListener() { 
 	   
@@ -495,7 +478,7 @@ public class CalendarActivity extends Activity{
 	       } 
 	    };
 	 /**
-	     * 鏃堕棿鎺т欢鐨勪簨浠�
+	     * 閺冨爼妫块幒褌娆㈤惃鍕皑娴狅拷
 	     */ 
 	    private TimePickerDialog.OnTimeSetListener mFromTimeSetListener = new TimePickerDialog.OnTimeSetListener() {
 
@@ -509,7 +492,7 @@ public class CalendarActivity extends Activity{
 	    };	    
 
 	    /**
-	     * 鏃ユ湡鎺т欢鐨勪簨浠�
+	     * 閺冦儲婀￠幒褌娆㈤惃鍕皑娴狅拷
 	     */ 
 	    private DatePickerDialog.OnDateSetListener mToDateSetListener = new DatePickerDialog.OnDateSetListener() { 
 	   
@@ -521,7 +504,7 @@ public class CalendarActivity extends Activity{
 	       } 
 	    };
 	 /**
-	     * 鏃堕棿鎺т欢鐨勪簨浠�
+	     * 閺冨爼妫块幒褌娆㈤惃鍕皑娴狅拷
 	     */ 
 	    private TimePickerDialog.OnTimeSetListener mToTimeSetListener = new TimePickerDialog.OnTimeSetListener() {
 
@@ -621,7 +604,16 @@ public class CalendarActivity extends Activity{
 				}
 				//Log.e("1",sdf.format(beginDate));
 				//Log.e("2",sdf.format(endDate));
-				
+				Calendarevent calendar = new Calendarevent();
+				calendar.setBeginTime(beginDate);
+				calendar.setEndTime(endDate);
+				calendar.setDescription(eventDescription);
+				calendar.setLocation(eventLocation);
+				calendar.setName(eventName);
+				calendar.setRemind(eventRemind);
+				calendar.setVersion(1);
+				calendar.setOwnerId(1);
+				new CalendarServiceImpl(CalendarActivity.this).createCalendar(calendar);
 			}
 		});
 		calendar_cancel.setOnClickListener(new View.OnClickListener() {
