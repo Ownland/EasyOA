@@ -3,12 +3,14 @@ package cn.edu.nju.software.dao;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 import cn.edu.nju.software.db.SQLiteHelper;
 import cn.edu.nju.software.model.Calendarevent;
 
@@ -38,9 +40,15 @@ public class CalendarDAOImpl implements CalendarDAO {
 	public List<Calendarevent> getCalendarList(int ownerId,boolean todo,int pageIndex, int pageSize) {
 		// TODO Auto-generated method stub
 		SQLiteDatabase db = dbHelper.getReadableDatabase();
-		Cursor cursor = db.query("calendar", new String[]{"eventId", "name","beginTime" ,"endTime","location","description","remind","ownerId","version"}, "ownerId=?", new String[]{}, null, null, "eventId desc",pageIndex*pageSize+","+pageSize);
+		Cursor cursor = null;
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH-mm");
+		String now = sdf.format(new Date());
+		if(todo){
+			cursor = db.query("calendar", new String[]{"eventId", "name","beginTime" ,"endTime","location","description","remind","ownerId","version"}, "ownerId=? and beginTime>=?", new String[]{ownerId+"",now}, null, null, "eventId desc",pageIndex*pageSize+","+pageSize);
+		}else{
+			cursor = db.query("calendar", new String[]{"eventId", "name","beginTime" ,"endTime","location","description","remind","ownerId","version"}, "ownerId=? and beginTime<?", new String[]{ownerId+"",now}, null, null, "eventId desc",pageIndex*pageSize+","+pageSize);
+		}
 		List<Calendarevent> list = new ArrayList<Calendarevent>();
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 		for(cursor.moveToFirst();!cursor.isAfterLast();cursor.moveToNext()){
 			Calendarevent event = new Calendarevent();
 			event.setName(cursor.getString(cursor.getColumnIndex("name")));
@@ -59,6 +67,8 @@ public class CalendarDAOImpl implements CalendarDAO {
 			event.setOwnerId(cursor.getInt(cursor.getColumnIndex("ownerId")));
 			list.add(event);
 		}
+		db.close();
+		Log.e("size",list.size()+"");
 		return list;
 	}
 	@Override

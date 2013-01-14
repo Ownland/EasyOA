@@ -38,5 +38,21 @@ public class CalendarServiceImpl implements CalendarService {
 		list.setPageSize(eList.size());
 		return list;
 	}
+	@Override
+	public void deleteCalendar(int eventId) {
+		// TODO Auto-generated method stub
+		CalendarDAO calendarDAO = new CalendarDAOImpl(context);
+		boolean networkAvailable = new NetUtil(context).goodNet();
+		if(networkAvailable){
+			//delete from server
+			calendarDAO.delete(eventId);
+		}
+	}
+	public void updateCalendar(Calendarevent calendar) {
+		// TODO Auto-generated method stub
+		CalendarDAO calendarDAO = new CalendarDAOImpl(context);
+		calendarDAO.update(calendar);
+		//send to server
+	}
 
 }

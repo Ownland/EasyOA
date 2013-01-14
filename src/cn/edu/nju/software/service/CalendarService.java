@@ -6,4 +6,6 @@ import cn.edu.nju.software.model.CalendareventList;
 public interface CalendarService {
 	public void createCalendar(Calendarevent calendar);
 	public CalendareventList getCalendars(int ownerId,int pageIndex,int pageSize,boolean todo,boolean isRefresh);
+	public void deleteCalendar(int eventId);
+	public void updateCalendar(Calendarevent calendar);
 }
