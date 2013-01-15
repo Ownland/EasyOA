@@ -18,4 +18,6 @@ public class ClientServiceResource {
 	
 	public static String contactService = "contactService";
 	
+	public static String documentService = "documentService";
+	
 }

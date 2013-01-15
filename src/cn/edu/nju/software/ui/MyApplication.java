@@ -10,6 +10,7 @@ public class MyApplication extends Application {
 	public static final String EMAIL_PASSWORD = "1q2w3e";
 	public static final String EMAIL_SEND_HOST = "smtp.163.com";
 	public static final String EMAIL_RECIEVE_HOST = "imap.163.com";
+	public static final String SD_DIR = "/mnt/sdcard/EasyOA";
 	@Override  
     public void onCreate() {  
         super.onCreate();  

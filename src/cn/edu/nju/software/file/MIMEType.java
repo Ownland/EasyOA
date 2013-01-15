@@ -22,6 +22,7 @@ public class MIMEType {
 		map.put(".conf", "text/plain");
 		map.put(".cpp", "text/plain");
 		map.put(".doc", "application/msword");
+		map.put(".docx", "application/msword");
 		map.put(".exe", "application/octet-stream");
 		map.put(".gif", "image/gif");
 		map.put(".gtar", "application/x-gtar");
@@ -57,6 +58,7 @@ public class MIMEType {
 		map.put(".png", "image/png");
 		map.put(".pps", "application/vnd.ms-powerpoint");
 		map.put(".ppt", "application/vnd.ms-powerpoint");
+		map.put(".pptx", "application/vnd.ms-powerpoint");
 		map.put(".prop", "text/plain");
 		map.put(".rar", "application/x-rar-compressed");
 		map.put(".rc", "text/plain");
@@ -71,6 +73,8 @@ public class MIMEType {
 		map.put(".wmv", "audio/x-ms-wmv");
 		map.put(".wps", "application/vnd.ms-works");
 		map.put(".xml", "text/plain");
+		map.put(".xls", "application/vnd.ms-excel");
+		map.put(".xlsx", "application/vnd.ms-excel");
 		map.put(".z", "application/x-compress");
 		map.put(".zip", "application/zip");
 		map.put("", "*/*");

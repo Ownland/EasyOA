@@ -1,7 +1,6 @@
 package cn.edu.nju.software.ui;
 
 import java.io.ByteArrayInputStream;
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -12,11 +11,16 @@ import java.util.Map.Entry;
 import cn.edu.nju.software.file.FileOperator;
 import cn.edu.nju.software.file.MIMEType;
 import cn.edu.nju.software.model.Document;
+import cn.edu.nju.software.service.IDocumentService;
+import cn.edu.nju.software.serviceConfig.ClientServiceHelper;
+import cn.edu.nju.software.utils.FileUtils;
+import cn.edu.nju.software.utils.NetUtil;
 import cn.edu.nju.software.utils.PathUtil;
 import cn.edu.nju.software.adapter.FileAdapter;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.Dialog;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -52,6 +56,9 @@ public class ShareFileActivity extends Activity {
 	private String filePath = ".";
 	private Notification notification;
 	private NotificationManager mNotificationManager;
+	private Dialog mDialog = null;
+	private NetUtil net;
+
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
@@ -60,8 +67,10 @@ public class ShareFileActivity extends Activity {
 		init();
 	}
 
+	@SuppressLint("UseSparseArrays")
 	public void init() {
 		context = this;
+		net = new NetUtil(context);
 		lstFiles = (ListView) findViewById(R.id.Lsv_files);
 		lstFiles.setVisibility(View.VISIBLE);
 		progress = (RelativeLayout) findViewById(R.id.rl_filebar);
@@ -97,6 +106,22 @@ public class ShareFileActivity extends Activity {
 		files.add(dir3);
 		files.add(dir4);
 		fileList(-1);
+
+		// initDocuments();
+	}
+
+	public void initDocuments() {
+		lstFiles.setVisibility(View.GONE);
+		progress.setVisibility(View.VISIBLE);
+		if (!net.goodNet()) {
+			Toast.makeText(ShareFileActivity.this, "网络不可用，请检测网络连接。",
+					Toast.LENGTH_SHORT).show();
+			lstFiles.setVisibility(View.VISIBLE);
+			progress.setVisibility(View.GONE);
+		} else {
+			Thread initDoc = new DocumentThread();
+			initDoc.start();
+		}
 	}
 
 	public void fileList(final int id) {
@@ -137,28 +162,37 @@ public class ShareFileActivity extends Activity {
 		return super.onKeyDown(keyCode, event);
 	}
 
+	public void showRequestDialog() {
+		if (mDialog != null) {
+			mDialog.dismiss();
+			mDialog = null;
+		}
+		mDialog = DialogFactory.creatRequestDialog(this, "正在打开...");
+		mDialog.show();
+	}
+
 	class MyDownloadListener implements OnClickListener {
 
 		@Override
 		public void onClick(View v) {
 			// TODO Auto-generated method stub
+			ArrayList<Integer> checkInt = new ArrayList<Integer>();
 			Iterator<Entry<Integer, Boolean>> downFiles = isChecked.entrySet()
 					.iterator();
 			while (downFiles.hasNext()) {
 				Entry<Integer, Boolean> file = downFiles.next();
 
 				if (file.getValue())
-					System.out.println(file.getKey());
+					checkInt.add(file.getKey());
 			}
 			Notification();
-			Thread downloadThread = new DownloadThread();
+			Thread downloadThread = new DownloadThread(checkInt, files);
 			downloadThread.start();
 		}
 	}
 
-	
 	@SuppressWarnings({ "deprecation" })
-	public void Notification(){
+	public void Notification() {
 		String ns = Context.NOTIFICATION_SERVICE;
 		mNotificationManager = (NotificationManager) getSystemService(ns);
 		int icon = R.drawable.download;
@@ -175,6 +209,7 @@ public class ShareFileActivity extends Activity {
 				contentIntent);
 		mNotificationManager.notify(1, notification);
 	}
+
 	class FileItemClickListener implements OnItemClickListener {
 
 		@Override
@@ -185,6 +220,7 @@ public class ShareFileActivity extends Activity {
 			if (cur.getType() == 0) {
 				Toast.makeText(ShareFileActivity.this, "打开" + cur.getTitle(),
 						Toast.LENGTH_SHORT).show();
+				showRequestDialog();
 				Thread openFile = new OpenFileThread(cur.getPath());
 				openFile.start();
 			} else {
@@ -192,7 +228,6 @@ public class ShareFileActivity extends Activity {
 				fileList(cur.getDocId());
 			}
 		}
-
 	}
 
 	@SuppressLint("HandlerLeak")
@@ -202,30 +237,49 @@ public class ShareFileActivity extends Activity {
 		@Override
 		public void handleMessage(Message msg) {
 			// TODO Auto-generated method stub
-			switch(msg.arg1){
+			switch (msg.arg1) {
+			case 0:				
+				fileList(-1);
+				lstFiles.setVisibility(View.VISIBLE);
+				progress.setVisibility(View.GONE);
+				break;
 			case 1:
-			Bundle b = msg.getData();
-			String fileName = b.getString("fileName");
-			String dir = Environment.getExternalStorageDirectory().getPath();
-			///System.out.println(dir);
-			MIMEType.openFile(fileName, dir, ShareFileActivity.this);
-			break;
+				ShareFileActivity.this.mDialog.dismiss();
+				Bundle b = msg.getData();
+				String fileName = b.getString("fileName");
+				String dir = Environment.getDownloadCacheDirectory().getPath();
+				MIMEType.openFile(fileName, dir, ShareFileActivity.this);
+				break;
 			case 2:
 				CharSequence contentTitle = "下载文件";
 				CharSequence contentText = "下载完成";
 				Intent notificationIntent = new Intent(ShareFileActivity.this,
 						SDCardActivity.class);
-				PendingIntent contentIntent = PendingIntent.getActivity(context, 0,
-						notificationIntent, 0);
-				notification.setLatestEventInfo(context, contentTitle, contentText,
-						contentIntent);
+				PendingIntent contentIntent = PendingIntent.getActivity(
+						context, 0, notificationIntent, 0);
+				notification.setLatestEventInfo(context, contentTitle,
+						contentText, contentIntent);
 				mNotificationManager.notify(1, notification);
 				break;
-				default:break;
+			default:
+				break;
 			}
 		}
 
 	};
+
+	class DocumentThread extends Thread {
+
+		@Override
+		public void run() {
+			// TODO Auto-generated method stub
+			super.run();
+			Message msg = new Message();
+			msg.arg1 = 0;
+			ShareFileActivity.this.myHandler.sendMessage(msg);
+		}
+
+	}
 
 	class OpenFileThread extends Thread {
 		private String filePath;
@@ -237,11 +291,21 @@ public class ShareFileActivity extends Activity {
 		@Override
 		public void run() {
 			// TODO Auto-generated method stub
-			
+			IDocumentService ds = ClientServiceHelper.getDocumentService();
+			ByteArrayInputStream bis = ds.getDocumentContent(filePath);
+			String path = Environment.getDownloadCacheDirectory().getPath();
+			FileUtils
+					.saveFile(
+							bis,
+							path
+									+ "/"
+									+ filePath.substring(filePath
+											.lastIndexOf("/") + 1));
 			Message msg = new Message();
-			msg.arg1 =1;
+			msg.arg1 = 1;
 			Bundle b = new Bundle();
-			b.putString("fileName", "data2whateverlog.txt");
+			b.putString("fileName",
+					filePath.substring(filePath.lastIndexOf("/") + 1));
 			msg.setData(b);
 			ShareFileActivity.this.myHandler.sendMessage(msg);
 		}
@@ -249,19 +313,36 @@ public class ShareFileActivity extends Activity {
 	}
 
 	class DownloadThread extends Thread {
+		ArrayList<Integer> ids;
+		ArrayList<Document> docs;
+
+		public DownloadThread(ArrayList<Integer> ids, ArrayList<Document> docs) {
+			this.ids = ids;
+			this.docs = docs;
+		}
 
 		@Override
 		public void run() {
 			// TODO Auto-generated method stub
-			try {
-				sleep(5000);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+
+			ArrayList<String> names = new ArrayList<String>();
+			for (int i = 0; i < docs.size(); i++) {
+				if (ids.contains(docs.get(i).getDocId()))
+					names.add(docs.get(i).getPath());
 			}
+			IDocumentService ds = ClientServiceHelper.getDocumentService();
+			ByteArrayInputStream bis = null;
+			for (int i = 0; i < names.size(); i++) {
+				bis = ds.getDocumentContent(names.get(i));
+				String path = MyApplication.SD_DIR + "/"
+						+ filePath.substring(filePath.lastIndexOf("/") + 1);
+				FileUtils.saveFile(bis, path);
+			}
+
 			Message msg = new Message();
-			msg.arg1 =2;
+			msg.arg1 = 2;
 			ShareFileActivity.this.myHandler.sendMessage(msg);
+
 		}
 
 	}

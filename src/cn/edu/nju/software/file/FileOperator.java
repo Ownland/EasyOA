@@ -1,17 +1,18 @@
 package cn.edu.nju.software.file;
 
 import java.io.File;
-import java.sql.Date;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
-import android.graphics.drawable.Drawable;
 import cn.edu.nju.software.model.Document;
+import cn.edu.nju.software.ui.MyApplication;
 import cn.edu.nju.software.ui.R;
 import edu.emory.mathcs.backport.java.util.Collections;
 
+@SuppressLint("DefaultLocale")
 public class FileOperator {
 	public static ArrayList<Document> fileList;
 
@@ -80,7 +81,7 @@ public class FileOperator {
 	}
 
 	public static ArrayList<HashMap<String, Object>> sdFileList(Context context) {
-		File path = new File("/mnt/sdcard/EasyOA");
+		File path = new File(MyApplication.SD_DIR);
 		File[] files = path.listFiles();
 		ArrayList<File> sdFiles = new ArrayList<File>();
 

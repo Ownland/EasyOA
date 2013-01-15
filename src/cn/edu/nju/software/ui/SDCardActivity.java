@@ -38,7 +38,7 @@ public class SDCardActivity extends Activity {
 				// TODO Auto-generated method stub
 				TextView tv =(TextView)arg1.findViewById(R.id.SDfileName);
 				String fileName = tv.getText().toString();
-				String dir ="/mnt/sdcard";
+				String dir =MyApplication.SD_DIR;
 				MIMEType.openFile(fileName, dir, SDCardActivity.this);
 			}
 			
