@@ -16,8 +16,8 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import cn.edu.nju.software.mgr.CalendarManager;
 import cn.edu.nju.software.model.Calendarevent;
-import cn.edu.nju.software.serviceImpl.CalendarServiceImpl;
 import cn.edu.nju.software.utils.DateUtil;
 import cn.edu.nju.software.utils.NetUtil;
 
@@ -168,7 +168,7 @@ public class CalendarDetailActivity extends Activity{
 		mProgressDialog.show();
 		new Thread(){
 			public void run(){
-				new CalendarServiceImpl(CalendarDetailActivity.this).deleteCalendar(eventId);
+				new CalendarManager(CalendarDetailActivity.this).deleteCalendar(eventId);
 				CalendarDetailActivity.this.deleteHandler.sendEmptyMessage(1);
 			}
 		}.start();

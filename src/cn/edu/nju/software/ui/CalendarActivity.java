@@ -35,9 +35,9 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 import cn.edu.nju.software.adapter.ListViewCalendarDoneAdapter;
 import cn.edu.nju.software.adapter.ListViewCalendarTodoAdapter;
+import cn.edu.nju.software.mgr.CalendarManager;
 import cn.edu.nju.software.model.Calendarevent;
 import cn.edu.nju.software.model.CalendareventList;
-import cn.edu.nju.software.serviceImpl.CalendarServiceImpl;
 import cn.edu.nju.software.utils.NetUtil;
 import cn.edu.nju.software.utils.StringUtils;
 import cn.edu.nju.software.utils.UIHelper;
@@ -170,7 +170,7 @@ public class CalendarActivity extends Activity {
 				Message msg = new Message();
 				try {
 					// 鑾峰彇鏁版嵁
-					CalendareventList list = new CalendarServiceImpl(
+					CalendareventList list = new CalendarManager(
 							CalendarActivity.this).getCalendars(1, pageIndex,
 							MyApplication.PAGE_SIZE, todo, isRefresh);
 					msg.what = list.getPageSize();
@@ -765,7 +765,7 @@ public class CalendarActivity extends Activity {
 		mProgressDialog.show();
 		new Thread() {
 			public void run() {
-				new CalendarServiceImpl(CalendarActivity.this)
+				new CalendarManager(CalendarActivity.this)
 						.createCalendar(calendar);
 				CalendarActivity.this.createHanlder.sendEmptyMessage(1);
 			}

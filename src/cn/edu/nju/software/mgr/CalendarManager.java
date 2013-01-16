@@ -1,4 +1,4 @@
-package cn.edu.nju.software.serviceImpl;
+package cn.edu.nju.software.mgr;
 
 import java.util.List;
 
@@ -10,18 +10,16 @@ import cn.edu.nju.software.dao.CalendarDAO;
 import cn.edu.nju.software.dao.CalendarDAOImpl;
 import cn.edu.nju.software.model.Calendarevent;
 import cn.edu.nju.software.model.CalendareventList;
-import cn.edu.nju.software.service.CalendarService;
 import cn.edu.nju.software.utils.NetUtil;
 
-public class CalendarServiceImpl implements CalendarService {
+public class CalendarManager{
 	private Context context;
 	private static final String calanderURL = "content://com.android.calendar/calendars";  
 	private static final String calanderEventURL = "content://com.android.calendar/events";  
 	private static final String calanderRemiderURL = "content://com.android.calendar/reminders";  
-	public CalendarServiceImpl(Context context) {
+	public CalendarManager(Context context) {
 		this.context = context;
 	}
-	@Override
 	public void createCalendar(Calendarevent calendar) {
 		// TODO Auto-generated method stub
 		if(calendar.isRemind()){
@@ -51,7 +49,6 @@ public class CalendarServiceImpl implements CalendarService {
 		calendarDAO.insert(calendar);
 		//send to server
 	}
-	@Override
 	public CalendareventList getCalendars(int ownerId,int pageIndex, int pageSize, boolean todo,
 			boolean isRefresh) {
 		// TODO Auto-generated method stub
@@ -66,7 +63,6 @@ public class CalendarServiceImpl implements CalendarService {
 		list.setPageSize(eList.size());
 		return list;
 	}
-	@Override
 	public void deleteCalendar(int eventId) {
 		// TODO Auto-generated method stub
 		CalendarDAO calendarDAO = new CalendarDAOImpl(context);

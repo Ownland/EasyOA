@@ -5,8 +5,8 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
+import cn.edu.nju.software.mgr.CalendarManager;
 import cn.edu.nju.software.model.Calendarevent;
-import cn.edu.nju.software.serviceImpl.CalendarServiceImpl;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
@@ -266,7 +266,7 @@ public class CalendarEditActivity extends Activity{
 		mProgressDialog.show();
 		new Thread() {
 			public void run() {
-				new CalendarServiceImpl(CalendarEditActivity.this)
+				new CalendarManager(CalendarEditActivity.this)
 						.updateCalendar(calendar);
 				CalendarEditActivity.this.editHandler.sendEmptyMessage(1);
 			}
