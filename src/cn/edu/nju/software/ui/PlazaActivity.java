@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import cn.edu.nju.software.ui.R;
+import cn.edu.nju.software.utils.NetUtil;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -60,19 +61,19 @@ public class PlazaActivity extends Activity {
 		gridview.setAdapter(saImageItems);
 		// 添加消息处理
 		gridview.setOnItemClickListener(new ItemClickListener());
-		
+
 		makeDir();
 	}
 
-	
-	public void makeDir(){
-		String mydir = Environment.getExternalStorageDirectory().getAbsolutePath()+"/EasyOA";
+	public void makeDir() {
+		String mydir = Environment.getExternalStorageDirectory()
+				.getAbsolutePath() + "/EasyOA";
 		File destDir = new File(mydir);
-		  if (!destDir.exists()) {
-		   destDir.mkdirs();
-		  }
+		if (!destDir.exists()) {
+			destDir.mkdirs();
+		}
 	}
-	
+
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		// TODO Auto-generated method stub
@@ -106,10 +107,13 @@ public class PlazaActivity extends Activity {
 				intent.setClass(PlazaActivity.this, CalendarActivity.class);
 				break;
 			case 3:
-				intent.setClass(PlazaActivity.this, ShareFileActivity.class);
+				if (new NetUtil(PlazaActivity.this).goodNet())
+					intent.setClass(PlazaActivity.this, ShareFileActivity.class);
+				else
+					intent.setClass(PlazaActivity.this, SDCardActivity.class);
 				break;
 			default:
-				
+
 				;
 			}
 			startActivity(intent);

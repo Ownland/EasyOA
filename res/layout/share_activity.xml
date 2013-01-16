@@ -9,13 +9,23 @@
         android:layout_height="40dip"
         android:background="@drawable/widget_head_bg" >
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        <ImageButton
+            android:id="@+id/imbSD"
+            android:layout_width="32dip"
+            android:layout_height="32dip"
+            android:layout_alignParentLeft="true"
             android:layout_centerInParent="true"
-            android:text="@string/public_file"
-            android:textColor="#FFFFFFFF"
-            android:textSize="20sp" />
+            android:layout_marginLeft="10dip"
+            android:layout_marginRight="10dip"
+            android:background="@drawable/sdcard" />
+
+        <ImageView
+            android:id="@+id/imgLine03"
+            android:layout_width="1dip"
+            android:layout_height="45dip"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@id/imbSD"
+            android:background="@drawable/top_bar_diviver" />
 
         <ImageButton
             android:id="@+id/imbDownload"
@@ -28,11 +38,23 @@
             android:background="@drawable/download" />
 
         <ImageView
+             android:id="@+id/imgLine04"
             android:layout_width="1dip"
             android:layout_height="45dip"
             android:layout_centerVertical="true"
             android:layout_toLeftOf="@id/imbDownload"
             android:background="@drawable/top_bar_diviver" />
+         <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@id/imgLine04"
+            android:layout_toRightOf="@id/imgLine03"
+            android:text="@string/public_file"
+            android:textColor="#FFFFFFFF"
+            android:gravity="center"
+            android:textSize="20sp" />
     </RelativeLayout>
 
     <RelativeLayout

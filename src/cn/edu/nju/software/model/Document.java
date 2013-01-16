@@ -1,9 +1,13 @@
 package cn.edu.nju.software.model;
 
+import java.io.Serializable;
 import java.util.Date;
 
-
-public class Document implements Comparable<Document>{
+public class Document implements Comparable<Document>, Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 5924932800367599562L;
 	public final static String DOCUMENT_ID = "documentId";
 	public final static String TITLE = "title";
 	public final static String PATH = "path";
@@ -11,8 +15,8 @@ public class Document implements Comparable<Document>{
 	public final static String UPLOADER_NAME = "uploaderName";
 	public final static String UPLOAD_DATE = "uploadDate";
 	public final static String PARENT_ID = "parentId";
-	public final static String TYPE = "type"; //0:文件 1:目录
-	public final static String RESOURCE = "resource";
+	public final static String TYPE = "type";
+	public final static String RESOURCE = "resource"; 
 	
 	private int docId;
 	private String title;
@@ -22,7 +26,7 @@ public class Document implements Comparable<Document>{
 	private Date uploadDate;
 	private int parentId;
 	private int type;
-	private int resource;
+	private int resource; // 0:文件 1:目录
 	
 	public Document(){
 		

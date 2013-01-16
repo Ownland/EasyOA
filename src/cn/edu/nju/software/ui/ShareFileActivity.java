@@ -52,6 +52,7 @@ public class ShareFileActivity extends Activity {
 	public static Map<Integer, Boolean> isChecked;
 	private RelativeLayout progress;
 	private ImageButton btnDownload;
+	private ImageButton btnSD;
 	private FileAdapter adapter;
 	private String filePath = ".";
 	private Notification notification;
@@ -75,11 +76,23 @@ public class ShareFileActivity extends Activity {
 		lstFiles.setVisibility(View.VISIBLE);
 		progress = (RelativeLayout) findViewById(R.id.rl_filebar);
 		btnDownload = (ImageButton) findViewById(R.id.imbDownload);
+		btnSD = (ImageButton) findViewById(R.id.imbSD);
+		btnSD.setOnClickListener(new OnClickListener(){
+
+			@Override
+			public void onClick(View arg0) {
+				// TODO Auto-generated method stub
+				Intent intent = new Intent();
+				intent.setClass(ShareFileActivity.this, SDCardActivity.class);
+				startActivity(intent);
+			}
+			
+		});
 		btnDownload.setOnClickListener(new MyDownloadListener());
-		files = new ArrayList<Document>();
+		//files = new ArrayList<Document>();
 		isChecked = new HashMap<Integer, Boolean>();
 		lstFiles.setOnItemClickListener(new FileItemClickListener());
-		Date date = new Date();
+		/*Date date = new Date();
 		Document dir1 = new Document(1, "folder1", "docx", 1, date, -1, 1, 0);
 		Document dir2 = new Document(2, "folder2", "xlsx", 1, date, -1, 1, 0);
 		Document dir3 = new Document(3, "folder3", "xlsx", 1, date, 1, 1, 0);
@@ -105,9 +118,9 @@ public class ShareFileActivity extends Activity {
 		files.add(dir2);
 		files.add(dir3);
 		files.add(dir4);
-		fileList(-1);
+		fileList(-1);*/
 
-		// initDocuments();
+		initDocuments();
 	}
 
 	public void initDocuments() {
@@ -176,18 +189,27 @@ public class ShareFileActivity extends Activity {
 		@Override
 		public void onClick(View v) {
 			// TODO Auto-generated method stub
-			ArrayList<Integer> checkInt = new ArrayList<Integer>();
-			Iterator<Entry<Integer, Boolean>> downFiles = isChecked.entrySet()
-					.iterator();
-			while (downFiles.hasNext()) {
-				Entry<Integer, Boolean> file = downFiles.next();
-
-				if (file.getValue())
-					checkInt.add(file.getKey());
+			if (!net.goodNet()) {
+				Toast.makeText(ShareFileActivity.this, "网络不可用，请检测网络连接。",
+						Toast.LENGTH_SHORT).show();
+			} else {
+				ArrayList<Integer> checkInt = new ArrayList<Integer>();
+				Iterator<Entry<Integer, Boolean>> downFiles = isChecked
+						.entrySet().iterator();
+				while (downFiles.hasNext()) {
+					Entry<Integer, Boolean> file = downFiles.next();
+					if (file.getValue())
+						checkInt.add(file.getKey());
+				}
+				if (0 == checkInt.size()) {
+					Toast.makeText(ShareFileActivity.this, "请至少选择一个需要下载的文件。",
+							Toast.LENGTH_SHORT).show();
+				} else {
+					Notification();
+					Thread downloadThread = new DownloadThread(checkInt, files);
+					downloadThread.start();
+				}
 			}
-			Notification();
-			Thread downloadThread = new DownloadThread(checkInt, files);
-			downloadThread.start();
 		}
 	}
 
@@ -218,11 +240,14 @@ public class ShareFileActivity extends Activity {
 			// TODO Auto-generated method stub
 			Document cur = (Document) arg0.getItemAtPosition(arg2);
 			if (cur.getType() == 0) {
-				Toast.makeText(ShareFileActivity.this, "打开" + cur.getTitle(),
-						Toast.LENGTH_SHORT).show();
-				showRequestDialog();
-				Thread openFile = new OpenFileThread(cur.getPath());
-				openFile.start();
+				if (!net.goodNet()) {
+					Toast.makeText(ShareFileActivity.this, "网络不可用，请检测网络连接。",
+							Toast.LENGTH_SHORT).show();
+				} else {
+					showRequestDialog();
+					Thread openFile = new OpenFileThread(cur.getDocId());
+					openFile.start();
+				}
 			} else {
 				filePath = PathUtil.addPath(filePath, cur.getParentId());
 				fileList(cur.getDocId());
@@ -238,8 +263,12 @@ public class ShareFileActivity extends Activity {
 		public void handleMessage(Message msg) {
 			// TODO Auto-generated method stub
 			switch (msg.arg1) {
-			case 0:				
-				fileList(-1);
+			case 0:
+				if(0 == msg.arg2)
+					fileList(-1);
+				else
+					Toast.makeText(ShareFileActivity.this, "连接服务器失败。",
+							Toast.LENGTH_SHORT).show();
 				lstFiles.setVisibility(View.VISIBLE);
 				progress.setVisibility(View.GONE);
 				break;
@@ -273,26 +302,33 @@ public class ShareFileActivity extends Activity {
 		@Override
 		public void run() {
 			// TODO Auto-generated method stub
-			super.run();
+			IDocumentService ds = ClientServiceHelper.getDocumentService();
+			files = (ArrayList<Document>) ds.getDocumentList();
 			Message msg = new Message();
 			msg.arg1 = 0;
+			if(files == null){			
+				msg.arg2 = 1;
+			} else{
+				msg.arg2 = 0;
+			}
+			
 			ShareFileActivity.this.myHandler.sendMessage(msg);
 		}
 
 	}
 
 	class OpenFileThread extends Thread {
-		private String filePath;
+		private int docId;
 
-		public OpenFileThread(String path) {
-			filePath = path;
+		public OpenFileThread(int id) {
+			this.docId = id;;
 		}
 
 		@Override
 		public void run() {
 			// TODO Auto-generated method stub
 			IDocumentService ds = ClientServiceHelper.getDocumentService();
-			ByteArrayInputStream bis = ds.getDocumentContent(filePath);
+			ByteArrayInputStream bis = ds.getDocumentContent(docId);
 			String path = Environment.getDownloadCacheDirectory().getPath();
 			FileUtils
 					.saveFile(
@@ -325,15 +361,15 @@ public class ShareFileActivity extends Activity {
 		public void run() {
 			// TODO Auto-generated method stub
 
-			ArrayList<String> names = new ArrayList<String>();
+			/*ArrayList<String> names = new ArrayList<String>();
 			for (int i = 0; i < docs.size(); i++) {
 				if (ids.contains(docs.get(i).getDocId()))
 					names.add(docs.get(i).getPath());
-			}
+			}*/
 			IDocumentService ds = ClientServiceHelper.getDocumentService();
 			ByteArrayInputStream bis = null;
-			for (int i = 0; i < names.size(); i++) {
-				bis = ds.getDocumentContent(names.get(i));
+			for (int i = 0; i < ids.size(); i++) {
+				bis = ds.getDocumentContent(ids.get(i));
 				String path = MyApplication.SD_DIR + "/"
 						+ filePath.substring(filePath.lastIndexOf("/") + 1);
 				FileUtils.saveFile(bis, path);

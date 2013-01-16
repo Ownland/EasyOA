@@ -2,13 +2,13 @@ package cn.edu.nju.software.serviceConfig;
 
 public class ClientServiceResource {
 	
-	public static String ip = "172.17.248.84";
+	public static String ip = "192.168.0.134";
 	
 	public static String bootspace = "/MSPServer/";
 	
 	public static int port = 8443;
 	
-	public static int outoftime = 5000;
+	public static int outoftime = 15000;
 	
 	public static String namespace = "http://service.software.nju.edu.cn/";
 	
@@ -18,6 +18,8 @@ public class ClientServiceResource {
 	
 	public static String contactService = "contactService";
 	
-	public static String documentService = "documentService";
+	public static String calendareventService = "calendareventService";
+	
+	public static String documetService = "documentService";
 	
 }
