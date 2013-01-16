@@ -92,6 +92,11 @@ public class EmailActivity extends Activity{
 		this.initEmailListView();
 		this.initNewEmailView();
 		this.initEmailListViewData();
+		Intent intent = getIntent();
+		String targetAddress = intent.getStringExtra("targetAddress");
+		if(targetAddress!=null){
+			recieverText.setText(targetAddress);
+		}
 	}
 	public void initFrameButton(){
 		frameBtEmailInbox = (Button)findViewById(R.id.frame_btn_email_inbox);
@@ -162,6 +167,14 @@ public class EmailActivity extends Activity{
 		@Override
 		public void onClick(View arg0) {
 			// TODO Auto-generated method stub
+			frameBtEmailInbox.setEnabled(true);
+			frameBtEmailOutbox.setEnabled(true);
+			frameBtEmailNew.setEnabled(false);
+			searchRFrame.setVisibility(View.GONE);
+			searchSFrame.setVisibility(View.GONE);
+			scrollView.setVisibility(View.VISIBLE);
+			emailRevievedList.setVisibility(View.GONE);
+			emailSendList.setVisibility(View.GONE);
 			
 		}
 		
