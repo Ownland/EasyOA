@@ -1,4 +1,4 @@
-package cn.edu.nju.software.ui;
+﻿package cn.edu.nju.software.ui;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -215,9 +215,7 @@ public class CalendarEditActivity extends Activity{
 					.append((dayOfMonth < 10) ? "0" + dayOfMonth : dayOfMonth));
 		}
 	};
-	/**
-	 * 鏃堕棿鎺т欢鐨勪簨浠�
-	 */
+
 	private TimePickerDialog.OnTimeSetListener mFromTimeSetListener = new TimePickerDialog.OnTimeSetListener() {
 
 		@Override
@@ -228,9 +226,7 @@ public class CalendarEditActivity extends Activity{
 
 		}
 	};
-	/**
-	 * 鏃ユ湡鎺т欢鐨勪簨浠�
-	 */
+	
 	private DatePickerDialog.OnDateSetListener mToDateSetListener = new DatePickerDialog.OnDateSetListener() {
 
 		public void onDateSet(DatePicker view, int year, int monthOfYear,
@@ -243,9 +239,7 @@ public class CalendarEditActivity extends Activity{
 					.append((dayOfMonth < 10) ? "0" + dayOfMonth : dayOfMonth));
 		}
 	};
-	/**
-	 * 鏃堕棿鎺т欢鐨勪簨浠�
-	 */
+
 	private TimePickerDialog.OnTimeSetListener mToTimeSetListener = new TimePickerDialog.OnTimeSetListener() {
 
 		@Override
@@ -259,8 +253,8 @@ public class CalendarEditActivity extends Activity{
 	public void editCalendar(final Calendarevent calendar) {
 		
 		mProgressDialog.setProgress(ProgressDialog.STYLE_SPINNER);
-		mProgressDialog.setTitle("���Եȡ�����");
-		mProgressDialog.setMessage("���ڱ�������");
+		mProgressDialog.setTitle("请稍等。。。");
+		mProgressDialog.setMessage("正在保存日历");
 		mProgressDialog.setIndeterminate(false);
 		mProgressDialog.setCancelable(false);
 		mProgressDialog.show();
