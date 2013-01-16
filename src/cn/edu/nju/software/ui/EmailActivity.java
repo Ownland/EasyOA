@@ -96,6 +96,14 @@ public class EmailActivity extends Activity{
 		String targetAddress = intent.getStringExtra("targetAddress");
 		if(targetAddress!=null){
 			recieverText.setText(targetAddress);
+			frameBtEmailInbox.setEnabled(true);
+			frameBtEmailOutbox.setEnabled(true);
+			frameBtEmailNew.setEnabled(false);
+			searchRFrame.setVisibility(View.GONE);
+			searchSFrame.setVisibility(View.GONE);
+			scrollView.setVisibility(View.VISIBLE);
+			emailRevievedList.setVisibility(View.GONE);
+			emailSendList.setVisibility(View.GONE);
 		}
 	}
 	public void initFrameButton(){

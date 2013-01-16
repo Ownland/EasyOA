@@ -4,7 +4,9 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -21,7 +23,7 @@ public class CalendarDAOImpl implements CalendarDAO {
 		dbHelper = new SQLiteHelper(context);
 	}
 	@Override
-	public void insert(Calendarevent event) {
+	public Calendarevent insert(Calendarevent event) {
 		// TODO Auto-generated method stub
 		SQLiteDatabase db = dbHelper.getWritableDatabase();
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH-mm");
@@ -33,8 +35,17 @@ public class CalendarDAOImpl implements CalendarDAO {
 		cv.put(Calendarevent.DESCRIPTION,event.getDescription());
 		cv.put(Calendarevent.REMIND, event.isRemind());
 		cv.put(Calendarevent.OWNER_ID,event.getOwnerId());
+		cv.put(Calendarevent.VERSION, event.getVersion());
 		db.insert("calendar", null, cv);
+		int eventId = 0;
+		Cursor cursor = db.query("calendar", new String[]{"eventId"}, null, null, null, null, "eventId desc",null);
+		if(!cursor.isAfterLast()){
+			cursor.moveToFirst();
+			eventId = cursor.getInt(cursor.getColumnIndex("eventId"));
+		}
+		event.setEventId(eventId);
 		db.close();
+		return event;
 	}
 	@Override
 	public List<Calendarevent> getCalendarList(int ownerId,boolean todo,int pageIndex, int pageSize) {
@@ -93,8 +104,47 @@ public class CalendarDAOImpl implements CalendarDAO {
 		cv.put(Calendarevent.DESCRIPTION,event.getDescription());
 		cv.put(Calendarevent.REMIND, event.isRemind());
 		cv.put(Calendarevent.OWNER_ID,event.getOwnerId());
+		cv.put(Calendarevent.VERSION,event.getVersion());
 		db.update("calendar",cv , "eventId=?", new String[]{event.getEventId()+""});
 		db.close();
+	}
+	@Override
+	public Map<String,String> getAllCalendarByOwnerId(int ownerId) {
+		// TODO Auto-generated method stub
+		SQLiteDatabase db = dbHelper.getReadableDatabase();
+		Cursor cursor = db.query("calendar", new String[]{"eventId","version"}, "ownerId=?", new String[]{ownerId+""}, null, null, null,null);
+		Map<String,String> version_map  = new HashMap<String,String>();
+		for(cursor.moveToFirst();!cursor.isAfterLast();cursor.moveToNext()){
+			version_map.put(cursor.getInt(cursor.getColumnIndex("eventId"))+"",cursor.getInt(cursor.getColumnIndex("version"))+"" );
+		}
+		return version_map;
+	}
+	@Override
+	public Calendarevent getCalendareventByEventId(int eventId) {
+		// TODO Auto-generated method stub
+		SQLiteDatabase db = dbHelper.getReadableDatabase();
+		Cursor cursor = db.query("calendar", new String[]{"eventId", "name","beginTime" ,"endTime","location","description","remind","ownerId","version"}, "eventId=?", new String[]{eventId+""}, null, null, null,null);
+		Calendarevent event = null;
+		if(!cursor.isAfterLast()){
+			cursor.moveToFirst();
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH-mm");
+			event = new Calendarevent();
+			event.setName(cursor.getString(cursor.getColumnIndex("name")));
+			try {
+				event.setBeginTime(sdf.parse(cursor.getString(cursor.getColumnIndex("beginTime"))));
+				event.setEndTime(sdf.parse(cursor.getString(cursor.getColumnIndex("endTime"))));
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			event.setEventId(cursor.getInt(cursor.getColumnIndex("eventId")));
+			event.setDescription(cursor.getString(cursor.getColumnIndex("description")));
+			event.setLocation(cursor.getString(cursor.getColumnIndex("location")));
+			event.setRemind(cursor.getInt(cursor.getColumnIndex("remind"))==0?false:true);
+			event.setVersion(cursor.getInt(cursor.getColumnIndex("version")));
+			event.setOwnerId(cursor.getInt(cursor.getColumnIndex("ownerId")));
+		}
+		return event;
 	}
 
 }

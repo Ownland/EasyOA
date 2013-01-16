@@ -47,8 +47,38 @@ public class CalendareventServiceImpl implements ICalendareventService{
 		try {
 			ht.call(null, this.envelope);
 			SoapObject soapObject = (SoapObject) envelope.bodyIn;
-			ObjectInputStream in = DecodeHelper.getObjectInputStream(soapObject, "etCalendareventListResult=");
+			ObjectInputStream in = DecodeHelper.getObjectInputStream(soapObject, "getCalendareventListResult=");
 			res = (List<Calendarevent>)in.readObject();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (XmlPullParserException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return res;
+	}
+	
+
+	@Override
+	public Map<String, Object> deleteCalendarevent(int event_id, int owner_id) {
+		// TODO Auto-generated method stub
+		_FakeX509TrustManager.allowAllSSL();
+		
+		this.methodName = "deleteCalendarevent";
+		this.request = new SoapObject(ClientServiceResource.namespace, this.methodName);
+		request.addProperty("arg0", new Integer(event_id).toString());
+		request.addProperty("arg1", new Integer(owner_id).toString());
+		Map<String , Object> res = null;
+		try {
+			ht.call(null, this.envelope);
+			SoapObject soapObject = (SoapObject) envelope.bodyIn;
+			ObjectInputStream in = DecodeHelper.getObjectInputStream(soapObject, "deleteCalendareventResult=");
+			res = (Map<String , Object>)in.readObject();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -64,9 +94,69 @@ public class CalendareventServiceImpl implements ICalendareventService{
 	}
 
 	@Override
-	public String updateCalendarevent(Calendarevent new_calendarevent) {
+	public Map<String, Object> addCalendarevent(Calendarevent new_calendarevent) {
 		// TODO Auto-generated method stub
-		return null;
+		_FakeX509TrustManager.allowAllSSL();
+		
+		String new_calendar_str = Tools.convert_object_to_string(new_calendarevent);
+		
+		this.methodName = "addCalendarevent";
+		this.request = new SoapObject(ClientServiceResource.namespace, this.methodName);
+		request.addProperty("arg0", new_calendar_str);
+		
+		Map<String , Object> res = null;
+
+		try {
+			ht.call(null, this.envelope);
+			SoapObject soapObject = (SoapObject) envelope.bodyIn;
+			ObjectInputStream in = DecodeHelper.getObjectInputStream(soapObject, "addCalendareventResult=");
+			res = (Map<String , Object>)in.readObject();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (XmlPullParserException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return res;
+	}
+
+
+	@Override
+	public Map<String, Object> updateCalendarevent(
+			Calendarevent new_calendarevent) {
+		// TODO Auto-generated method stub
+		_FakeX509TrustManager.allowAllSSL();
+		
+		String new_calendar_str = Tools.convert_object_to_string(new_calendarevent);
+		
+		this.methodName = "updateCalendarevent";
+		this.request = new SoapObject(ClientServiceResource.namespace, this.methodName);
+		request.addProperty("arg0", new_calendar_str);
+		
+		Map<String , Object> res = null;
+
+		try {
+			ht.call(null, this.envelope);
+			SoapObject soapObject = (SoapObject) envelope.bodyIn;
+			ObjectInputStream in = DecodeHelper.getObjectInputStream(soapObject, "updateCalendareventResult=");
+			res = (Map<String , Object>)in.readObject();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (XmlPullParserException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return res;
 	}
 
 }

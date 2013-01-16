@@ -1,6 +1,7 @@
 package cn.edu.nju.software.mgr;
 
 import java.util.List;
+import java.util.Map;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -10,6 +11,8 @@ import cn.edu.nju.software.dao.CalendarDAO;
 import cn.edu.nju.software.dao.CalendarDAOImpl;
 import cn.edu.nju.software.model.Calendarevent;
 import cn.edu.nju.software.model.CalendareventList;
+import cn.edu.nju.software.service.ICalendareventService;
+import cn.edu.nju.software.serviceConfig.ClientServiceHelper;
 import cn.edu.nju.software.utils.NetUtil;
 
 public class CalendarManager{
@@ -46,7 +49,8 @@ public class CalendarManager{
 	        context.getContentResolver().insert(Uri.parse(calanderRemiderURL), values);  
 		}
 		CalendarDAO calendarDAO = new CalendarDAOImpl(context);
-		calendarDAO.insert(calendar);
+		Calendarevent calendarevent = calendarDAO.insert(calendar);
+		
 		//send to server
 	}
 	public CalendareventList getCalendars(int ownerId,int pageIndex, int pageSize, boolean todo,
@@ -56,7 +60,18 @@ public class CalendarManager{
 		CalendareventList list = new CalendareventList();
 		if(networkAvailable&&isRefresh){
 			//update from the server
-			//new CalendarDAOImpl(context)
+			Map<String,String> version_map = new CalendarDAOImpl(context).getAllCalendarByOwnerId(ownerId);
+			System.out.println(version_map.size());
+			ICalendareventService calendarService = ClientServiceHelper.getCalendareventService();
+			List<Calendarevent> toBeUpdatedList = calendarService.getCalendareventList(version_map, ownerId);
+			System.out.println(toBeUpdatedList.size());
+			CalendarDAO calendarDAO = new CalendarDAOImpl(context);
+			for(Calendarevent event:toBeUpdatedList){
+				if(calendarDAO.getCalendareventByEventId(event.getEventId())!=null)
+					calendarDAO.update(event);
+				else
+					calendarDAO.insert(event);
+			}
 		}
 		List<Calendarevent> eList = new CalendarDAOImpl(context).getCalendarList(ownerId, todo, pageIndex, pageSize);
 		list.setCalendarList(eList);
@@ -98,6 +113,7 @@ public class CalendarManager{
 	        values.put( "minutes", 0);
 	        context.getContentResolver().insert(Uri.parse(calanderRemiderURL), values);  
 		}
+		calendar.setVersion(calendar.getVersion()+1);
 		CalendarDAO calendarDAO = new CalendarDAOImpl(context);
 		calendarDAO.update(calendar);
 		//send to server

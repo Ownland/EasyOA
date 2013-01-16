@@ -2,7 +2,7 @@ package cn.edu.nju.software.serviceConfig;
 
 public class ClientServiceResource {
 	
-	public static String ip = "192.168.0.134";
+	public static String ip = "192.168.1.100";
 	
 	public static String bootspace = "/MSPServer/";
 	

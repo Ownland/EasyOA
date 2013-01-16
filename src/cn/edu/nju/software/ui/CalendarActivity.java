@@ -460,7 +460,7 @@ public class CalendarActivity extends Activity {
 		public void onItemClick(AdapterView<?> parent, View view, int position,
 				long id) {
 			// TODO Auto-generated method stub
-			if (position == 0 || view == calendarTodoFooter)
+			if (position == 0 || view == calendarDoneFooter)
 				return;
 			Calendarevent event = null;
 			if (view instanceof TextView) {

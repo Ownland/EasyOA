@@ -1,9 +1,14 @@
 package cn.edu.nju.software.model;
 
+import java.io.Serializable;
 import java.util.Date;
 
 
-public class Calendarevent {
+public class Calendarevent implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1510701930055440513L;
 	public final static String EVENT_ID = "eventId";
 	public final static String NAME = "name";
 	public final static String BEGIN_TIME = "beginTime";
@@ -13,7 +18,9 @@ public class Calendarevent {
 	public final static String REMIND = "remind";
 	public final static String OWNER_ID = "ownerId";
 	public final static String VERSION = "version";//每次更新加一
+	public final static String ID = "id";
 	
+	private int id;
 	private int eventId;
 	private String name;
 	private Date beginTime;
@@ -114,8 +121,13 @@ public class Calendarevent {
 	public void setVersion(int version) {
 		this.version = version;
 	}
-	
-	
-	
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
 	
 }

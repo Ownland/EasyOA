@@ -78,7 +78,11 @@ public class ContactDetailActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				finish();
+				
+				Intent intent = new Intent();
+				intent.setClass(ContactDetailActivity.this, EmailActivity.class);
+				intent.putExtra("targetAddress", nowContact.getEmail());
+				startActivity(intent);
 			}
 
 		});
