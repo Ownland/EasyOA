@@ -110,8 +110,6 @@ public class LoginActivity extends Activity {
 			Message msg = new Message();
 			Bundle b = new Bundle();
 
-			/**
-			 * 没有服务器时注释掉这一段，直接跳转到主界面
 			 
 			ILoginService ls = ClientServiceHelper.getLoginService();
 			Map<String, Object> result = ls.login(user.getUsername(),
@@ -130,14 +128,14 @@ public class LoginActivity extends Activity {
 					String backMsg = (String) result.get("msg");
 					b.putString("msg", backMsg);
 				}
-			}*/
+			}
 			
-			user.setContactId(1);
-			user.setId(1);
-			user.setKey("abc");
-			user.setType(1);
-			((MyApplication) getApplication()).setUser(user);
-			b.putInt("result", 0);
+			//user.setContactId(1);
+			//user.setId(1);
+			//user.setKey("abc");
+			//user.setType(1);
+			//((MyApplication) getApplication()).setUser(user);
+			//b.putInt("result", 0);
 			msg.setData(b);
 			LoginActivity.this.myHandler.sendMessage(msg);
 		}

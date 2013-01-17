@@ -64,9 +64,10 @@ public class FileAdapter extends BaseAdapter {
 
 			fileName.setText(document.getTitle());
 			fileOwner.setText(document.getUploaderId() + "");
-			String time = document.getUploadDate().getYear() + "-"
+			String time = document.getUploadDate().getDate() + "-"
 					+ document.getUploadDate().getMonth() + "-"
 					+ document.getUploadDate().getDay();
+			System.out.println("++++++++++++++"+document.getUploadDate());
 			fileDate.setText(time);
 			int docId = document.getDocId();
 			if (document.getType() == 0) {

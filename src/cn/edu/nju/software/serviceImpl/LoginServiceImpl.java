@@ -3,6 +3,8 @@ package cn.edu.nju.software.serviceImpl;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.OptionalDataException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Map;
 
 import org.ksoap2.SoapEnvelope;
@@ -28,7 +30,9 @@ public class LoginServiceImpl implements ILoginService{
 	@Override
 	public Map<String, Object> login(String username, String password) {
 		// TODO Auto-generated method stub
+		System.out.println("before allw "+getTime());
 		_FakeX509TrustManager.allowAllSSL();
+		System.out.println("after allw "+getTime());
 		this.methodName = "login";
 		this.request = new SoapObject(ClientServiceResource.namespace, this.methodName);
 		request.addProperty("arg0", username);
@@ -36,7 +40,9 @@ public class LoginServiceImpl implements ILoginService{
 		this.envelope.bodyOut = request;
 		Map <String,Object> res = null;
 			try {
+				System.out.println("before call "+getTime());
 				ht.call(null, this.envelope);
+				System.out.println("after call "+getTime());
 				SoapObject soapObject = (SoapObject) envelope.bodyIn;
 				System.out.println("soap Object " + soapObject.toString());
 				ObjectInputStream in = DecodeHelper.getObjectInputStream(soapObject, "loginResult=");
@@ -54,4 +60,10 @@ public class LoginServiceImpl implements ILoginService{
 			return res;
 	}
 
+	private String getTime(){
+		SimpleDateFormat   formatter   =   new   SimpleDateFormat   ("yyyy年MM月dd日   HH:mm:ss     ");     
+		 Date   curDate   =   new   Date(System.currentTimeMillis());//获取当前时间     
+		String   str   =   formatter.format(curDate);     
+		return str;
+	}
 }

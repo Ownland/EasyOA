@@ -113,13 +113,13 @@ public class ContactActivity extends Activity {
 
 	Runnable runnable = new Runnable() {
 		public void run() {
-			//IContactService cs = ClientServiceHelper.getContactService();
-			//contacts = cs.getContactList();
-			contacts = new ArrayList<Contact>();
+			IContactService cs = ClientServiceHelper.getContactService();
+			contacts = cs.getContactList();
+			/*contacts = new ArrayList<Contact>();
 			for(int i=0;i<10;i++){
 				Contact a =new Contact(i,"aa","aa","aa","aa","aa","aa","aa","aa","aa",0);
 				contacts.add(a);
-			}
+			}*/
 			contactMgr.delAllContacts();
 			
 			for (int i = 0; i < contacts.size(); i++) {

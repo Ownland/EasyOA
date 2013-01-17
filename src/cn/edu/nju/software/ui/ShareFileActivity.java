@@ -245,7 +245,7 @@ public class ShareFileActivity extends Activity {
 							Toast.LENGTH_SHORT).show();
 				} else {
 					showRequestDialog();
-					Thread openFile = new OpenFileThread(cur.getDocId());
+					Thread openFile = new OpenFileThread(cur.getDocId(),cur.getTitle());
 					openFile.start();
 				}
 			} else {
@@ -276,7 +276,7 @@ public class ShareFileActivity extends Activity {
 				ShareFileActivity.this.mDialog.dismiss();
 				Bundle b = msg.getData();
 				String fileName = b.getString("fileName");
-				String dir = Environment.getDownloadCacheDirectory().getPath();
+				String dir = MyApplication.TEMP_DIR;
 				MIMEType.openFile(fileName, dir, ShareFileActivity.this);
 				break;
 			case 2:
@@ -319,9 +319,11 @@ public class ShareFileActivity extends Activity {
 
 	class OpenFileThread extends Thread {
 		private int docId;
+		private String mypath;
 
-		public OpenFileThread(int id) {
+		public OpenFileThread(int id, String path) {
 			this.docId = id;;
+			this.mypath = path;
 		}
 
 		@Override
@@ -329,19 +331,18 @@ public class ShareFileActivity extends Activity {
 			// TODO Auto-generated method stub
 			IDocumentService ds = ClientServiceHelper.getDocumentService();
 			ByteArrayInputStream bis = ds.getDocumentContent(docId);
-			String path = Environment.getDownloadCacheDirectory().getPath();
+			String path = MyApplication.TEMP_DIR;
 			FileUtils
 					.saveFile(
 							bis,
 							path
 									+ "/"
-									+ filePath.substring(filePath
-											.lastIndexOf("/") + 1));
+									+ mypath);
 			Message msg = new Message();
 			msg.arg1 = 1;
 			Bundle b = new Bundle();
 			b.putString("fileName",
-					filePath.substring(filePath.lastIndexOf("/") + 1));
+					mypath);
 			msg.setData(b);
 			ShareFileActivity.this.myHandler.sendMessage(msg);
 		}
@@ -361,17 +362,17 @@ public class ShareFileActivity extends Activity {
 		public void run() {
 			// TODO Auto-generated method stub
 
-			/*ArrayList<String> names = new ArrayList<String>();
+			ArrayList<String> names = new ArrayList<String>();
 			for (int i = 0; i < docs.size(); i++) {
 				if (ids.contains(docs.get(i).getDocId()))
-					names.add(docs.get(i).getPath());
-			}*/
+					names.add(docs.get(i).getTitle());
+			}
 			IDocumentService ds = ClientServiceHelper.getDocumentService();
 			ByteArrayInputStream bis = null;
 			for (int i = 0; i < ids.size(); i++) {
 				bis = ds.getDocumentContent(ids.get(i));
 				String path = MyApplication.SD_DIR + "/"
-						+ filePath.substring(filePath.lastIndexOf("/") + 1);
+						+ names.get(i);
 				FileUtils.saveFile(bis, path);
 			}
 
