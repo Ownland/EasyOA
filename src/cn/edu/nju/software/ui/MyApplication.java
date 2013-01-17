@@ -6,10 +6,10 @@ import android.app.Application;
 public class MyApplication extends Application {
 	private User user;
 	public static final int PAGE_SIZE = 20;
-	public static final String EMAIL_ADDRESS = "androiddevelop1@163.com";
-	public static final String EMAIL_PASSWORD = "1q2w3e";
-	public static final String EMAIL_SEND_HOST = "smtp.163.com";
-	public static final String EMAIL_RECIEVE_HOST = "imap.163.com";
+	public static final String EMAIL_ADDRESS = "ysm@localhost";
+	public static final String EMAIL_PASSWORD = "123456";
+	public static final String EMAIL_SEND_HOST = "192.168.1.100";
+	public static final String EMAIL_RECIEVE_HOST = "192.168.1.100";
 	public static final String SD_DIR = "/mnt/sdcard/EasyOA";
 	public static final String TEMP_DIR = "/mnt/sdcard/temp/EasyOA";
 	@Override  

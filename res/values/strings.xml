@@ -53,7 +53,7 @@
     <string name="pull_to_refresh_pull_label">下拉可以刷新</string>
     <string name="pull_to_refresh_release_label">松开可以刷新</string>
     <string name="pull_to_refresh_update">最近更新：</string>
-    <string name="pull_to_refresh_refreshing_label">加载中...</string>
+    <string name="pull_to_refresh_refreshing_label">加载中&#8230;</string>
     <string name="load_ing">加载中···</string>
     <string name="load_more">更多</string>
     <string name="load_full">已加载全部</string>
@@ -66,4 +66,6 @@
     <string name="delete_mail_success">删除成功</string>
 	<string name="public_file">公共文件</string>
 	<string name="download_file">已下载文件</string>
+	<string name="wait">请稍等&#8230;</string>
+	<string name="creatingCalendar">正在创建日历</string>
 </resources>

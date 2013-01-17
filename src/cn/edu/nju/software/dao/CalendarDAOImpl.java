@@ -117,6 +117,7 @@ public class CalendarDAOImpl implements CalendarDAO {
 		for(cursor.moveToFirst();!cursor.isAfterLast();cursor.moveToNext()){
 			version_map.put(cursor.getInt(cursor.getColumnIndex("eventId"))+"",cursor.getInt(cursor.getColumnIndex("version"))+"" );
 		}
+		db.close();
 		return version_map;
 	}
 	@Override

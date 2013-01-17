@@ -56,7 +56,7 @@ public class FileOperator {
 				fileIcon.add(R.drawable.pdf);
 			} else if (end.equals("mp3")) {
 				fileIcon.add(R.drawable.mp3);
-			} else if (end.equals("jpeg")) {
+			} else if (end.equals("jpeg") || end.equals("jpg")) {
 				fileIcon.add(R.drawable.jpeg);
 			} else if (end.equals("png")) {
 				fileIcon.add(R.drawable.png);
@@ -105,7 +105,7 @@ public class FileOperator {
 				fileIcon.add(R.drawable.pdf);
 			} else if (end.equals("mp3")) {
 				fileIcon.add(R.drawable.mp3);
-			} else if (end.equals("jpeg")) {
+			} else if (end.equals("jpeg") || end.equals("jpg")) {
 				fileIcon.add(R.drawable.jpeg);
 			} else if (end.equals("png")) {
 				fileIcon.add(R.drawable.png);

@@ -169,9 +169,8 @@ public class CalendarActivity extends Activity {
 			public void run() {
 				Message msg = new Message();
 				try {
-					// 鑾峰彇鏁版嵁
 					CalendareventList list = new CalendarManager(
-							CalendarActivity.this).getCalendars(1, pageIndex,
+							CalendarActivity.this).getCalendars(((MyApplication)getApplication()).getUser().getId(), pageIndex,
 							MyApplication.PAGE_SIZE, todo, isRefresh);
 					msg.what = list.getPageSize();
 					msg.obj = list;
@@ -736,7 +735,7 @@ public class CalendarActivity extends Activity {
 				calendar.setName(eventName);
 				calendar.setRemind(eventRemind);
 				calendar.setVersion(1);
-				calendar.setOwnerId(1);
+				calendar.setOwnerId(((MyApplication)getApplication()).getUser().getId());
 				createCalendar(calendar);
 
 			}
@@ -758,8 +757,8 @@ public class CalendarActivity extends Activity {
 	public void createCalendar(final Calendarevent calendar) {
 		
 		mProgressDialog.setProgress(ProgressDialog.STYLE_SPINNER);
-		mProgressDialog.setTitle("请稍等。。。");
-		mProgressDialog.setMessage("正在创建日历");
+		mProgressDialog.setTitle(R.string.wait);
+		mProgressDialog.setMessage(getString(R.string.creatingCalendar));
 		mProgressDialog.setIndeterminate(false);
 		mProgressDialog.setCancelable(false);
 		mProgressDialog.show();
