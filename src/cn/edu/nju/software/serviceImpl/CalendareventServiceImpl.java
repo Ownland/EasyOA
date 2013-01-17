@@ -73,6 +73,7 @@ public class CalendareventServiceImpl implements ICalendareventService{
 		this.request = new SoapObject(ClientServiceResource.namespace, this.methodName);
 		request.addProperty("arg0", new Integer(event_id).toString());
 		request.addProperty("arg1", new Integer(owner_id).toString());
+		this.envelope.bodyOut = request;
 		Map<String , Object> res = null;
 		try {
 			ht.call(null, this.envelope);
@@ -103,6 +104,8 @@ public class CalendareventServiceImpl implements ICalendareventService{
 		this.methodName = "addCalendarevent";
 		this.request = new SoapObject(ClientServiceResource.namespace, this.methodName);
 		request.addProperty("arg0", new_calendar_str);
+		
+		this.envelope.bodyOut = request;
 		
 		Map<String , Object> res = null;
 
@@ -137,6 +140,8 @@ public class CalendareventServiceImpl implements ICalendareventService{
 		this.methodName = "updateCalendarevent";
 		this.request = new SoapObject(ClientServiceResource.namespace, this.methodName);
 		request.addProperty("arg0", new_calendar_str);
+		
+		this.envelope.bodyOut = request;
 		
 		Map<String , Object> res = null;
 

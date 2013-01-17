@@ -124,8 +124,9 @@ public class CalendarDetailActivity extends Activity{
 		switch (item.getItemId()) {
         case DELETE_ITEM:  
         	int eventId = intent.getIntExtra(Calendarevent.EVENT_ID, -1);
+        	int ownerId1 = intent.getIntExtra(Calendarevent.OWNER_ID, -1);
         	if(new NetUtil(this).goodNet()){
-        		deleteCalendar(eventId);
+        		deleteCalendar(eventId,ownerId1);
         		}else{
         		Toast.makeText(getApplicationContext(), R.string.netBad,
 	        		     Toast.LENGTH_SHORT).show();
@@ -139,7 +140,7 @@ public class CalendarDetailActivity extends Activity{
     		String description = intent.getStringExtra(Calendarevent.DESCRIPTION);
     		Date beginTime = (Date)intent.getSerializableExtra(Calendarevent.BEGIN_TIME);
     		Date endTime = (Date)intent.getSerializableExtra(Calendarevent.END_TIME);
-    		int ownerId = intent.getIntExtra(Calendarevent.OWNER_ID, 0);
+    		int ownerId2 = intent.getIntExtra(Calendarevent.OWNER_ID, 0);
     		int version = intent.getIntExtra(Calendarevent.VERSION, 1);
     		
     		Intent newIntent = new Intent(CalendarDetailActivity.this,
@@ -151,7 +152,7 @@ public class CalendarDetailActivity extends Activity{
     		newIntent.putExtra(Calendarevent.LOCATION, location);
     		newIntent.putExtra(Calendarevent.DESCRIPTION,description);
     		newIntent.putExtra(Calendarevent.REMIND, remind);
-    		newIntent.putExtra(Calendarevent.OWNER_ID, ownerId);
+    		newIntent.putExtra(Calendarevent.OWNER_ID, ownerId2);
     		newIntent.putExtra(Calendarevent.VERSION, version);
 			startActivity(newIntent);
     		finish();
@@ -159,7 +160,7 @@ public class CalendarDetailActivity extends Activity{
         }  
         return super.onOptionsItemSelected(item);  
     } 
-	public void deleteCalendar(final int eventId){
+	public void deleteCalendar(final int eventId,final int ownerId){
 		mProgressDialog.setProgress(ProgressDialog.STYLE_SPINNER);
 		mProgressDialog.setTitle("请稍等。。。");
 		mProgressDialog.setMessage("正在删除日历");
@@ -168,7 +169,7 @@ public class CalendarDetailActivity extends Activity{
 		mProgressDialog.show();
 		new Thread(){
 			public void run(){
-				new CalendarManager(CalendarDetailActivity.this).deleteCalendar(eventId);
+				new CalendarManager(CalendarDetailActivity.this).deleteCalendar(eventId,ownerId);
 				CalendarDetailActivity.this.deleteHandler.sendEmptyMessage(1);
 			}
 		}.start();

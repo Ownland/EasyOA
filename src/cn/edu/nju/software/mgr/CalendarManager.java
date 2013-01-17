@@ -51,7 +51,9 @@ public class CalendarManager{
 		CalendarDAO calendarDAO = new CalendarDAOImpl(context);
 		Calendarevent calendarevent = calendarDAO.insert(calendar);
 		
-		//send to server
+		System.out.println(calendarevent.getEventId());
+		ICalendareventService calendarService = ClientServiceHelper.getCalendareventService();
+		calendarService.addCalendarevent(calendarevent);
 	}
 	public CalendareventList getCalendars(int ownerId,int pageIndex, int pageSize, boolean todo,
 			boolean isRefresh) {
@@ -78,12 +80,17 @@ public class CalendarManager{
 		list.setPageSize(eList.size());
 		return list;
 	}
-	public void deleteCalendar(int eventId) {
+	public void deleteCalendar(int eventId,int ownerId) {
 		// TODO Auto-generated method stub
 		CalendarDAO calendarDAO = new CalendarDAOImpl(context);
 		boolean networkAvailable = new NetUtil(context).goodNet();
 		if(networkAvailable){
 			//delete from server
+			ICalendareventService calendarService = ClientServiceHelper.getCalendareventService();
+			System.out.println(ownerId);
+			Map<String,Object> map = calendarService.deleteCalendarevent(eventId, ownerId);
+			System.out.println((Integer)map.get("status"));
+			System.out.println((String)map.get("message"));
 			calendarDAO.delete(eventId);
 		}
 	}
@@ -114,6 +121,8 @@ public class CalendarManager{
 	        context.getContentResolver().insert(Uri.parse(calanderRemiderURL), values);  
 		}
 		calendar.setVersion(calendar.getVersion()+1);
+		ICalendareventService calendarService = ClientServiceHelper.getCalendareventService();
+		calendarService.updateCalendarevent(calendar);
 		CalendarDAO calendarDAO = new CalendarDAOImpl(context);
 		calendarDAO.update(calendar);
 		//send to server
